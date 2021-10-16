@@ -13,45 +13,50 @@
         <h3>testname testLastName</h3>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row class="mb-3">
       <v-col cols="1"></v-col>
       <v-col cols="10" align="center">
         <v-row>
-          <Input label="ชื่อ-นามสกุล" icon="mdi-map-marker" />
+          <Input label="ชื่อ-นามสกุล" icon="mdi-account" />
         </v-row>
         <v-row>
-          <Input label="อีเมลล์" icon="mdi-map-marker" />
+          <Input label="อีเมลล์" icon="mdi-email" />
         </v-row>
         <v-row>
-          <Input label="เบอร์โทรศัพท์" icon="mdi-map-marker" />
+          <Input label="เบอร์โทรศัพท์" icon="mdi-cellphone" />
         </v-row>
         <v-row>
           <Input label="ที่อยู่" icon="mdi-map-marker" />
         </v-row>
         <v-row>
           <v-col class="ma-0 pa-0 pr-1">
-            <Select label="จังหวัด" icon="mdi-map" />
+            <Select label="จังหวัด" icon="mdi-island" />
           </v-col>
           <v-col class="ma-0 pa-0 pl-1">
-            <Select label="อำเภอ" icon="mdi-map" />
+            <Select label="อำเภอ" icon="mdi-subway-variant" />
           </v-col>
         </v-row>
         <v-row>
           <v-col class="ma-0 pa-0 pr-1">
-            <Select label="ตำบล" icon="mdi-map" />
+            <Select label="ตำบล" icon="mdi-elephant" />
           </v-col>
           <v-col class="ma-0 pa-0 pl-1">
-            <Input label="รหัสไปรษณีย์" icon="mdi-map-marker" />
+            <Input label="รหัสไปรษณีย์" icon="mdi-qrcode-edit" />
           </v-col>
+        </v-row>
+        <v-row>
+          <v-btn x-large block color="primary" rounded>บันทึก</v-btn>
         </v-row>
       </v-col>
       <v-col cols="1"></v-col>
     </v-row>
     <v-footer color="primary lighten-1" padless app>
-      <v-row justify="center" no-gutters>
-        <v-btn color="white" text rounded class="my-2"> บันทึก </v-btn>
-        <v-col class="primary lighten-2 py-4 text-center white--text" cols="12">
-          {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+      <v-row justify="center" align="center" no-gutters>
+        <v-col align="right" cols="4" class="py-4 white--text">
+          <Logo height="80" width="80" />
+        </v-col>
+        <v-col align="center" cols="8" class="py-4 white--text">
+          <h1>SHIFT CAFÉ</h1>
         </v-col>
       </v-row>
     </v-footer>
