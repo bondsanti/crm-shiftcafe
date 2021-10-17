@@ -60,12 +60,12 @@
 export default {
   props: {
     height: {
-      type: Number,
-      default: 40,
+      type: String,
+      default: '40',
     },
     width: {
-      type: Number,
-      default: 40,
+      type: String,
+      default: '40',
     },
   },
 }

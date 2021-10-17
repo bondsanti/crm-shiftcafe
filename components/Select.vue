@@ -2,6 +2,8 @@
   <v-select
     :label="label"
     :value="value"
+    :items="items"
+    :disabled="disabled"
     dense
     filled
     rounded
@@ -22,6 +24,14 @@ export default {
     icon: {
       type: String,
       default: '',
+    },
+    items: {
+      type: Array,
+      default: () => [],
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
 }

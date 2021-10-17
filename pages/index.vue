@@ -30,15 +30,42 @@
         </v-row>
         <v-row>
           <v-col class="ma-0 pa-0 pr-1">
-            <Select label="จังหวัด" icon="mdi-island" />
+            <v-select
+              v-model="province"
+              label="จังหวัด"
+              :items="provinces"
+              dense
+              filled
+              rounded
+              prepend-inner-icon="mdi-island"
+              @change="selectProvince"
+            ></v-select>
           </v-col>
           <v-col class="ma-0 pa-0 pl-1">
-            <Select label="อำเภอ" icon="mdi-subway-variant" />
+            <!-- <Select label="อำเภอ" icon="mdi-subway-variant" /> -->
+            <v-select
+              v-model="district"
+              label="อำเภอ"
+              :items="districts"
+              dense
+              filled
+              rounded
+              prepend-inner-icon="mdi-subway-variant"
+              @change="getSubdistrict"
+            ></v-select>
           </v-col>
         </v-row>
         <v-row>
           <v-col class="ma-0 pa-0 pr-1">
             <Select label="ตำบล" icon="mdi-elephant" />
+            <v-select
+              label="ตำบล"
+              :items="subdistricts"
+              dense
+              filled
+              rounded
+              prepend-inner-icon="mdi-elephant"
+            ></v-select>
           </v-col>
           <v-col class="ma-0 pa-0 pl-1">
             <Input label="รหัสไปรษณีย์" icon="mdi-qrcode-edit" />
@@ -67,7 +94,59 @@ export default {
   data() {
     return {
       e1: 1,
+      provinces: [],
+      districts: [],
+      subdistricts: [],
+      province: '',
+      district: '',
     }
+  },
+  computed: {},
+  created() {
+    this.$axios
+      .$get(
+        'https://thaiaddressapi-thaikub.herokuapp.com/v1/thailand/provinces'
+      )
+      .then((res) => {
+        // console.log(res.data)
+        const provincesForselect = res.data.map((p) => {
+          const obj = { text: p.province, value: p.province }
+          return obj
+        })
+        // console.log(provincesForselect)
+        this.provinces = provincesForselect
+      })
+  },
+  methods: {
+    selectProvince() {
+      console.log(this.province)
+      this.selectDistrict()
+    },
+    selectDistrict() {
+      this.$axios
+        .$get(
+          `https://thaiaddressapi-thaikub.herokuapp.com/v1/thailand/provinces/${this.province}`
+        )
+        .then((res) => {
+          // console.log(res.data)
+          const districtForselect = res.data.map((p) => {
+            const obj = {
+              text: p.district,
+              value: p.district,
+              subdistrict: p.subdistrict,
+            }
+            return obj
+          })
+          // console.log(districtForselect)
+          this.districts = districtForselect
+        })
+    },
+    getSubdistrict() {
+      console.log(this.district)
+      const district = this.districts.find((d) => d.value === this.district)
+      this.subdistricts = district.subdistrict
+      // console.log(subdistrict)
+    },
   },
 }
 </script>
