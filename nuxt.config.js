@@ -9,8 +9,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - crm-shiftcafe-for-loyverse',
-    title: 'crm-shiftcafe-for-loyverse',
+    titleTemplate: 'SHIFT CAFÉ | %s',
+    title: 'REGISTER',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -18,19 +18,20 @@ export default {
       { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/logo.ico' },
       {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap',
       },
     ],
+    script: [{ src: 'https://static.line-scdn.net/liff/edge/2.1/sdk.js' }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ['@/assets/liff.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -76,4 +77,8 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+  server: {
+    port: 3000,
+    host: '0.0.0.0',
+  },
 }

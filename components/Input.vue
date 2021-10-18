@@ -1,12 +1,15 @@
 <template>
   <v-text-field
+    :type="type"
     :label="label"
     :value="value"
     :placeholder="label"
+    :rules="rules"
     filled
     rounded
     dense
     :append-icon="icon"
+    @input="$emit('input', $event)"
   ></v-text-field>
 </template>
 <script>
@@ -23,6 +26,14 @@ export default {
     icon: {
       type: String,
       default: '',
+    },
+    rules: {
+      type: Array,
+      default: () => [],
+    },
+    type: {
+      type: String,
+      default: 'text',
     },
   },
 }
