@@ -104,16 +104,38 @@
               />
             </v-col>
           </v-row>
+          <v-row v-show="errorText">
+            <v-alert
+              width="100%"
+              color="error"
+              dark
+              icon="mdi-alert"
+              border="left"
+              prominent
+            >
+              {{ errorText }}
+            </v-alert>
+          </v-row>
           <v-row>
             <v-btn
               type="submit"
               :disabled="!valid"
+              :loading="btnLoad"
               x-large
               block
               color="primary"
               rounded
               >บันทึก</v-btn
             >
+            <!-- <v-btn
+              type="submit"
+              x-large
+              block
+              color="primary"
+              rounded
+              :loading="btnLoad"
+              >บันทึก</v-btn
+            > -->
           </v-row>
         </v-form>
       </v-col>
@@ -123,26 +145,31 @@
 </template>
 <script>
 export default {
+  middleware: 'checkCustomer',
   data() {
     return {
       lineData: {},
       valid: true,
-      customer_code: '',
+      // customer data
+      customer_code: null,
       fullName: '',
       email: '',
       telephone: '',
       address: '',
       country_code: '',
-      provinces: [],
-      districts: [],
-      subdistricts: [],
       province: '',
       district: '',
       subdistrict: '',
+      // -----------------------
+      errorText: null,
+      provinces: [],
+      districts: [],
+      subdistricts: [],
       districtLoad: false,
       districtDisable: true,
       subdistrictLoad: false,
       subdistrictDisable: true,
+      btnLoad: false,
       emailRules: [
         (v) => !!v || 'กรุณากรอกอีเมลล์',
         (v) => /.+@.+\..+/.test(v) || 'อีเมลล์ไม่ถูกต้อง',
@@ -159,46 +186,81 @@ export default {
       ],
     }
   },
-  computed: {},
-  mounted() {
-    // this.$liff
-    //   .init({
-    //     liffId: '1656544842-bvKoPqBv',
-    //   })
-    //   .then(() => {
-    //     // console.log('PASS')
-    //     if (this.$liff.isLoggedIn()) {
-    //       // console.log('login')
-    //       this.$liff.getProfile().then((res) => {
-    //         this.lineData = res
-    //         this.customer_code = res.userId
-    //         console.log(res)
-    //       })
-    //     } else {
-    //       // console.log('not login')
-    //       this.$liff.login()
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     console.warn(e)
-    //   })
+  computed: {
+    allCustomers() {
+      return this.$store.state.allCustomers
+    },
   },
   created() {
-    this.$axios
-      .$get(
-        'https://thaiaddressapi-thaikub.herokuapp.com/v1/thailand/provinces'
-      )
-      .then((res) => {
-        // console.log(res.data)
-        const provincesForselect = res.data.map((p) => {
-          const obj = { text: p.province, value: p.province }
-          return obj
-        })
-        // console.log(provincesForselect)
-        this.provinces = provincesForselect
-      })
+    this.getAllCustomerFromLoyverse()
+    this.loginWithLine()
+    // this.getProvinces()
   },
   methods: {
+    async loginWithLine() {
+      try {
+        await this.$liff.init({ liffId: '1656544842-bvKoPqBv' })
+
+        if (this.$liff.isLoggedIn()) {
+          // console.log('login')
+          this.$liff.getProfile().then(async (res) => {
+            const customer = await this.findCustomersByCustomerCode(res.userId)
+
+            if (customer) {
+              console.log(customer)
+              this.$store.commit('setCustomerAfterRegister', customer)
+              this.$router.push('/detail')
+            }
+            this.getProvinces()
+            this.lineData = res
+            this.customer_code = res.userId
+            // console.log(res)
+          })
+        } else {
+          // console.log('not login')
+          this.$liff.login()
+        }
+      } catch (e) {
+        console.warn(e)
+      }
+    },
+    findCustomersByCustomerCode(customerCode) {
+      return new Promise((resolve, reject) => {
+        const result = this.allCustomers.find((c) => {
+          return c.customer_code === customerCode
+        })
+        resolve(result)
+      })
+    },
+    getAllCustomerFromLoyverse() {
+      this.$axios.setHeader(
+        'Authorization',
+        `Bearer ${this.$nuxt.context.env.loyverseToken}`
+      )
+      this.$axios
+        .$get(
+          'https://cors-anywhere.herokuapp.com/https://api.loyverse.com/v1.0/customers/'
+        )
+        .then((res) => {
+          this.$store.commit('setAllCustomers', res.customers)
+          // console.log(res)
+        })
+    },
+    getProvinces() {
+      this.$axios
+        .$get(
+          'https://thaiaddressapi-thaikub.herokuapp.com/v1/thailand/provinces'
+        )
+        .then((res) => {
+          // console.log(res.data)
+          const provincesForselect = res.data.map((p) => {
+            const obj = { text: p.province, value: p.province }
+            return obj
+          })
+          // console.log(provincesForselect)
+          this.provinces = provincesForselect
+        })
+    },
     checkValidate(name) {
       return [(v) => !!v || `กรุณากรอก${name}`]
     },
@@ -210,15 +272,14 @@ export default {
       this.districtLoad = true
       this.$axios
         .$get(
-          `https://thaiaddressapi-thaikub.herokuapp.com/v1/thailand/provinces/${this.province}`
+          `https://thaiaddressapi-thaikub.herokuapp.com/v1/thailand/provinces/${this.province}/district`
         )
         .then((res) => {
           // console.log(res.data)
           const districtForselect = res.data.map((p) => {
             const obj = {
-              text: p.district,
-              value: p.district,
-              subdistrict: p.subdistrict,
+              text: p,
+              value: p,
             }
             return obj
           })
@@ -230,60 +291,70 @@ export default {
     },
     getSubdistrict() {
       this.subdistrictLoad = true
-      console.log(this.district)
-      const district = this.districts.find((d) => d.value === this.district)
-      this.subdistricts = district.subdistrict
-      this.subdistrictDisable = false
-      this.subdistrictLoad = false
-      // console.log(subdistrict)
+      // console.log(this.district)
+      this.$axios
+        .$get(
+          `https://thaiaddressapi-thaikub.herokuapp.com/v1/thailand/provinces/${this.province}/district/${this.district}`
+        )
+        .then((res) => {
+          // console.log(res)
+          const subdistricts = res.data.map((s) => {
+            const obj = {
+              text: s,
+              value: s,
+            }
+            return obj
+          })
+          this.subdistricts = subdistricts
+          this.subdistrictDisable = false
+          this.subdistrictLoad = false
+        })
+      // const district = this.districts.find((d) => d.value === this.district)
     },
     saveData() {
-      // console.log(this.province, this.district, this.subdistrict)
-      // const obj = {
-      //   name: this.fullName,
-      //   email: this.email,
-      //   phone_number: this.telephone,
-      //   address: `${this.address} ${this.subdistrict}`,
-      //   city: this.district,
-      //   region: this.province,
-      //   postal_code: this.country_code,
-      //   country_code: 'th',
-      // }
+      this.$refs.form.validate()
+      this.btnLoad = true
+      console.log(this.province, this.district, this.subdistrict)
       const obj = {
-        name: 'dev',
-        email: 'dev@email.com',
-        phone_number: '9876543210',
-        address: 'dev',
-        city: 'dev',
-        region: 'dev',
-        postal_code: '52000',
+        name: this.fullName,
+        email: this.email,
+        phone_number: this.telephone,
+        address: `${this.address} ${this.subdistrict}`,
+        city: this.district,
+        region: this.province,
+        customer_code: this.customer_code,
+        postal_code: this.country_code,
         country_code: 'th',
       }
-      console.log(obj)
+
       /* this.$liff.closeWindow() */
 
-      // this.$axios.setHeader(
-      //   'Authorization',
-      //   'Bearer 3eb04e3a8baa4887bfaa8ded241543ee'
-      // )
-      // this.$axios.setToken('3eb04e3a8baa4887bfaa8ded241543ee', 'Bearer')
-      // this.$axios
-      //   .$get('https://api.loyverse.com/v1.0/customers')
-      //   .then((res) => {
-      //     console.log(res)
-      //   })
-      //   .catch((e) => {
-      //     console.warn(e)
-      //   })
+      this.$axios.setHeader(
+        'Authorization',
+        `Bearer ${this.$nuxt.context.env.loyverseToken}`
+      )
+
+      this.$axios
+        .$post(
+          'https://cors-anywhere.herokuapp.com/https://api.loyverse.com/v1.0/customers/',
+          obj
+        )
+        .then((res) => {
+          this.$store.commit('setCustomerAfterRegister', res)
+          this.$router.push('/success')
+          this.btnLoad = false
+        })
+        .catch((e) => {
+          this.btnLoad = false
+          this.errorText = e.response.data.errors[0].details
+          console.warn(e.response.data.errors)
+          console.warn(e)
+        })
     },
   },
 }
 </script>
 <style>
-div {
-  font-family: 'Mitr', sans-serif;
-}
-
 .v-input__control input {
   text-align: center;
 }

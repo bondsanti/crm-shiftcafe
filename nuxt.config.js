@@ -16,6 +16,7 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      { name: ' theme-color', content: colors.shades.black },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/logo.ico' },
@@ -73,6 +74,9 @@ export default {
         },
       },
     },
+  },
+  env: {
+    loyverseToken: '3eb04e3a8baa4887bfaa8ded241543ee',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

@@ -1,21 +1,12 @@
 <template>
-  <div>
-    <v-app-bar color="primary" dark fixed app
-      ><v-spacer></v-spacer>
-      <h3><v-icon left>mdi-check-circle-outline</v-icon> {{ title }}</h3>
-      <v-spacer></v-spacer
-    ></v-app-bar>
-
-    <v-row justify="center" class="mt-15">
-      <v-col align="center">
-        <v-avatar color="orange" size="150    ">
-          <img src=" /logo.ico" alt="John" />
-        </v-avatar>
-        <h2>SHIFT CAFÉ</h2>
-      </v-col>
-    </v-row>
-    <v-row justify="center">Thank You</v-row>
-  </div>
+  <v-app-bar color="primary" dark fixed app
+    ><v-spacer></v-spacer>
+    <h2 class="mt-3">
+      <v-icon left :size="iconSize">{{ icon }}</v-icon>
+      {{ title }}
+    </h2>
+    <v-spacer></v-spacer
+  ></v-app-bar>
 </template>
 <script>
 export default {
@@ -23,6 +14,22 @@ export default {
     title: {
       type: String,
       default: 'สมัครสมาชิก',
+    },
+    icon: {
+      type: String,
+      default: '',
+    },
+  },
+  computed: {
+    iconSize() {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs':
+          return 30
+        case 'sm':
+          return 45
+        default:
+          return 60
+      }
     },
   },
 }
