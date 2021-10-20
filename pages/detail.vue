@@ -39,6 +39,11 @@
 </template>
 <script>
 export default {
+  head() {
+    return {
+      title: this.customer.name || 'SHIFT CAFÉ',
+    }
+  },
   computed: {
     customer() {
       return this.$store.state.customerAfterRegister
