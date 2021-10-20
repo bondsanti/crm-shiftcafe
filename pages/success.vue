@@ -27,8 +27,8 @@ export default {
   },
   created() {
     setTimeout(() => {
-      this.$liff.closeWindow()
-    }, 10000)
+      this.$router.push('/detail')
+    }, 3000)
   },
 }
 </script>

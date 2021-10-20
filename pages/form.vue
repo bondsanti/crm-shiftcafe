@@ -4,9 +4,9 @@
     <v-row justify="center" align="center" class="mt-0">
       <v-col align="center">
         <v-avatar color="orange" size="100">
-          <img :src="lineData.pictureUrl || '/logo.ico'" alt="John" />
+          <img :src="dataAfterLogin.img || '/logo.ico'" alt="John" />
         </v-avatar>
-        <h3>{{ lineData.displayName || 'SHIFT CAFÉ' }}</h3>
+        <h3>{{ dataAfterLogin.name || 'SHIFT CAFÉ' }}</h3>
       </v-col>
     </v-row>
     <v-row class="mb-2">
@@ -127,15 +127,6 @@
               rounded
               >บันทึก</v-btn
             >
-            <!-- <v-btn
-              type="submit"
-              x-large
-              block
-              color="primary"
-              rounded
-              :loading="btnLoad"
-              >บันทึก</v-btn
-            > -->
           </v-row>
         </v-form>
       </v-col>
@@ -146,12 +137,11 @@
 <script>
 export default {
   middleware: 'getProvince',
+
   data() {
     return {
-      lineData: {},
       valid: true,
       // customer data
-      customer_code: null,
       fullName: '',
       email: '',
       telephone: '',
@@ -185,54 +175,23 @@ export default {
       ],
     }
   },
+  head() {
+    return {
+      title: 'REGISTER',
+    }
+  },
   computed: {
-    allCustomers() {
-      return this.$store.state.allCustomers
-    },
     provinces() {
       return this.$store.state.provinces
     },
+    dataAfterLogin() {
+      return this.$store.state.dataAfterLogin
+    },
   },
   created() {
-    this.loginWithLine()
+    // this.loginWithLine()
   },
   methods: {
-    async loginWithLine() {
-      try {
-        await this.$liff.init({ liffId: '1656544842-bvKoPqBv' })
-
-        if (this.$liff.isLoggedIn()) {
-          // console.log('login')
-          this.$liff.getProfile().then(async (res) => {
-            // console.log(res)
-            const customer = await this.findCustomersByCustomerCode(res.userId)
-
-            console.log(customer)
-            if (customer) {
-              this.$store.commit('setCustomerAfterRegister', customer)
-              this.$router.push('/detail')
-            }
-
-            this.lineData = res
-            this.customer_code = res.userId
-          })
-        } else {
-          // console.log('not login')
-          this.$liff.login()
-        }
-      } catch (e) {
-        console.warn(e)
-      }
-    },
-    findCustomersByCustomerCode(customerCode) {
-      console.log(this.allCustomers)
-      return new Promise((resolve, reject) => {
-        const result = this.allCustomers.find((c) => {
-          return c.customer_code === customerCode
-        })
-        resolve(result)
-      })
-    },
     checkValidate(name) {
       return [(v) => !!v || `กรุณากรอก${name}`]
     },
@@ -294,7 +253,7 @@ export default {
         address: `${this.address} ${this.subdistrict}`,
         city: this.district,
         region: this.province,
-        customer_code: this.customer_code,
+        customer_code: this.dataAfterLogin.id || null,
         postal_code: this.country_code,
         country_code: 'th',
       }
@@ -312,7 +271,10 @@ export default {
           obj
         )
         .then((res) => {
-          this.$store.commit('setCustomerAfterRegister', res)
+          this.$store.commit('setCustomerAfterRegister', {
+            ...res,
+            img: this.dataAfterLogin.img,
+          })
           this.$router.push('/success')
           this.btnLoad = false
         })

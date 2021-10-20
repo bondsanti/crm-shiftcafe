@@ -1,39 +1,43 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <Header title="รายละเอียดสมาชิก" icon="mdi-card-account-details-outline" />
-    <v-row justify="center" class="mt-2">
+    <v-row justify="center" align="center" class="fill-height">
       <v-col align="center">
-        <v-avatar color="orange" size="150    ">
-          <img src=" /logo.ico" alt="John" />
-        </v-avatar>
-        <p id="font" class="title font-weight-bold font-weight-black">
-          คุณ {{ customer.name || 'SHIFT CAFÉ' }}
-        </p>
+        <v-row justify="center">
+          <v-avatar color="orange" size="150    ">
+            <img :src="customer.img || '/logo.ico'" alt="John" />
+          </v-avatar>
+        </v-row>
+        <v-row justify="center">
+          <p id="font" class="title font-weight-bold font-weight-black">
+            คุณ {{ customer.name || 'SHIFT CAFÉ' }}
+          </p>
+        </v-row>
+        <v-row justify="center">
+          <div id="font" class="title mx-1">อีเมลล์ :</div>
+          <div id="font" class="title mx-1 font-weight-bold font-weight-black">
+            {{ customer.email || 'shift.restaurant.center@gmail.com' }}
+          </div>
+        </v-row>
+        <v-row justify="center">
+          <div id="font" class="title mx-1">เบอร์โทรศัพท์ :</div>
+          <div id="font" class="title mx-1 font-weight-bold font-weight-black">
+            {{ customer.phone_number || '0917961816' }}
+          </div>
+        </v-row>
+        <v-row justify="center">
+          <div id="font" class="title mx-1">ยอดจ่ายทั้งหมด :</div>
+          <div id="font" class="title mx-1 font-weight-bold font-weight-black">
+            {{ formatPrice(customer.total_spent || 0) }} บาท
+          </div>
+        </v-row>
+        <v-row justify="center">
+          <div id="font" class="title mx-1">แต้มสะสม :</div>
+          <div id="font" class="title mx-1 font-weight-bold font-weight-black">
+            {{ customer.total_points || 0 }} แต้ม
+          </div>
+        </v-row>
       </v-col>
-    </v-row>
-    <v-row justify="center">
-      <div id="font" class="title mx-1">อีเมลล์ :</div>
-      <div id="font" class="title mx-1 font-weight-bold font-weight-black">
-        {{ customer.email || 'shift.restaurant.center@gmail.com' }}
-      </div>
-    </v-row>
-    <v-row justify="center">
-      <div id="font" class="title mx-1">เบอร์โทรศัพท์ :</div>
-      <div id="font" class="title mx-1 font-weight-bold font-weight-black">
-        {{ customer.phone_number || '0917961816' }}
-      </div>
-    </v-row>
-    <v-row justify="center">
-      <div id="font" class="title mx-1">ยอดจ่ายทั้งหมด :</div>
-      <div id="font" class="title mx-1 font-weight-bold font-weight-black">
-        {{ formatPrice(customer.total_spent || 0) }} บาท
-      </div>
-    </v-row>
-    <v-row justify="center">
-      <div id="font" class="title mx-1">แต้มสะสม :</div>
-      <div id="font" class="title mx-1 font-weight-bold font-weight-black">
-        {{ customer.total_points || 0 }} แต้ม
-      </div>
     </v-row>
   </div>
 </template>

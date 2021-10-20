@@ -10,11 +10,15 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: 'SHIFT CAFÉ | %s',
-    title: 'REGISTER',
+    title: 'WELCOME',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'SHIFT CAFÉ at LAMPANG',
+      },
       { name: 'format-detection', content: 'telephone=no' },
       { name: ' theme-color', content: colors.shades.black },
     ],
@@ -25,14 +29,17 @@ export default {
         href: 'https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap',
       },
     ],
-    script: [{ src: 'https://static.line-scdn.net/liff/edge/2.1/sdk.js' }],
+    script: [
+      { src: 'https://static.line-scdn.net/liff/edge/2.1/sdk.js' },
+      { src: 'https://connect.facebook.net/en_US/sdk.js' },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/assets/liff.js'],
+  plugins: ['@/assets/liff.js', '@/assets/facebook.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
