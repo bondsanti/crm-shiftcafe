@@ -187,8 +187,13 @@ export default {
     dataAfterLogin() {
       return this.$store.state.dataAfterLogin
     },
+    customers() {
+      return this.$store.state.allCustomers
+    },
   },
   created() {
+    this.fullName = this.dataAfterLogin.name || ''
+    this.email = this.dataAfterLogin.email || ''
     // this.loginWithLine()
   },
   methods: {
@@ -242,48 +247,61 @@ export default {
         })
       // const district = this.districts.find((d) => d.value === this.district)
     },
-    saveData() {
-      this.$refs.form.validate()
-      this.btnLoad = true
-      console.log(this.province, this.district, this.subdistrict)
-      const obj = {
-        name: this.fullName,
-        email: this.email,
-        phone_number: this.telephone,
-        address: `${this.address} ${this.subdistrict}`,
-        city: this.district,
-        region: this.province,
-        customer_code: this.dataAfterLogin.id || null,
-        postal_code: this.country_code,
-        country_code: 'th',
-      }
-
+    findCustomerByTelephone(telephone) {
+      // console.log(this.customers)
+      return new Promise((resolve, reject) => {
+        const result = this.customers.find((c) => c.phone_number === telephone)
+        resolve(result)
+      })
+    },
+    async saveData() {
       /* this.$liff.closeWindow() */
+      try {
+        this.$refs.form.validate()
+        this.btnLoad = true
+        console.log(this.province, this.district, this.subdistrict)
+        const check = await this.findCustomerByTelephone(this.telephone)
+        console.log(check)
+        if (check) {
+          this.errorText =
+            'หมายเลขโทรศัพท์นี้ได้สมัครสมาชิกกับทางร้านเรียบร้อยแล้ว'
+          this.btnLoad = false
+          return
+        }
+        const obj = {
+          name: this.fullName,
+          email: this.email,
+          phone_number: this.telephone,
+          address: `${this.address} ${this.subdistrict}`,
+          city: this.district,
+          region: this.province,
+          customer_code: this.dataAfterLogin.id || null,
+          postal_code: this.country_code,
+          country_code: 'th',
+        }
+        // console.log(obj)
+        this.$axios.setHeader(
+          'Authorization',
+          `Bearer ${this.$nuxt.context.env.loyverseToken}`
+        )
 
-      this.$axios.setHeader(
-        'Authorization',
-        `Bearer ${this.$nuxt.context.env.loyverseToken}`
-      )
-
-      this.$axios
-        .$post(
+        const res = await this.$axios.$post(
           'https://cors-anywhere.herokuapp.com/https://api.loyverse.com/v1.0/customers/',
           obj
         )
-        .then((res) => {
-          this.$store.commit('setCustomerAfterRegister', {
-            ...res,
-            img: this.dataAfterLogin.img,
-          })
-          this.$router.push('/success')
-          this.btnLoad = false
+        this.$store.commit('setCustomerAfterRegister', {
+          ...res,
+          img: this.dataAfterLogin.img || null,
         })
-        .catch((e) => {
-          this.btnLoad = false
-          this.errorText = e.response.data.errors[0].details
-          console.warn(e.response.data.errors)
-          console.warn(e)
-        })
+        this.$router.push('/success')
+        this.btnLoad = false
+      } catch (e) {
+        console.error(e)
+        console.error(e.message)
+        console.error(e.response)
+        this.btnLoad = false
+        this.errorText = e.response.data.errors[0].details || e.message
+      }
     },
   },
 }

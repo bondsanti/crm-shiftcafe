@@ -23,9 +23,21 @@
           >
         </v-row>
         <v-row justify="center" class="my-3">
-          <v-btn disabled dark rounded block color="red"
+          <v-btn dark rounded block color="red" @click="loginWithGoogle"
             ><v-icon left> mdi-google </v-icon>GOOGLE</v-btn
           >
+        </v-row>
+        <v-row v-show="errorText" justify="center" class="my-3">
+          <v-alert
+            color="red"
+            outlined
+            type="warning"
+            prominent
+            border="left"
+            width="100%"
+          >
+            {{ errorText }}
+          </v-alert>
         </v-row>
       </v-col>
       <v-col cols="1" md="2" lg="4"></v-col>
@@ -37,7 +49,7 @@ export default {
   middleware: 'getCustomer',
   data() {
     return {
-      lineData: {},
+      errorText: null,
     }
   },
   computed: {
@@ -46,12 +58,13 @@ export default {
     },
   },
   created() {
-    console.log(this.dataAfterLogin)
+    // console.log(this.dataAfterLogin)
     // this.loginWithLine()
   },
   methods: {
     async loginWithLine() {
       try {
+        this.errorText = null
         await this.$liff.init({ liffId: '1656544842-bvKoPqBv' })
 
         if (this.$liff.isLoggedIn()) {
@@ -85,7 +98,7 @@ export default {
       }
     },
     findCustomersByCustomerCode(customerCode) {
-      console.log(this.allCustomers)
+      // console.log(this.allCustomers)
       return new Promise((resolve, reject) => {
         const result = this.allCustomers.find((c) => {
           return c.customer_code === customerCode
@@ -93,31 +106,68 @@ export default {
         resolve(result)
       })
     },
-    loginWithFacebook() {
+    async loginWithFacebook() {
       try {
-        this.$facebook.init({
+        this.errorText = null
+        await this.$facebook.init({
           appId: '437943554425729',
           status: true,
           xfbml: true,
           version: 'v2.7',
         })
-
-        // console.log(res)
         console.log(this.$facebook)
-        this.$facebook.login(function (response) {
+        this.$facebook.login(async (response) => {
           console.log(response)
           if (response.authResponse) {
-            console.log('Welcome!  Fetching your information.... ')
-            this.$facebook.api('/me', function (response) {
-              console.log('Good to see you, ' + response.name + '.')
-            })
+            console.log(response.authResponse.userID)
+            // console.log(this.errorText)
+            const customer = await this.findCustomersByCustomerCode(
+              response.authResponse.userID
+            )
+            if (customer) {
+              this.$store.commit('setCustomerAfterRegister', customer)
+              this.$router.push('/detail')
+            } else {
+              this.$store.commit('setDataAfterLogin', {
+                id: response.authResponse.userID,
+              })
+              this.$router.push('/form')
+            }
           } else {
-            console.log('User cancelled login or did not fully authorize.')
+            this.errorText = 'User cancelled login or did not fully authorize.'
           }
         })
         // }
       } catch (e) {
         console.warn(e)
+      }
+    },
+    async loginWithGoogle() {
+      try {
+        const googleUser = await this.$gAuth.signIn()
+        const customer = await this.findCustomersByCustomerCode(
+          googleUser.nt.uT
+        )
+        if (customer) {
+          this.$store.commit('setCustomerAfterRegister', {
+            ...customer,
+            img: googleUser.nt.nK,
+          })
+          this.$router.push('/detail')
+        } else {
+          const obj = {
+            name: googleUser.nt.JU + ' ' + googleUser.nt.$S,
+            img: googleUser.nt.nK,
+            id: googleUser.nt.uT,
+            email: googleUser.nt.Yt,
+          }
+          this.$store.commit('setDataAfterLogin', obj)
+          this.$router.push('/form')
+        }
+
+        console.log(googleUser)
+      } catch (e) {
+        console.error(e)
       }
     },
   },

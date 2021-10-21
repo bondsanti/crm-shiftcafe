@@ -32,6 +32,7 @@ export default {
     script: [
       { src: 'https://static.line-scdn.net/liff/edge/2.1/sdk.js' },
       { src: 'https://connect.facebook.net/en_US/sdk.js' },
+      // '@/assets/init.js',
     ],
   },
 
@@ -39,7 +40,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/assets/liff.js', '@/assets/facebook.js'],
+  plugins: ['@/assets/liff.js', '@/assets/facebook.js', '@/assets/google.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
