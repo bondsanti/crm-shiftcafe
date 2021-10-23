@@ -3,7 +3,7 @@
     <Header title="ยินดีต้อนรับ" />
     <v-row justify="center" align="center" class="fill-height">
       <v-col cols="1" md="2" lg="4"></v-col>
-      <v-col align="center">
+      <v-col cols="10" md="8" lg="4" align="center">
         <v-row justify="center">
           <v-avatar color="orange" size="100">
             <img src=" /logo.ico" alt="John" />
@@ -13,20 +13,51 @@
           <h3>SHIFT CAFÉ</h3>
         </v-row>
         <v-row justify="center" class="my-3">
-          <v-btn dark rounded block color="green" @click="loginWithLine"
+          <p>สมัครสมาชิกด้วย</p>
+        </v-row>
+        <v-row justify="center" class="hidden-sm-and-down">
+          <v-col cols="12" md="4" align="right">
+            <v-btn icon fab dark color="green" @click="loginWithLine"
+              ><v-icon left> mdi-chat </v-icon>LINE</v-btn
+            >
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-btn icon fab dark color="blue" @click="loginWithFacebook"
+              ><v-icon left> mdi-facebook </v-icon>FACEBOOK</v-btn
+            >
+          </v-col>
+          <v-col cols="12" md="4" align="left">
+            <v-btn icon fab dark color="red" @click="loginWithGoogle"
+              ><v-icon left> mdi-google </v-icon>GOOGLE</v-btn
+            >
+          </v-col>
+        </v-row>
+        <v-row justify="center" class="my-3 d-md-none">
+          <v-btn block outlined dark color="green" @click="loginWithLine"
             ><v-icon left> mdi-chat </v-icon>LINE</v-btn
           >
         </v-row>
-        <v-row justify="center" class="my-3">
-          <v-btn dark rounded block color="blue" @click="loginWithFacebook"
+        <v-row justify="center" class="my-3 d-md-none">
+          <v-btn block outlined dark color="blue" @click="loginWithFacebook"
             ><v-icon left> mdi-facebook </v-icon>FACEBOOK</v-btn
           >
         </v-row>
-        <v-row justify="center" class="my-3">
-          <v-btn dark rounded block color="red" @click="loginWithGoogle"
+        <v-row justify="center" class="my-3 d-md-none">
+          <v-btn
+            style="border-color: '#000'"
+            block
+            dark
+            outlined
+            color="red"
+            @click="loginWithGoogle"
             ><v-icon left> mdi-google </v-icon>GOOGLE</v-btn
           >
         </v-row>
+        <v-card-text class="d-flex align-center mt-2">
+          <v-divider></v-divider>
+          <span class="mx-5">หรือ</span>
+          <v-divider></v-divider>
+        </v-card-text>
         <v-row v-show="errorText" justify="center" class="my-3">
           <v-alert
             color="red"
@@ -89,12 +120,14 @@ export default {
               this.$store.commit('setDataAfterLogin', obj)
               this.$router.push('/form')
             }
+            this.$store.commit('setLoginType', 'Line')
           })
         } else {
           this.$liff.login()
         }
       } catch (e) {
         console.warn(e)
+        this.errorText = 'User cancelled login or did not fully authorize.'
       }
     },
     findCustomersByCustomerCode(customerCode) {
@@ -116,22 +149,37 @@ export default {
           version: 'v2.7',
         })
         console.log(this.$facebook)
-        this.$facebook.login(async (response) => {
-          console.log(response)
+        this.$facebook.login((response) => {
+          // console.log(response)
           if (response.authResponse) {
-            console.log(response.authResponse.userID)
-            // console.log(this.errorText)
-            const customer = await this.findCustomersByCustomerCode(
-              response.authResponse.userID
+            // console.log(response.authResponse.userID)
+            // eslint-disable-line
+            window.FB.api(
+              '/me',
+              { fields: ['picture', 'name', 'email'] },
+              function (response) {
+                // console.log(response)
+                letStart(response)
+              }
             )
-            if (customer) {
-              this.$store.commit('setCustomerAfterRegister', customer)
-              this.$router.push('/detail')
-            } else {
-              this.$store.commit('setDataAfterLogin', {
-                id: response.authResponse.userID,
-              })
-              this.$router.push('/form')
+            const letStart = async (obj) => {
+              const customer = await this.findCustomersByCustomerCode(obj.id)
+              if (customer) {
+                this.$store.commit('setCustomerAfterRegister', {
+                  ...customer,
+                  img: obj.picture.data.url,
+                })
+                this.$router.push('/detail')
+              } else {
+                this.$store.commit('setDataAfterLogin', {
+                  id: obj.id,
+                  name: obj.name,
+                  img: obj.picture.data.url,
+                  email: obj.email,
+                })
+                this.$router.push('/form')
+              }
+              this.$store.commit('setLoginType', 'Facebook')
             }
           } else {
             this.errorText = 'User cancelled login or did not fully authorize.'
@@ -144,6 +192,7 @@ export default {
     },
     async loginWithGoogle() {
       try {
+        this.errorText = null
         const googleUser = await this.$gAuth.signIn()
         const customer = await this.findCustomersByCustomerCode(
           googleUser.nt.uT
@@ -164,10 +213,12 @@ export default {
           this.$store.commit('setDataAfterLogin', obj)
           this.$router.push('/form')
         }
+        this.$store.commit('setLoginType', 'Google')
 
-        console.log(googleUser)
+        // console.log(googleUser)
       } catch (e) {
         console.error(e)
+        this.errorText = 'User cancelled login or did not fully authorize.'
       }
     },
   },
