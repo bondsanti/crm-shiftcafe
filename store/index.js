@@ -3,6 +3,7 @@ export const state = () => ({
   customerAfterRegister: {},
   provinces: [],
   dataAfterLogin: {},
+  loginType: '',
 })
 
 export const mutations = {
@@ -11,4 +12,5 @@ export const mutations = {
   setAllCustomers: (state, value) => (state.allCustomers = value),
   setProvinces: (state, value) => (state.provinces = value),
   setDataAfterLogin: (state, value) => (state.dataAfterLogin = value),
+  setLoginType: (state, value) => (state.loginType = value),
 }
