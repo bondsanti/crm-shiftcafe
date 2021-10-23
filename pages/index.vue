@@ -2,8 +2,8 @@
   <div style="height: 100%">
     <Header title="ยินดีต้อนรับ" />
     <v-row justify="center" align="center" class="fill-height">
-      <v-col cols="1" md="2" lg="4"></v-col>
-      <v-col cols="10" md="8" lg="4" align="center">
+      <v-col cols="1" md="2" lg="3"></v-col>
+      <v-col cols="10" md="8" lg="6" align="center">
         <v-row justify="center">
           <v-avatar color="orange" size="100">
             <img src=" /logo.ico" alt="John" />
@@ -12,52 +12,86 @@
         <v-row justify="center" class="my-3">
           <h3>SHIFT CAFÉ</h3>
         </v-row>
-        <v-row justify="center" class="my-3">
-          <p>สมัครสมาชิกด้วย</p>
-        </v-row>
-        <v-row justify="center" class="hidden-sm-and-down">
-          <v-col cols="12" md="4" align="right">
-            <v-btn icon fab dark color="green" @click="loginWithLine"
-              ><v-icon left> mdi-chat </v-icon>LINE</v-btn
-            >
-          </v-col>
-          <v-col cols="12" md="4">
-            <v-btn icon fab dark color="blue" @click="loginWithFacebook"
-              ><v-icon left> mdi-facebook </v-icon>FACEBOOK</v-btn
-            >
-          </v-col>
-          <v-col cols="12" md="4" align="left">
-            <v-btn icon fab dark color="red" @click="loginWithGoogle"
-              ><v-icon left> mdi-google </v-icon>GOOGLE</v-btn
-            >
-          </v-col>
-        </v-row>
-        <v-row justify="center" class="my-3 d-md-none">
-          <v-btn block outlined dark color="green" @click="loginWithLine"
-            ><v-icon left> mdi-chat </v-icon>LINE</v-btn
+        <v-row justify="center" class="mt-5 pb-2">
+          <v-btn block outlined dark color="primary" @click="noSocial"
+            >สมัครสมาชิก</v-btn
           >
         </v-row>
-        <v-row justify="center" class="my-3 d-md-none">
-          <v-btn block outlined dark color="blue" @click="loginWithFacebook"
-            ><v-icon left> mdi-facebook </v-icon>FACEBOOK</v-btn
-          >
-        </v-row>
-        <v-row justify="center" class="my-3 d-md-none">
-          <v-btn
-            style="border-color: '#000'"
-            block
-            dark
-            outlined
-            color="red"
-            @click="loginWithGoogle"
-            ><v-icon left> mdi-google </v-icon>GOOGLE</v-btn
-          >
-        </v-row>
+
         <v-card-text class="d-flex align-center mt-2">
           <v-divider></v-divider>
           <span class="mx-5">หรือ</span>
           <v-divider></v-divider>
         </v-card-text>
+
+        <v-row justify="center" class="hidden-sm-and-down">
+          <v-col cols="12" md="4" align="right" class="ma-0 pa-0">
+            <v-btn
+              :loading="lineLoading"
+              icon
+              fab
+              dark
+              color="primary"
+              @click="loginWithLine"
+              ><v-icon left> mdi-chat </v-icon>LINE</v-btn
+            >
+          </v-col>
+          <v-col align="center" cols="12" md="4" class="ma-0 pa-0 pr-2">
+            <v-btn
+              :loading="facebookLoading"
+              icon
+              fab
+              dark
+              color="primary"
+              @click="loginWithFacebook"
+              ><v-icon left> mdi-facebook </v-icon>FACEBOOK</v-btn
+            >
+          </v-col>
+          <v-col cols="12" md="4" align="left" class="ma-0 pa-0">
+            <v-btn
+              :loading="googleLoading"
+              icon
+              fab
+              dark
+              color="primary"
+              @click="loginWithGoogle"
+              ><v-icon left> mdi-google </v-icon>GOOGLE</v-btn
+            >
+          </v-col>
+        </v-row>
+        <v-row justify="center" class="my-3 d-md-none">
+          <v-btn
+            :loading="lineLoading"
+            block
+            outlined
+            dark
+            color="primary"
+            @click="loginWithLine"
+            ><v-icon left> mdi-chat </v-icon>LINE</v-btn
+          >
+        </v-row>
+        <v-row justify="center" class="my-3 d-md-none">
+          <v-btn
+            :loading="facebookLoading"
+            block
+            outlined
+            dark
+            color="primary"
+            @click="loginWithFacebook"
+            ><v-icon left> mdi-facebook </v-icon>FACEBOOK</v-btn
+          >
+        </v-row>
+        <v-row justify="center" class="my-3 d-md-none">
+          <v-btn
+            :loading="googleLoading"
+            block
+            dark
+            outlined
+            color="primary"
+            @click="loginWithGoogle"
+            ><v-icon left> mdi-google </v-icon>GOOGLE</v-btn
+          >
+        </v-row>
         <v-row v-show="errorText" justify="center" class="my-3">
           <v-alert
             color="red"
@@ -71,7 +105,7 @@
           </v-alert>
         </v-row>
       </v-col>
-      <v-col cols="1" md="2" lg="4"></v-col>
+      <v-col cols="1" md="2" lg="3"></v-col>
     </v-row>
   </div>
 </template>
@@ -81,6 +115,9 @@ export default {
   data() {
     return {
       errorText: null,
+      facebookLoading: false,
+      googleLoading: false,
+      lineLoading: false,
     }
   },
   computed: {
@@ -95,6 +132,7 @@ export default {
   methods: {
     async loginWithLine() {
       try {
+        this.lineLoading = true
         this.errorText = null
         await this.$liff.init({ liffId: '1656544842-bvKoPqBv' })
 
@@ -120,6 +158,7 @@ export default {
               this.$store.commit('setDataAfterLogin', obj)
               this.$router.push('/form')
             }
+            this.lineLoading = false
             this.$store.commit('setLoginType', 'Line')
           })
         } else {
@@ -127,6 +166,7 @@ export default {
         }
       } catch (e) {
         console.warn(e)
+        this.lineLoading = false
         this.errorText = 'User cancelled login or did not fully authorize.'
       }
     },
@@ -141,6 +181,7 @@ export default {
     },
     async loginWithFacebook() {
       try {
+        this.facebookLoading = true
         this.errorText = null
         await this.$facebook.init({
           appId: '437943554425729',
@@ -148,7 +189,7 @@ export default {
           xfbml: true,
           version: 'v2.7',
         })
-        console.log(this.$facebook)
+        // console.log(this.$facebook)
         this.$facebook.login((response) => {
           // console.log(response)
           if (response.authResponse) {
@@ -179,9 +220,11 @@ export default {
                 })
                 this.$router.push('/form')
               }
+              this.facebookLoading = false
               this.$store.commit('setLoginType', 'Facebook')
             }
           } else {
+            this.facebookLoading = false
             this.errorText = 'User cancelled login or did not fully authorize.'
           }
         })
@@ -192,6 +235,7 @@ export default {
     },
     async loginWithGoogle() {
       try {
+        this.googleLoading = true
         this.errorText = null
         const googleUser = await this.$gAuth.signIn()
         const customer = await this.findCustomersByCustomerCode(
@@ -214,18 +258,23 @@ export default {
           this.$router.push('/form')
         }
         this.$store.commit('setLoginType', 'Google')
-
+        this.googleLoading = false
         // console.log(googleUser)
       } catch (e) {
         console.error(e)
+        this.googleLoading = false
+
         this.errorText = 'User cancelled login or did not fully authorize.'
       }
+    },
+    noSocial() {
+      this.$router.push('/form')
     },
   },
 }
 </script>
-<style>
-.v-input__control input {
-  text-align: center;
+<style scoped>
+.v-btn--outlined {
+  border: thin solid #000 !important;
 }
 </style>
