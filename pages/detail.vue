@@ -42,7 +42,12 @@
           </div>
         </v-row>
         <v-row justify="center" class="mt-12">
-          <v-btn color="primary" block rounded @click="logout"
+          <v-btn
+            :loading="logoutLoading"
+            color="primary"
+            block
+            rounded
+            @click="logout"
             >ออกจากระบบ</v-btn
           >
         </v-row>
@@ -53,6 +58,11 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      logoutLoading: false,
+    }
+  },
   head() {
     return {
       title: this.customer.name || 'SHIFT CAFÉ',
@@ -75,6 +85,7 @@ export default {
     async logout() {
       console.log(this.loginType)
       try {
+        this.logoutLoading = true
         if (this.loginType === 'Line') {
           await this.$liff.logout()
         } else if (this.loginType === 'Facebook') {
@@ -83,6 +94,7 @@ export default {
           await this.$gAuth.signOut()
         }
         this.$router.push('/')
+        this.logoutLoading = false
       } catch (e) {
         console.log(e)
       }

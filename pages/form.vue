@@ -306,7 +306,7 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 .v-input__control input {
   text-align: center;
 }
