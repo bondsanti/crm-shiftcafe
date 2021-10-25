@@ -1,5 +1,5 @@
 <template>
   <div>
-    <Header title="จัดการหลังบ้าน" />
+    <Header title="Dashboard" system-bar icon="mdi-chart-box" />
   </div>
 </template>
