@@ -56,7 +56,7 @@
                 dense
                 filled
                 rounded
-                prepend-inner-icon="mdi-island"
+                prepend-inner-icon="mdi-map"
                 @change="selectProvince"
               ></v-select>
             </v-col>
@@ -73,7 +73,7 @@
                 dense
                 filled
                 rounded
-                prepend-inner-icon="mdi-subway-variant"
+                prepend-inner-icon="mdi-map-marker-minus"
                 @change="getSubdistrict"
               ></v-select>
             </v-col>
@@ -92,14 +92,14 @@
                 dense
                 filled
                 rounded
-                prepend-inner-icon="mdi-elephant"
+                prepend-inner-icon="mdi-map-marker-distance"
               ></v-select>
             </v-col>
             <v-col class="ma-0 pa-0 pl-1">
               <Input
                 v-model="country_code"
                 label="รหัสไปรษณีย์"
-                icon="mdi-qrcode-edit"
+                icon="mdi-numeric"
                 :rules="countryCodeRules"
               />
             </v-col>

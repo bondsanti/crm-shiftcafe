@@ -6,6 +6,15 @@ export default {
 
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
+  loading: {
+    color: 'white',
+    height: '10px',
+  },
+  loadingIndicator: {
+    name: 'folding-cube',
+    color: '#fff',
+    background: 'black',
+  },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
