@@ -20,13 +20,13 @@
             id="font"
             class="title mx-1 font-weight-bold font-weight-black text-truncate"
           >
-            {{ customer.email || 'shift.restaurant.center@gmail.com' }}
+            {{ customer.email || '...' }}
           </div>
         </v-row>
         <v-row justify="center">
           <div id="font" class="title mx-1">เบอร์โทรศัพท์ :</div>
           <div id="font" class="title mx-1 font-weight-bold font-weight-black">
-            {{ customer.phone_number || '0917961816' }}
+            {{ customer.phone_number || '...' }}
           </div>
         </v-row>
         <v-row justify="center">
@@ -83,13 +83,12 @@ export default {
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     },
     async logout() {
-      console.log(this.loginType)
       try {
         this.logoutLoading = true
         if (this.loginType === 'Line') {
           await this.$liff.logout()
         } else if (this.loginType === 'Facebook') {
-          await window.FB.LogOut()
+          await window.FB.logout()
         } else if (this.loginType === 'Google') {
           await this.$gAuth.signOut()
         }

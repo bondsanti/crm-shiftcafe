@@ -13,23 +13,35 @@
           <h3>SHIFT CAFÉ</h3>
         </v-row>
         <v-row justify="center" class="mt-5 pb-2">
-          <v-btn block outlined dark color="primary" @click="noSocial"
-            >สมัครสมาชิก</v-btn
-          >
+          <v-col>
+            <v-btn block outlined dark color="primary" @click="noSocial"
+              >สมัครสมาชิก</v-btn
+            >
+          </v-col>
+          <v-col>
+            <v-btn
+              block
+              outlined
+              dark
+              color="primary"
+              @click="$refs.dl.dialog = true"
+              >รายละเอียดสมาชิก</v-btn
+            >
+          </v-col>
         </v-row>
 
         <v-card-text class="d-flex align-center mt-2">
           <v-divider></v-divider>
-          <span class="mx-5">หรือ</span>
+          <span class="mx-5">สมัครสมาชิกหรือดูรายละเอียดด้วย</span>
           <v-divider></v-divider>
         </v-card-text>
 
         <v-row justify="center" class="hidden-sm-and-down">
           <v-col cols="12" md="4" align="right" class="ma-0 pa-0">
             <v-btn
+              id="no-background-border"
               :loading="lineLoading"
-              icon
-              fab
+              outlined
               dark
               color="primary"
               @click="loginWithLine"
@@ -38,9 +50,9 @@
           </v-col>
           <v-col align="center" cols="12" md="4" class="ma-0 pa-0 pr-2">
             <v-btn
+              id="no-background-border"
               :loading="facebookLoading"
-              icon
-              fab
+              outlined
               dark
               color="primary"
               @click="loginWithFacebook"
@@ -49,9 +61,9 @@
           </v-col>
           <v-col cols="12" md="4" align="left" class="ma-0 pa-0">
             <v-btn
+              id="no-background-border"
               :loading="googleLoading"
-              icon
-              fab
+              outlined
               dark
               color="primary"
               @click="loginWithGoogle"
@@ -107,6 +119,12 @@
       </v-col>
       <v-col cols="1" md="2" lg="3"></v-col>
     </v-row>
+    <Dialog
+      ref="dl"
+      :error="errorDialog"
+      :btn-loading="btnLoading"
+      @confirmDialog="goDetail"
+    />
   </div>
 </template>
 <script>
@@ -118,6 +136,8 @@ export default {
       facebookLoading: false,
       googleLoading: false,
       lineLoading: false,
+      errorDialog: false,
+      btnLoading: false,
     }
   },
   computed: {
@@ -128,6 +148,10 @@ export default {
   created() {
     // console.log(this.dataAfterLogin)
     // this.loginWithLine()
+    // this.$nextTick(() => {
+    //   this.$nuxt.$loading.start()
+    //   setTimeout(() => this.$nuxt.$loading.finish(), 500)
+    // })
   },
   methods: {
     async loginWithLine() {
@@ -139,7 +163,7 @@ export default {
         if (this.$liff.isLoggedIn()) {
           // console.log('login')
           this.$liff.getProfile().then(async (res) => {
-            console.log(res)
+            // console.log(res)
             const customer = await this.findCustomersByCustomerCode(res.userId)
             // const customer = await this.findCustomersByCustomerCode('57889654')
             console.log(customer)
@@ -270,11 +294,38 @@ export default {
     noSocial() {
       this.$router.push('/form')
     },
+    async goDetail(telephone) {
+      // console.log(telephone)
+      this.btnLoading = true
+      this.errorDialog = false
+      const customer = await this.findCustomersByTelephone(telephone)
+      if (!customer) {
+        this.errorDialog = true
+        this.btnLoading = false
+      } else {
+        this.btnLoading = false
+        this.errorDialog = false
+        this.$refs.dl.dialog = false
+        this.$store.commit('setCustomerAfterRegister', customer)
+        this.$router.push('/detail')
+      }
+      // console.log(customer)
+    },
+    findCustomersByTelephone(telephone) {
+      // console.log(this.allCustomers)
+      return new Promise((resolve, reject) => {
+        const result = this.allCustomers.find((c) => {
+          return c.phone_number === telephone
+        })
+        setTimeout(() => resolve(result), 1300)
+        // resolve(result)
+      })
+    },
   },
 }
 </script>
 <style scoped>
-.v-btn--outlined {
-  border: thin solid #000 !important;
+#no-background-border {
+  border: thin solid transparent !important;
 }
 </style>
