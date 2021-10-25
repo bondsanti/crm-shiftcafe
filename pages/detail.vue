@@ -93,6 +93,7 @@ export default {
         } else if (this.loginType === 'Google') {
           await this.$gAuth.signOut()
         }
+        this.$store.commit('setCustomerAfterRegister', {})
         this.$router.push('/')
         this.logoutLoading = false
       } catch (e) {
