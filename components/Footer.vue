@@ -5,7 +5,7 @@
         <Logo height="80" width="80" />
       </v-col>
       <v-col align="center" cols="8" class="py-4 white--text">
-        <h1>SHIFT CAFÉ</h1>
+        <h1 class="font-weight-regular">SHIFT CAFÉ</h1>
       </v-col>
     </v-row>
   </v-footer>
