@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100%">
-    <Header title="เข้าสู่ระบบ" />
+    <Header title="เข้าสู่ระบบ" icon="mdi-account-lock" />
     <v-row justify="center" align="center" class="fill-height">
       <v-col cols="1" sm="2" md="3" lg="4"></v-col>
       <v-col cols="10" sm="8" md="6" lg="4" align="center">
@@ -18,7 +18,13 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-btn rounded block color="primary">เข้าสู่ระบบ</v-btn>
+          <v-btn
+            rounded
+            block
+            color="primary"
+            @click="$router.push('/admin/home')"
+            >เข้าสู่ระบบ</v-btn
+          >
         </v-row>
       </v-col>
       <v-col cols="1" sm="2" md="3" lg="4"></v-col>
