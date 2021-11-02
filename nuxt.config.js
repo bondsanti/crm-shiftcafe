@@ -1,19 +1,18 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
+  serverMiddleware: ['@/server/index.js'],
+  target: 'server',
   ssr: false,
-
-  // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
   loading: {
     color: 'white',
     height: '10px',
+    continuous: true,
   },
   loadingIndicator: {
     name: 'folding-cube',
-    color: '#fff',
-    background: 'black',
+    color: '#000',
+    background: 'white',
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -41,7 +40,6 @@ export default {
     script: [
       { src: 'https://static.line-scdn.net/liff/edge/2.1/sdk.js' },
       { src: 'https://connect.facebook.net/en_US/sdk.js' },
-      // '@/assets/init.js',
     ],
   },
 
@@ -62,6 +60,9 @@ export default {
     '@nuxtjs/vuetify',
     '@nuxtjs/axios',
   ],
+  axios: {
+    baseURL: 'http://localhost:3000/server',
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -92,14 +93,7 @@ export default {
       },
     },
   },
-  env: {
-    loyverseToken: '3eb04e3a8baa4887bfaa8ded241543ee',
-  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
-  server: {
-    port: 3000,
-    host: '0.0.0.0',
-  },
 }

@@ -145,20 +145,13 @@ export default {
       return this.$store.state.allCustomers
     },
   },
-  created() {
-    // console.log(this.dataAfterLogin)
-    // this.loginWithLine()
-    // this.$nextTick(() => {
-    //   this.$nuxt.$loading.start()
-    //   setTimeout(() => this.$nuxt.$loading.finish(), 500)
-    // })
-  },
+  created() {},
   methods: {
     async loginWithLine() {
       try {
         this.lineLoading = true
         this.errorText = null
-        await this.$liff.init({ liffId: '1656544842-bvKoPqBv' })
+        await this.$liff.init({ liffId: '1656591886-1kqakNAV' })
 
         if (this.$liff.isLoggedIn()) {
           // console.log('login')
@@ -208,7 +201,7 @@ export default {
         this.facebookLoading = true
         this.errorText = null
         await this.$facebook.init({
-          appId: '437943554425729',
+          appId: '637285820599884',
           status: true,
           xfbml: true,
           version: 'v2.7',
