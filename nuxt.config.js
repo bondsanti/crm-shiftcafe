@@ -27,7 +27,7 @@ export default {
         name: 'description',
         content: 'SHIFT CAFÉ at LAMPANG',
       },
-      { name: 'format-detection', content: 'telephone=no' },
+      // { name: 'format-detection', content: 'telephone=no' },
       { name: ' theme-color', content: colors.shades.black },
     ],
     link: [
@@ -59,6 +59,7 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxtjs/axios',
+    '@nuxtjs/pwa',
   ],
   axios: {
     baseURL: 'http://localhost:3000/server',
@@ -82,6 +83,20 @@ export default {
           success: colors.green.accent3,
         },
       },
+    },
+  },
+  pwa: {
+    icon: false,
+    // icon: {
+    //   iconFileName: 'icon.png',
+    // },
+    manifest: {
+      name: 'SHIFT CAFÉ',
+      lang: 'th',
+      useWebmanifestExtension: false,
+      theme_color: colors.shades.black,
+      description:
+        'shift café บริการ เครื่องดื่มและอาหาร ตั้งอยู่ที่ 89/1 ถนน สุขสวัสดิ์ 4 เมือง ลำปาง 52000 โทร 091-796-1816',
     },
   },
 
