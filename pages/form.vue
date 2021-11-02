@@ -252,7 +252,7 @@ export default {
       try {
         this.$refs.form.validate()
         this.btnLoad = true
-        console.log(this.province, this.district, this.subdistrict)
+        // console.log(this.province, this.district, this.subdistrict)
         const check = await this.findCustomerByTelephone(this.telephone)
         // console.log(check)
         if (check) {
