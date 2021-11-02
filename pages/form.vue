@@ -226,14 +226,16 @@ export default {
       this.$axios
         .$get(`/province/${this.province}/${this.district}`)
         .then((res) => {
-          // console.log(res)
-          const subdistricts = res.data.map((s) => {
-            const obj = {
-              text: s,
-              value: s,
-            }
-            return obj
-          })
+          console.log(res)
+          const subdistricts = res.data
+            ? res.data.map((s) => {
+                const obj = {
+                  text: s,
+                  value: s,
+                }
+                return obj
+              })
+            : []
           this.subdistricts = subdistricts
           this.subdistrictDisable = false
           this.subdistrictLoad = false

@@ -62,6 +62,7 @@ export default {
   ],
   axios: {
     baseURL: 'http://localhost:3000/server',
+    // baseURL: 'https://shiftcafe.th.app.ruk-com.cloud/server',
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
