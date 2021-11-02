@@ -281,11 +281,10 @@ export default {
         this.$router.push('/success')
         this.btnLoad = false
       } catch (e) {
-        console.error(e)
-        console.error(e.message)
         console.error(e.response)
+        console.error(e.response.data)
         this.btnLoad = false
-        this.errorText = e.response.data.errors[0].details || e.message
+        this.errorText = e.response.data.error.message || e.message
       }
     },
   },

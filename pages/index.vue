@@ -159,7 +159,7 @@ export default {
             // console.log(res)
             const customer = await this.findCustomersByCustomerCode(res.userId)
             // const customer = await this.findCustomersByCustomerCode('57889654')
-            console.log(customer)
+            // console.log(customer)
             if (customer) {
               this.$store.commit('setCustomerAfterRegister', {
                 ...customer,
