@@ -137,7 +137,6 @@
 <script>
 export default {
   middleware: 'getProvince',
-
   data() {
     return {
       valid: true,
@@ -201,37 +200,31 @@ export default {
       return [(v) => !!v || `กรุณากรอก${name}`]
     },
     selectProvince() {
-      console.log(this.province)
+      // console.log(this.province)
       this.selectDistrict()
     },
     selectDistrict() {
       this.districtLoad = true
-      this.$axios
-        .$get(
-          `https://thaiaddressapi-thaikub.herokuapp.com/v1/thailand/provinces/${this.province}/district`
-        )
-        .then((res) => {
-          // console.log(res.data)
-          const districtForselect = res.data.map((p) => {
-            const obj = {
-              text: p,
-              value: p,
-            }
-            return obj
-          })
-          // console.log(districtForselect)
-          this.districts = districtForselect
-          this.districtLoad = false
-          this.districtDisable = false
+      this.$axios.$get(`/province/${this.province}`).then((res) => {
+        // console.log(res.data)
+        const districtForselect = res.data.map((p) => {
+          const obj = {
+            text: p,
+            value: p,
+          }
+          return obj
         })
+        // console.log(districtForselect)
+        this.districts = districtForselect
+        this.districtLoad = false
+        this.districtDisable = false
+      })
     },
     getSubdistrict() {
       this.subdistrictLoad = true
       // console.log(this.district)
       this.$axios
-        .$get(
-          `https://thaiaddressapi-thaikub.herokuapp.com/v1/thailand/provinces/${this.province}/district/${this.district}`
-        )
+        .$get(`/province/${this.province}/${this.district}`)
         .then((res) => {
           // console.log(res)
           const subdistricts = res.data.map((s) => {
@@ -261,7 +254,7 @@ export default {
         this.btnLoad = true
         console.log(this.province, this.district, this.subdistrict)
         const check = await this.findCustomerByTelephone(this.telephone)
-        console.log(check)
+        // console.log(check)
         if (check) {
           this.errorText =
             'หมายเลขโทรศัพท์นี้ได้สมัครสมาชิกกับทางร้านเรียบร้อยแล้ว'
@@ -279,16 +272,8 @@ export default {
           postal_code: this.country_code,
           country_code: 'th',
         }
-        // console.log(obj)
-        this.$axios.setHeader(
-          'Authorization',
-          `Bearer ${this.$nuxt.context.env.loyverseToken}`
-        )
 
-        const res = await this.$axios.$post(
-          'https://cors-anywhere.herokuapp.com/https://api.loyverse.com/v1.0/customers/',
-          obj
-        )
+        const res = await this.$axios.$post('/customer', obj)
         this.$store.commit('setCustomerAfterRegister', {
           ...res,
           img: this.dataAfterLogin.img || null,

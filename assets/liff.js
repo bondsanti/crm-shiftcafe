@@ -1,2 +1,4 @@
 import Vue from 'vue'
-Vue.prototype.$liff = window.liff
+if (process.client) {
+  Vue.prototype.$liff = window.liff
+}

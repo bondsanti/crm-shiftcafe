@@ -1,2 +1,4 @@
 import Vue from 'vue'
-Vue.prototype.$facebook = window.FB
+if (process.client) {
+  Vue.prototype.$facebook = window.FB
+}
