@@ -145,8 +145,39 @@ export default {
       return this.$store.state.allCustomers
     },
   },
-  created() {},
+  created() {
+    this.checkLineLogin()
+  },
   methods: {
+    async checkLineLogin() {
+      await this.$liff.init({ liffId: '1656591886-1kqakNAV' })
+      if (this.$liff.isLoggedIn()) {
+        // console.log('login')
+        this.$liff.getProfile().then(async (res) => {
+          // console.log(res)
+          const customer = await this.findCustomersByCustomerCode(res.userId)
+          // const customer = await this.findCustomersByCustomerCode('57889654')
+          // console.log(customer)
+          if (customer) {
+            this.$store.commit('setCustomerAfterRegister', {
+              ...customer,
+              img: res.pictureUrl,
+            })
+            this.$router.push('/detail')
+          } else {
+            const obj = {
+              name: res.displayName,
+              img: res.pictureUrl,
+              id: res.userId,
+            }
+            this.$store.commit('setDataAfterLogin', obj)
+            this.$router.push('/form')
+          }
+          this.lineLoading = false
+          this.$store.commit('setLoginType', 'Line')
+        })
+      }
+    },
     async loginWithLine() {
       try {
         this.lineLoading = true
