@@ -25,7 +25,8 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: 'SHIFT CAFÉ at LAMPANG',
+        content:
+          'shift café บริการ เครื่องดื่มและอาหาร ตั้งอยู่ที่ 89/1 ถนน สุขสวัสดิ์ 4 เมือง ลำปาง 52000 โทร 091-796-1816',
       },
       // { name: 'format-detection', content: 'telephone=no' },
       { name: ' theme-color', content: colors.shades.black },
@@ -78,7 +79,7 @@ export default {
           accent: colors.grey.darken3,
           secondary: colors.grey.lighten1,
           info: colors.teal.lighten1,
-          warning: colors.amber.base,
+          warning: '#f7ce68',
           error: colors.red.accent4,
           success: colors.green.accent3,
         },
@@ -87,9 +88,10 @@ export default {
   },
   pwa: {
     icon: false,
-    // icon: {
-    //   iconFileName: 'icon.png',
-    // },
+    meta: {
+      description:
+        'shift café บริการ เครื่องดื่มและอาหาร ตั้งอยู่ที่ 89/1 ถนน สุขสวัสดิ์ 4 เมือง ลำปาง 52000 โทร 091-796-1816',
+    },
     manifest: {
       name: 'SHIFT CAFÉ',
       lang: 'th',
