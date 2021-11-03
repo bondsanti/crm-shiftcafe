@@ -78,7 +78,7 @@
               ></v-select>
             </v-col>
           </v-row>
-          <v-row>
+          <v-row class="mb-1">
             <v-col class="ma-0 pa-0 pr-1">
               <!-- <Select label="ตำบล" icon="mdi-elephant" /> -->
               <v-select
@@ -88,7 +88,6 @@
                 loader-height="5"
                 :disabled="subdistrictDisable"
                 :items="subdistricts"
-                :rules="checkValidate('ตำบล')"
                 dense
                 filled
                 rounded
@@ -103,6 +102,34 @@
                 :rules="countryCodeRules"
               />
             </v-col>
+          </v-row>
+          <hr />
+          <v-row class="mt-2 pl-3">
+            <v-col>
+              <v-row justify="center">
+                <h3 class="font-weight-regular">คุณรู้จักเราผ่านช่องทางไหน</h3>
+              </v-row>
+              <v-row justify="center" class="mt-n2">
+                <v-radio-group v-model="know" row>
+                  <v-radio label="Facebook" value="Facebook"></v-radio>
+                  <v-radio label="Google" value="Google"></v-radio>
+                  <v-radio label="Line" value="Line"></v-radio>
+                  <v-radio label="Instagram" value="Instagram"></v-radio>
+                  <v-radio label="เพื่อน" value="เพื่อน"></v-radio>
+                  <v-radio label="อื่นๆ" value="อื่นๆ"></v-radio>
+                </v-radio-group>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-autocomplete
+              v-model="advise"
+              label="รหัสแนะนำ"
+              :items="adviseCode"
+              dense
+              filled
+              rounded
+            ></v-autocomplete>
           </v-row>
           <v-row v-show="errorText">
             <v-alert
@@ -127,6 +154,9 @@
               rounded
               >บันทึก</v-btn
             >
+            <!-- <v-btn type="submit" x-large block color="primary" rounded
+              >บันทึก</v-btn
+            > -->
           </v-row>
         </v-form>
       </v-col>
@@ -137,10 +167,18 @@
 <script>
 export default {
   middleware: 'getProvince',
+  async asyncData({ $axios }) {
+    const res = await $axios.$get('/adviser')
+    const adviseCode = res.map((r) => r.advise_code)
+    // console.log(adviserCode)
+    return { adviseCode }
+  },
   data() {
     return {
       valid: true,
       // customer data
+      know: 'Facebook',
+      advise: '',
       fullName: '',
       email: '',
       telephone: '',
@@ -226,7 +264,7 @@ export default {
       this.$axios
         .$get(`/province/${this.province}/${this.district}`)
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           const subdistricts = res.data
             ? res.data.map((s) => {
                 const obj = {
@@ -251,6 +289,7 @@ export default {
     },
     async saveData() {
       /* this.$liff.closeWindow() */
+      // console.log(this.know, this.advise)
       try {
         this.$refs.form.validate()
         this.btnLoad = true
@@ -273,6 +312,8 @@ export default {
           customer_code: this.dataAfterLogin.id || null,
           postal_code: this.country_code,
           country_code: 'th',
+          know: this.know,
+          advise: this.advise,
         }
 
         const res = await this.$axios.$post('/customer', obj)
