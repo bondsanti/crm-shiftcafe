@@ -11,6 +11,7 @@ app.use(
   cors({
     origin: [
       'http://192.168.1.55:3000',
+      'http://192.168.0.108:3000',
       'https://shiftcafe.th.app.ruk-com.cloud/',
     ],
   })

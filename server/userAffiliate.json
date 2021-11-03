@@ -1,0 +1,12 @@
+{
+  "adviser": [
+    {
+      "id": "29b7950c-1c9f-4219-9e5b-674dd9d73d6g",
+      "advise_code": "SHIFT001",
+      "full_name": "SHIFT CAFE",
+      "id_cutomer": "29b7950c-1c9f-4219-9e5b-674dd9d73d6c",
+      "percent": 10,
+      "status": true
+    }
+  ]
+}

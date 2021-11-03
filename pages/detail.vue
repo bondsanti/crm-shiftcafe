@@ -15,7 +15,7 @@
           </p>
         </v-row>
         <v-row justify="center">
-          <div id="font" class="title mx-1">อีเมลล์ :</div>
+          <div id="font" class="title mx-1">อีเมล :</div>
           <div
             id="font"
             class="title mx-1 font-weight-bold font-weight-black text-truncate"
