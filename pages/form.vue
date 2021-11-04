@@ -106,25 +106,42 @@
           <hr />
           <v-row class="mt-2 pl-3">
             <v-col>
-              <v-row justify="center">
-                <h3 class="font-weight-regular">คุณรู้จักเราผ่านช่องทางไหน</h3>
+              <v-row>
+                <h3 class="font-weight-regular">
+                  <v-icon size="30">mdi-map-marker-question</v-icon>
+                  คุณรู้จักเราผ่านช่องทางไหน
+                </h3>
               </v-row>
-              <v-row justify="center" class="mt-n2">
-                <v-radio-group v-model="know" row>
-                  <v-radio label="Facebook" value="Facebook"></v-radio>
-                  <v-radio label="Google" value="Google"></v-radio>
-                  <v-radio label="Line" value="Line"></v-radio>
-                  <v-radio label="Instagram" value="Instagram"></v-radio>
-                  <v-radio label="เพื่อน" value="เพื่อน"></v-radio>
-                  <v-radio label="อื่นๆ" value="อื่นๆ"></v-radio>
-                </v-radio-group>
-              </v-row>
+              <!-- <v-row justify="center" class="mt-n2"> -->
+              <v-radio-group v-model="know" row>
+                <v-row justify="start" class="mt-1">
+                  <v-col cols="5" md="3" class="ma-0 pa-0">
+                    <v-radio label="Facebook" value="Facebook"></v-radio>
+                  </v-col>
+                  <v-col cols="4" md="3" class="ma-0 pa-0">
+                    <v-radio label="Google" value="Google"></v-radio>
+                  </v-col>
+                  <v-col cols="3" md="3" class="ma-0 pa-0">
+                    <v-radio label="Line" value="Line"></v-radio>
+                  </v-col>
+                  <v-col cols="5" md="3" class="ma-0 pa-0">
+                    <v-radio label="Instagram" value="Instagram"></v-radio>
+                  </v-col>
+                  <v-col cols="4" md="3" class="ma-0 pa-0">
+                    <v-radio label="เพื่อน" value="เพื่อน"></v-radio>
+                  </v-col>
+                  <v-col cols="3" md="3" class="ma-0 pa-0">
+                    <v-radio label="อื่นๆ" value="อื่นๆ"></v-radio>
+                  </v-col>
+                </v-row>
+              </v-radio-group>
+              <!-- </v-row> -->
             </v-col>
           </v-row>
           <v-row>
             <v-autocomplete
               v-model="advise"
-              label="รหัสแนะนำ"
+              label="รหัสแนะนำ (ถ้ามี)"
               :items="adviseCode"
               prepend-inner-icon="mdi-account-multiple-check"
               dense

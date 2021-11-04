@@ -1,21 +1,29 @@
 import HandyStorage from 'handy-storage'
-// import request from 'request'
+
 import { loyversConnect, sendLineNotify } from '../help'
 
 const storage = new HandyStorage({
   beautify: true,
 })
 
-// import { LOYVERSE_BASE_URL, LOYVERSE_TOKEN } from './../constant'
 export const allCustomer = async (req, res, next) => {
   try {
     const result = await loyversConnect('GET', '/customers')
-    res.json(result)
-    // await sendLineNotify('hello world')
-    // res.json({ message: 'ok' })
+    const result2 = result.customers.map((r) => {
+      const customer = findCustomerById(r.id)
+      return { ...r, detail: customer }
+    })
+    res.json(result2)
   } catch (e) {
     next(e)
   }
+}
+
+const findCustomerById = (id) => {
+  const data = storage.connect('./server/referralcodeCutomerLoyverse.json')
+  const { customers } = data.state
+  const result = customers.find((c) => c.id_cutomer === id)
+  return result
 }
 
 export const createCustomer = async (req, res, next) => {
@@ -30,15 +38,19 @@ export const createCustomer = async (req, res, next) => {
     }
     customers.push(newCustomer)
     data.setState({ customers })
+    await data.save()
+
+    const number = customers.length
+    // console.log(number)
     const adviser = await findAdviserByAdviseCode(req.body.advise)
-    // console.log(adviser)
-    const msg = `มีสมาชิกใหม่
-    คุณ : ${result.name}
-    เบอร์ : ${result.phone_number}
-    อีเมล : ${result.email}
-    รู้จักเราจาก : ${req.body.know}
-    รหัสแนะนำ : ${req.body.advise ? req.body.advise : '...'}
+    const msg = `มีสมาชิกใหม่ [${number}]  \r
+    คุณ : ${result.name} \r
+    เบอร์ : ${result.phone_number}\r
+    อีเมล : ${result.email}\r
+    รู้จักเราจาก : ${req.body.know}\r
+    รหัสแนะนำ : ${req.body.advise ? req.body.advise : '...'}\r
     ชื่อผู้แนะนำ : ${req.body.advise ? adviser.full_name : '...'}`
+    // console.log(msg)
     await sendLineNotify(msg, req.body.imgUrl)
     res.json(result)
     // res.json({ message: 'ok' })
