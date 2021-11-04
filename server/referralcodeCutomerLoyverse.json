@@ -1,64 +1,19 @@
 {
-    "customers": [
-        {
-            "id_cutomer": "5162a633-6923-4bdc-bbc8-7efcc1cbc60b",
-            "know": "Google",
-            "advise": "SHIFT001"
-        },
-        {
-            "id_cutomer": "e1d74667-7f1e-41a9-ab7b-d9edb1005109",
-            "know": "Facebook",
-            "advise": "02154877855"
-        },
-        {
-            "id_cutomer": "3409016a-cf81-4b63-bb1a-c198e658a06b",
-            "know": "Facebook",
-            "advise": "02154877855"
-        },
-        {
-            "id_cutomer": "cb5c7496-d3e1-403a-9da9-54ebf1bc0420",
-            "know": "Facebook",
-            "advise": "02154877855"
-        },
-        {
-            "id_cutomer": "a6c7d467-dc4a-4ac4-adc0-e91fb9491589",
-            "know": "Facebook",
-            "advise": "02154877855"
-        },
-        {
-            "id_cutomer": "ad9af465-f821-4944-b0f8-54998312cd3a",
-            "know": "Facebook",
-            "advise": "02154877855"
-        },
-        {
-            "id_cutomer": "86d204c9-fca1-4e67-a564-3d588490b1ec",
-            "know": "Facebook",
-            "advise": "02154877855"
-        },
-        {
-            "id_cutomer": "dd987c42-35e3-4da3-919e-13c0028f5840",
-            "know": "Facebook",
-            "advise": "02154877855"
-        },
-        {
-            "id_cutomer": "346835f0-9d6e-4297-9581-6065bb24af91",
-            "know": "Facebook",
-            "advise": "02154877855"
-        },
-        {
-            "id_cutomer": "ea988752-08e2-4449-96ce-b98440901fbe",
-            "know": "Facebook",
-            "advise": "02154877855"
-        },
-        {
-            "id_cutomer": "6ba21529-bd92-4c7a-bb82-4620d93bddec",
-            "know": "Facebook",
-            "advise": "02154877855"
-        },
-        {
-            "id_cutomer": "dece1ec6-0679-4f1e-b57f-0f5dd6a5223a",
-            "know": "Facebook",
-            "advise": "02154877855"
-        }
-    ]
+  "customers": [
+    {
+      "id_cutomer": "a84ce1c4-05b1-4cd1-a495-cc9bc52d3aad",
+      "know": "Line",
+      "advise": "SHIFT001"
+    },
+    {
+      "id_cutomer": "3d78cd51-bfa8-4695-9943-2e5b78966804",
+      "know": "Friend",
+      "advise": "SHIFT001"
+    },
+    {
+      "id_cutomer": "b4d2ebfa-7059-472b-a04f-33fe8ec137b8",
+      "know": "Instagram",
+      "advise": "SHIFT001"
+    }
+  ]
 }
