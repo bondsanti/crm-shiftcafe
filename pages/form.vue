@@ -126,6 +126,7 @@
               v-model="advise"
               label="รหัสแนะนำ"
               :items="adviseCode"
+              prepend-inner-icon="mdi-account-multiple-check"
               dense
               filled
               rounded
@@ -178,7 +179,7 @@ export default {
       valid: true,
       // customer data
       know: 'Facebook',
-      advise: '',
+      advise: null,
       fullName: '',
       email: '',
       telephone: '',
@@ -314,6 +315,7 @@ export default {
           country_code: 'th',
           know: this.know,
           advise: this.advise,
+          imgUrl: this.dataAfterLogin.img || null,
         }
 
         const res = await this.$axios.$post('/customer', obj)

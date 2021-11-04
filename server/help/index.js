@@ -1,5 +1,10 @@
 import fetch from 'node-fetch'
-import { LOYVERSE_BASE_URL, LOYVERSE_TOKEN } from './../constant'
+import request from 'request'
+import {
+  LINENOTIFY_TOKEN,
+  LOYVERSE_BASE_URL,
+  LOYVERSE_TOKEN,
+} from './../constant'
 export const loyversConnect = (type, endpoint, body) => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
@@ -46,5 +51,37 @@ export const fetchProvince = (url) => {
     } catch (e) {
       reject(e)
     }
+  })
+}
+
+export const sendLineNotify = (msg, imgUrl) => {
+  return new Promise((resolve, reject) => {
+    request(
+      {
+        method: 'POST',
+        uri: 'https://notify-api.line.me/api/notify',
+        header: {
+          'Content-Type': 'multipart/form-data',
+        },
+        auth: {
+          bearer: LINENOTIFY_TOKEN,
+        },
+        form: {
+          message: msg,
+          imageThumbnail: imgUrl,
+          imageFullsize: imgUrl,
+        },
+      },
+      (err, httpResponse, body) => {
+        if (err) {
+          // console.log(err)
+          reject(err)
+        } else {
+          // console.log(body)
+          reject(body)
+        }
+      }
+    )
+    resolve(true)
   })
 }
