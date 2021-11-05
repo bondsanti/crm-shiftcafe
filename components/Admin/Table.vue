@@ -35,7 +35,11 @@
                 ></v-text-field>
               </template>
               <v-date-picker v-model="date" range no-title locale="th">
-                <v-btn text color="primary" @click="$refs.menu.save(date)">
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.menu.save(date), test()"
+                >
                   ตกลง
                 </v-btn>
                 <v-spacer></v-spacer>
@@ -87,6 +91,7 @@
   </v-card>
 </template>
 <script>
+import moment from 'moment'
 export default {
   props: {
     headers: {
@@ -123,12 +128,45 @@ export default {
   },
   computed: {
     dateRangeText() {
-      return this.date.join(' ถึง ')
+      if (this.date.length > 1) {
+        return (
+          this.$options.filters.dateTh(this.date[0]) +
+          ' ถึง ' +
+          this.$options.filters.dateTh(this.date[1])
+        )
+      } else {
+        return this.$options.filters.dateTh(this.date[0])
+      }
+      // return this.date.join(' ถึง ')
     },
   },
   created() {
-    const test = this.$options.filters.dateTh('2021-11-05T09:51:11.000Z')
-    console.log(test)
+    // const daylist = this.getDaysArray(
+    //   moment(this.date[0]),
+    //   moment(this.date[1])
+    // )
+    // console.log(daylist)
+  },
+  methods: {
+    getDaysArray(start, end) {
+      const now = start.clone()
+      const dates = []
+      // eslint-disable-next-line no-unmodified-loop-condition
+      while (now.isSameOrBefore(end)) {
+        dates.push(now.format('DD/MM/YYYY'))
+        now.add(1, 'days')
+      }
+      return dates
+    },
+    test() {
+      // console.log(this.date)
+      const daylist = this.getDaysArray(
+        moment(this.date[0]),
+        moment(this.date[1] || moment(this.date[0]))
+      )
+
+      console.log(daylist)
+    },
   },
 }
 </script>

@@ -34,6 +34,10 @@
 </template>
 <script>
 export default {
+  async asyncData({ $axios }) {
+    const result = await $axios.$get('/receipt')
+    console.log(result)
+  },
   data: () => ({
     headers: [
       {
