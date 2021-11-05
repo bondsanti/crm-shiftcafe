@@ -9,6 +9,13 @@ moment().format('LLLL')
 Vue.filter('dateTh', function (value) {
   if (!value) return ''
   const strdate = moment(value).add(543, 'years')
+  return moment(strdate).format('D MMMM YYYY')
+  // value = value.toString()
+})
+
+Vue.filter('dateThWithTime', function (value) {
+  if (!value) return ''
+  const strdate = moment(value).add(543, 'years')
   return moment(strdate).format('D MMMM YYYY H:mm')
   // value = value.toString()
 })
