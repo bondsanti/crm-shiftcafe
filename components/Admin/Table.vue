@@ -1,16 +1,74 @@
 <template>
   <v-card width="100%">
-    <v-card-title>
-      {{ title }}
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="ค้นหา"
-        filled
-        rounded
-        hide-details
-      ></v-text-field>
+    <v-card-title class="ma-0 pa-0">
+      <v-col align="center" cols="12" md="4" class="mb-0">
+        <v-row justify="center">
+          <h1 class="font-weight-regular">
+            <v-icon size="60">{{ icon }}</v-icon> {{ title }}
+          </h1>
+        </v-row>
+        <v-row justify="center"> {{ dateRangeText }} </v-row>
+      </v-col>
+      <v-col cols="12" md="8">
+        <v-row class="pa-2 mb-0">
+          <v-col class="ma-0 mr-2 pa-0">
+            <v-menu
+              ref="menu"
+              v-model="menu"
+              :close-on-content-click="false"
+              :return-value.sync="date"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template #activator="{ on, attrs }">
+                <v-text-field
+                  v-model="dateRangeText"
+                  filled
+                  hide-details
+                  rounded
+                  label="วันที่"
+                  append-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="date" range no-title locale="th">
+                <v-btn text color="primary" @click="$refs.menu.save(date)">
+                  ตกลง
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="menu = false">
+                  ยกเลิก
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
+          </v-col>
+          <v-col class="ma-0 pa-0">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="ค้นหา"
+              filled
+              rounded
+              hide-details
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row justify="center" class="mt-0">
+          <v-chip
+            v-for="(item, i) in itemsSubHeader"
+            :key="i"
+            class="ma-2"
+            color="warning"
+            text-color="white"
+          >
+            {{ item.value }} {{ item.text }}
+            <v-icon right> {{ item.icon }} </v-icon>
+          </v-chip>
+        </v-row>
+      </v-col>
     </v-card-title>
     <v-data-table
       :headers="headers"
@@ -21,7 +79,8 @@
       hide-default-footer
       class="elevation-1 ma-2"
       @page-count="pageCount = $event"
-    ></v-data-table>
+    >
+    </v-data-table>
     <div class="text-center py-2">
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
     </div>
@@ -42,14 +101,34 @@ export default {
       type: String,
       default: '',
     },
+    icon: {
+      type: String,
+      default: '',
+    },
+    itemsSubHeader: {
+      type: Array,
+      default: () => [],
+    },
   },
+
   data() {
     return {
       search: '',
       page: 1,
       pageCount: 0,
       itemsPerPage: 10,
+      date: ['2021-11-05', '2021-11-30'],
+      menu: false,
     }
+  },
+  computed: {
+    dateRangeText() {
+      return this.date.join(' ถึง ')
+    },
+  },
+  created() {
+    const test = this.$options.filters.dateTh('2021-11-05T09:51:11.000Z')
+    console.log(test)
   },
 }
 </script>

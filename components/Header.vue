@@ -15,78 +15,12 @@
             {{ title }}
           </h2>
         </v-row>
-        <v-row v-show="systemBar" justify="center" class="mt-n3">
-          <v-slide-group v-model="slide" show-arrows class="mt-3">
-            <v-slide-item>
-              <v-menu offset-y>
-                <template #activator="{ on, attrs }">
-                  <v-btn
-                    :input-value="1"
-                    active-class="warning white--text"
-                    color="primary"
-                    depressed
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    รายงาน
-                  </v-btn>
-                </template>
-                <v-list>
-                  <v-list-item
-                    v-for="(item, index) in reports"
-                    :key="index"
-                    link
-                  >
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </v-slide-item>
-            <v-slide-item>
-              <v-menu offset-y>
-                <template #activator="{ on, attrs }">
-                  <v-btn
-                    active-class="warning white--text"
-                    color="primary"
-                    depressed
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    รายการสินค้า
-                  </v-btn>
-                </template>
-                <v-list>
-                  <v-list-item
-                    v-for="(item, index) in products"
-                    :key="index"
-                    link
-                  >
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </v-slide-item>
-            <v-slide-item>
-              <v-btn
-                class="mx-2"
-                color="primary"
-                active-class="warning white--text"
-                depressed
-              >
-                ลูกค้า
-              </v-btn>
-            </v-slide-item>
-            <v-slide-item>
-              <v-btn
-                class="mx-2"
-                color="primary"
-                active-class="warning white--text"
-                depressed
-              >
-                ออกจากระบบ
-              </v-btn>
-            </v-slide-item>
-          </v-slide-group>
+        <v-row v-show="systemBar" justify="center" class="ma-0 pa-0 mt-2">
+          <v-chip-group mandatory active-class="warning--text" show-arrows>
+            <v-chip v-for="(item, i) in items" :key="i" label>
+              {{ item.text }}
+            </v-chip>
+          </v-chip-group>
         </v-row>
       </v-col>
     </v-app-bar>
@@ -119,7 +53,13 @@ export default {
   data() {
     return {
       slide: 1,
-      reports: [{ title: 'สรุปยอดขาย' }, { title: 'ใบเสร็จรับเงิน' }],
+      items: [
+        { text: 'รายงาน', value: 1 },
+        { text: 'รายการสินค้า', value: 2 },
+        { text: 'ลูกค้า', value: 2 },
+        { text: 'รหัสตัวแทน', value: 2 },
+        { text: 'ออกจากระบบ', value: 2 },
+      ],
       products: [{ title: 'ของหวาน' }, { title: 'อาหารทานเล่น' }],
     }
   },

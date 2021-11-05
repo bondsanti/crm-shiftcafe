@@ -82,6 +82,7 @@ export default {
           warning: '#f7ce68',
           error: colors.red.accent4,
           success: colors.green.accent3,
+          white: colors.shades.white,
         },
       },
     },
