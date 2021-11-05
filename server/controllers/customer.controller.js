@@ -10,6 +10,26 @@ export const allCustomer = async (req, res, next) => {
   try {
     const result = await loyversConnect('GET', '/customers')
     const result2 = result.customers.map((r) => {
+      return {
+        name: r.name,
+        email: result.email,
+        phone_number: r.phone_number,
+        total_spent: r.total_spent,
+        total_points: r.total_points,
+        customer_code: r.customer_code,
+      }
+    })
+
+    res.json(result2)
+  } catch (e) {
+    next(e)
+  }
+}
+
+export const allCustomerForAdmin = async (req, res, next) => {
+  try {
+    const result = await loyversConnect('GET', '/customers')
+    const result2 = result.customers.map((r) => {
       const customer = findCustomerById(r.id)
       return { ...r, detail: customer }
     })

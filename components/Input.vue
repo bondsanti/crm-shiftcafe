@@ -8,6 +8,7 @@
     filled
     rounded
     dense
+    :autocomplete="autocomplete"
     :append-icon="icon"
     @input="$emit('input', $event)"
   ></v-text-field>
@@ -34,6 +35,10 @@ export default {
     type: {
       type: String,
       default: 'text',
+    },
+    autocomplete: {
+      type: Boolean,
+      default: false,
     },
   },
 }

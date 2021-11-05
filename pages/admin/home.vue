@@ -2,24 +2,33 @@
   <div>
     <Header title="Dashboard" system-bar icon="mdi-chart-box" prominent dense />
     <v-row justify="center" dense class="ma-2">
-      <v-col cols="12" sm="6" md="4" lg="2">
-        <AdminTopCard title="ยอดขาย" icon="mdi-cash-check" />
+      <v-col cols="12" sm="6" lg="3">
+        <AdminTopCard title="สรุปยอดขาย" />
       </v-col>
-      <v-col cols="12" sm="6" md="4" lg="3">
-        <AdminTopCard title="คืนเงิน" icon="mdi-cash-refund" />
+      <v-col cols="12" sm="6" lg="3">
+        <AdminTopCard
+          title="ยอดขายแยกตามหมวดหมู่"
+          icon="mdi-food-off-outline"
+        />
       </v-col>
-      <v-col cols="12" sm="6" md="4" lg="2">
-        <AdminTopCard title="ส่วนลด" />
+      <v-col cols="12" sm="6" lg="3">
+        <AdminTopCard
+          title="ยอดขายแยกตามประเภทการชำระเงิน"
+          icon="mdi-cash-register"
+        />
       </v-col>
-      <v-col cols="12" sm="6" md="4" lg="3">
-        <AdminTopCard title="ยอดขายสุทธิ" icon="mdi-cash-remove" />
-      </v-col>
-      <v-col cols="12" sm="6" md="4" lg="2">
-        <AdminTopCard title="กำไรรวม" icon="mdi-cash-remove" />
+      <v-col cols="12" sm="6" lg="3">
+        <AdminTopCard title="ใบเสร็จรับเงิน" icon="mdi-receipt" />
       </v-col>
     </v-row>
     <v-row class="ma-3">
-      <AdminTable title="ยอดขาย" :headers="headers" :items="desserts" />
+      <AdminTable
+        title="สรุปยอดขาย"
+        icon="mdi-cash"
+        :headers="headers"
+        :items="desserts"
+        :items-sub-header="itemsSubHeader"
+      />
     </v-row>
   </div>
 </template>
@@ -72,6 +81,33 @@ export default {
         value: 'iron',
       },
     ],
+    itemsSubHeader: [
+      {
+        value: 100,
+        text: 'ยอดขาย',
+        icon: 'mdi-cash',
+      },
+      {
+        value: 2,
+        text: 'คืนเงิน',
+        icon: 'mdi-cash-refund',
+      },
+      {
+        value: 3,
+        text: 'ส่วนลด',
+        icon: 'mdi-cash-minus',
+      },
+      {
+        value: 4,
+        text: 'ยอดขายสุทธิ',
+        icon: 'mdi-cash-lock',
+      },
+      {
+        value: 5,
+        text: 'กำไรรวม',
+        icon: 'mdi-cash-plus',
+      },
+    ],
     desserts: [
       {
         name: 'Frozen Yogurt',
@@ -104,94 +140,6 @@ export default {
         carbs: 67,
         protein: 4.3,
         iron: '8%',
-      },
-      {
-        name: 'Gingerbread',
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: '16%',
-      },
-      {
-        name: 'Jelly bean',
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: '0%',
-      },
-      {
-        name: 'Lollipop',
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: '2%',
-      },
-      {
-        name: 'Honeycomb',
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: '45%',
-      },
-      {
-        name: 'Donut',
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: '22%',
-      },
-      {
-        name: 'KitKat',
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: '6%',
-      },
-      {
-        name: 'KitKat',
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: '6%',
-      },
-      {
-        name: 'KitKat',
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: '6%',
-      },
-      {
-        name: 'KitKat',
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: '6%',
-      },
-      {
-        name: 'KitKat',
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: '6%',
-      },
-      {
-        name: 'KitKat',
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: '6%',
       },
     ],
   }),

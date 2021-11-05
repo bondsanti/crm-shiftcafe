@@ -9,11 +9,9 @@
       <div class="d-flex flex-no-wrap justify-space-between">
         <v-col align="center" align-self="center">
           <h2 class="font-weight-regular">{{ title }}</h2>
-
-          <h1>1</h1>
         </v-col>
 
-        <v-avatar class="ma-3" size="125" tile>
+        <v-avatar class="ma-3 ml-0 pa-0" size="125" tile>
           <v-icon size="100" color="warning">{{ icon }}</v-icon>
         </v-avatar>
       </div>
