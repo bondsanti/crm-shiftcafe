@@ -19,3 +19,21 @@ Vue.filter('dateThWithTime', function (value) {
   return moment(strdate).format('D MMMM YYYY H:mm')
   // value = value.toString()
 })
+
+Vue.filter('currency', function (value) {
+  if (!value) return '0'
+  const thai = new Intl.NumberFormat('th', {
+    style: 'currency',
+    currency: 'THB',
+  }).format(value)
+  return thai
+  // value = value.toString()
+})
+
+Vue.filter('unFormatCurrency', function (value) {
+  if (!value) return '0'
+  value = value.replace('฿', '')
+  value = value.replace(',', '')
+  value = parseFloat(value)
+  return value
+})

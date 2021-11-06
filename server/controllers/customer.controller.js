@@ -8,8 +8,18 @@ const storage = new HandyStorage({
 
 export const allCustomer = async (req, res, next) => {
   try {
-    const result = await loyversConnect('GET', '/customers')
-    const result2 = result.customers.map((r) => {
+    let customers = []
+    let result = await loyversConnect('GET', '/customers?limit=250')
+    customers = [...customers, ...result.customers]
+
+    while (result.cursor) {
+      result = await checkCursorInResult(
+        `/customers?limit=250&cursor=${result.cursor}`
+      )
+      customers = [...customers, ...result.customers]
+    }
+
+    const result2 = customers.map((r) => {
       return {
         name: r.name,
         email: result.email,
@@ -37,6 +47,11 @@ export const allCustomerForAdmin = async (req, res, next) => {
   } catch (e) {
     next(e)
   }
+}
+
+const checkCursorInResult = async (url) => {
+  const result = await loyversConnect('GET', url)
+  return result
 }
 
 const findCustomerById = (id) => {

@@ -20,7 +20,8 @@
     "nuxt": "^2.15.7",
     "request": "^2.88.2",
     "vue-google-oauth2": "^1.5.8",
-    "vuetify": "^2.5.5"
+    "vuetify": "^2.5.5",
+    "xlsx": "^0.17.3"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",

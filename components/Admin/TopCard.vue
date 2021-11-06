@@ -1,10 +1,12 @@
 <template>
   <v-hover v-slot="{ hover }" close-delay="100">
     <v-card
-      color="primary"
+      :color="routeName === $route.name ? 'warning' : 'primary'"
       dark
+      class="cursor"
       :elevation="hover ? 16 : 2"
       :class="{ 'on-hover': hover }"
+      @click="$router.push('/admin/report')"
     >
       <div class="d-flex flex-no-wrap justify-space-between">
         <v-col align="center" align-self="center">
@@ -12,7 +14,11 @@
         </v-col>
 
         <v-avatar class="ma-3 ml-0 pa-0" size="125" tile>
-          <v-icon size="100" color="warning">{{ icon }}</v-icon>
+          <v-icon
+            size="100"
+            :color="routeName === $route.name ? 'primary' : 'warning'"
+            >{{ icon }}</v-icon
+          >
         </v-avatar>
       </div>
     </v-card>
@@ -29,6 +35,13 @@ export default {
       type: String,
       default: 'mdi-cash',
     },
+    routeName: {
+      type: String,
+      default: '',
+    },
+  },
+  created() {
+    console.log(this.$route.name)
   },
 }
 </script>
@@ -38,5 +51,8 @@ export default {
 }
 .v-card.on-hover.theme--dark > .v-card__text {
   color: #000;
+}
+.cursor:hover {
+  cursor: pointer;
 }
 </style>
