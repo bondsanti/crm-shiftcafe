@@ -11,7 +11,7 @@
       </v-col>
       <v-col cols="12" md="8">
         <v-row class="pa-2 mb-0">
-          <v-col class="ma-0 mr-2 pa-0">
+          <v-col cols="12" md="5" class="ma-0 pt-1 pa-0">
             <v-menu
               ref="menu"
               v-model="menu"
@@ -49,7 +49,7 @@
               </v-date-picker>
             </v-menu>
           </v-col>
-          <v-col class="ma-0 pa-0">
+          <v-col cols="6" md="5" class="ma-0 px-1 pt-1 pa-0">
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
@@ -59,18 +59,39 @@
               hide-details
             ></v-text-field>
           </v-col>
+          <v-col cols="6" md="2" class="ma-0 pt-1 pa-0">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-target"
+              label="เป้าหมาย"
+              filled
+              rounded
+              hide-details
+            ></v-text-field>
+          </v-col>
         </v-row>
         <v-row justify="center" align="center" class="mt-0">
           <v-chip
             v-for="(item, i) in itemsSubHeader"
+            v-show="chip"
             :key="i"
             class="ma-2"
             color="warning"
             text-color="white"
           >
+            <v-icon left> {{ item.icon }} </v-icon>
             {{ item.value | currency }} {{ item.text }}
-            <v-icon right> {{ item.icon }} </v-icon>
           </v-chip>
+          <v-btn
+            v-for="item in itemsSubHeader"
+            v-show="btn"
+            :key="item.text"
+            rounded
+            color="warning"
+            class="ma-1"
+            ><v-icon left>{{ item.icon }}</v-icon> {{ item.value | currency }}
+            {{ item.text }}</v-btn
+          >
           <v-btn rounded color="primary" @click="onExport"
             ><v-icon left>mdi-file-table</v-icon>CSV</v-btn
           >
@@ -137,6 +158,14 @@ export default {
       default: () => [],
     },
     loading: {
+      type: Boolean,
+      default: false,
+    },
+    chip: {
+      type: Boolean,
+      default: false,
+    },
+    btn: {
       type: Boolean,
       default: false,
     },

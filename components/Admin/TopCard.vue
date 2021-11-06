@@ -6,7 +6,7 @@
       class="cursor"
       :elevation="hover ? 16 : 2"
       :class="{ 'on-hover': hover }"
-      @click="$router.push('/admin/report')"
+      @click="$router.push(to)"
     >
       <div class="d-flex flex-no-wrap justify-space-between">
         <v-col align="center" align-self="center">
@@ -36,6 +36,10 @@ export default {
       default: 'mdi-cash',
     },
     routeName: {
+      type: String,
+      default: '',
+    },
+    to: {
       type: String,
       default: '',
     },

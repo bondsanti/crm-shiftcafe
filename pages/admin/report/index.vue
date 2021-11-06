@@ -3,6 +3,7 @@
     <AdminTable
       title="สรุปยอดขาย"
       icon="mdi-cash"
+      chip
       :headers="headers"
       :items="items"
       :items-sub-header="itemsSubHeader"
@@ -13,14 +14,15 @@
 </template>
 <script>
 export default {
-  async asyncData({ $axios }) {
-    const result = await $axios.$get('/receipt')
-    // const { receipts } = result
-    // console.log(result)
-    const receipt2 = result.filter((r) => r.cancelled_at === null)
-    return { receipts: receipt2 }
+  props: {
+    allReceipts: {
+      type: Array,
+      default: () => [],
+    },
   },
+
   data: () => ({
+    receipts: [],
     headers: [
       {
         text: 'วันที่',
@@ -38,6 +40,18 @@ export default {
       { text: 'ส่วนลด', align: 'start', sortable: false, value: 'discount' },
       {
         text: 'ยอดขายสุทธิ',
+        align: 'start',
+        sortable: false,
+        value: 'total',
+      },
+      {
+        text: 'ผลต่าง จากยอดขายต่อวัน',
+        align: 'start',
+        sortable: false,
+        value: 'total',
+      },
+      {
+        text: 'ผลต่าง จากเป้าหมาย',
         align: 'start',
         sortable: false,
         value: 'total',
@@ -68,6 +82,15 @@ export default {
     items: [],
     loading: false,
   }),
+  head() {
+    return {
+      title: 'สรุปยอดขาย',
+    }
+  },
+  created() {
+    // console.log(this.title)
+    this.receipts = this.allReceipts.filter((r) => r.cancelled_at === null)
+  },
   methods: {
     getDateRange(dayList) {
       this.loading = true
@@ -84,7 +107,7 @@ export default {
         return res
       })
       // หน่วงเวลา
-      console.log(dates)
+      // console.log(dates)
 
       setTimeout(() => {
         dates.map((d) => {
