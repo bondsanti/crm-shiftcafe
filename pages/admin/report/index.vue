@@ -4,6 +4,7 @@
       title="สรุปยอดขาย"
       icon="mdi-cash"
       chip
+      target
       :headers="headers"
       :items="items"
       :items-sub-header="itemsSubHeader"
@@ -13,6 +14,7 @@
   </v-row>
 </template>
 <script>
+// import moment from 'moment'
 export default {
   props: {
     allReceipts: {
@@ -48,13 +50,13 @@ export default {
         text: 'ผลต่าง จากยอดขายต่อวัน',
         align: 'start',
         sortable: false,
-        value: 'total',
+        value: 'diffPerYesterday',
       },
       {
         text: 'ผลต่าง จากเป้าหมาย',
         align: 'start',
         sortable: false,
-        value: 'total',
+        value: 'diffPerGoal',
       },
     ],
     itemsSubHeader: [
@@ -90,9 +92,13 @@ export default {
   created() {
     // console.log(this.title)
     this.receipts = this.allReceipts.filter((r) => r.cancelled_at === null)
+    // console.log(moment('2021-11-06').add(-1, 'days').format('YYYY-MM-DD'))
   },
   methods: {
-    getDateRange(dayList) {
+    getDateRange(obj) {
+      const { dayList, goal } = obj
+      // console.log(goal.replace(/,/g, ''))
+      const goal2 = goal.replace(/,/g, '')
       this.loading = true
       const dates = []
       this.items = []
@@ -110,8 +116,8 @@ export default {
       // console.log(dates)
 
       setTimeout(() => {
-        dates.map((d) => {
-          this.makeItRightForTable(d)
+        dates.map((d, i) => {
+          this.makeItRightForTable(d, i, dates, goal2)
           return d
         })
         this.loading = false
@@ -148,7 +154,7 @@ export default {
       })
       return result
     },
-    makeItRightForTable(data) {
+    makeItRightForTable(data, index, datas, goal) {
       const refund =
         this.findRefund(data.value).refund +
         this.findRefund(data.value).discount
@@ -163,8 +169,23 @@ export default {
         refund: this.$options.filters.currency(refund),
         discount: this.$options.filters.currency(discount),
         total: this.$options.filters.currency(total),
+        diffPerGoal: total !== 0 ? total - goal : 0,
+        diffPerYesterday: this.findDiffPerYesterday(total, index, datas),
       }
       this.items.push(obj)
+    },
+    findDiffPerYesterday(totalToday, index, datas) {
+      const yesterday = index + 1
+      let totalYesterday = 0
+      if (datas[yesterday]) {
+        totalYesterday =
+          this.findSale(datas[yesterday].value) -
+          this.findRefund(datas[yesterday].value).refund
+        return totalYesterday !== 0 ? totalToday - totalYesterday : 0
+      } else {
+        return 0
+      }
+      // console.log(totalToday - totalYesterday)
     },
     findSale(data) {
       let sale = 0

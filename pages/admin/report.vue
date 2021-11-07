@@ -30,17 +30,25 @@
         />
       </v-col>
     </v-row>
-    <nuxt-child :all-receipts="receipts"></nuxt-child>
+    <nuxt-child
+      :all-receipts="receipts"
+      :customers="customers"
+      :employees="employees"
+    ></nuxt-child>
   </div>
 </template>
 <script>
 export default {
   async asyncData({ $axios }) {
-    const result = await $axios.$get('/receipt')
+    const [result, customers, employees] = await Promise.all([
+      $axios.$get('/receipt'),
+      $axios.$get('/customer/admin'),
+      $axios.$get('/customer/employee'),
+    ])
     // const { receipts } = result
-    // console.log(result)
+    // console.log(customers)
     // const receipt2 = result.filter((r) => r.cancelled_at === null)
-    return { receipts: result }
+    return { receipts: result, customers, employees }
   },
 }
 </script>
