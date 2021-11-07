@@ -11,7 +11,7 @@
       </v-col>
       <v-col cols="12" md="8">
         <v-row class="pa-2 mb-0">
-          <v-col cols="12" md="5" class="ma-0 pt-1 pa-0">
+          <v-col cols="12" :md="target ? 5 : 6" class="ma-0 pt-1 pa-0">
             <v-menu
               ref="menu"
               v-model="menu"
@@ -49,7 +49,11 @@
               </v-date-picker>
             </v-menu>
           </v-col>
-          <v-col cols="6" md="5" class="ma-0 px-1 pt-1 pa-0">
+          <v-col
+            :cols="target ? 6 : 12"
+            :md="target ? 5 : 6"
+            class="ma-0 px-1 pt-1 pa-0"
+          >
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
@@ -59,14 +63,16 @@
               hide-details
             ></v-text-field>
           </v-col>
-          <v-col cols="6" md="2" class="ma-0 pt-1 pa-0">
+          <v-col v-show="target" cols="6" md="2" class="ma-0 pt-1 pa-0">
             <v-text-field
-              v-model="search"
+              v-model="goal"
               append-icon="mdi-target"
               label="เป้าหมาย"
               filled
               rounded
               hide-details
+              @keypress.enter="getDateRange"
+              @keypress="getDateRangeForKeyPress"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -87,12 +93,13 @@
             v-show="btn"
             :key="item.text"
             rounded
-            color="warning"
+            :color="btnSelect == item.text ? 'primary' : 'warning'"
             class="ma-1"
-            ><v-icon left>{{ item.icon }}</v-icon> {{ item.value | currency }}
+            @click="$emit('filterReceipt', item.text)"
+            ><v-icon left>{{ item.icon }}</v-icon> {{ item.value }}
             {{ item.text }}</v-btn
           >
-          <v-btn rounded color="primary" @click="onExport"
+          <v-btn rounded color="success" @click="onExport"
             ><v-icon left>mdi-file-table</v-icon>CSV</v-btn
           >
         </v-row>
@@ -110,6 +117,7 @@
       hide-default-footer
       class="elevation-1 ma-2"
       @page-count="pageCount = $event"
+      @click:row="handleClick"
     >
       <template #no-data>
         <v-alert
@@ -122,8 +130,24 @@
           ไม่มีข้อมูล
         </v-alert>
       </template>
+      <template #[`item.diffPerGoal`]="{ item }">
+        <span :class="`${item.diffPerGoal > 0 ? 'green' : 'red'}--text`">{{
+          item.diffPerGoal > 0 ? '+ ' : ''
+        }}</span
+        ><span :class="textColor(item.diffPerGoal)">{{
+          item.diffPerGoal | currency
+        }}</span>
+      </template>
+      <template #[`item.diffPerYesterday`]="{ item }">
+        <span :class="`${item.diffPerYesterday > 0 ? 'green' : 'red'}--text`">{{
+          item.diffPerYesterday > 0 ? '+ ' : ''
+        }}</span
+        ><span :class="textColor(item.diffPerYesterday)">{{
+          item.diffPerYesterday | currency
+        }}</span>
+      </template>
     </v-data-table>
-    <div class="text-center py-2">
+    <div class="text-center py-2 mx-5">
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
     </div>
   </v-card>
@@ -169,6 +193,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    btnSelect: {
+      type: String,
+      default: 'ใบเสร็จรับเงินทั้งหมด',
+    },
+    target: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -179,8 +211,10 @@ export default {
       itemsPerPage: 10,
       date: ['2021-11-05', '2021-11-30'],
       menu: false,
+      goal: '5,000',
     }
   },
+
   computed: {
     dateRangeText() {
       if (this.date.length > 1) {
@@ -193,6 +227,16 @@ export default {
         return this.$options.filters.dateTh(this.date[0])
       }
       // return this.date.join(' ถึง ')
+    },
+  },
+  watch: {
+    goal(newValue) {
+      const result = newValue
+        .replace(/\D/g, '')
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      this.$nextTick(() => {
+        this.goal = result
+      })
     },
   },
   created() {
@@ -217,18 +261,40 @@ export default {
     },
     getDateRange() {
       // console.log(this.date)
-      const daylist = this.getDaysArray(
+      const dayList = this.getDaysArray(
         moment(this.date[0]),
         moment(this.date[1] || moment(this.date[0]))
       )
-      this.$emit('getDateRange', daylist)
+      this.$emit('getDateRange', { dayList, goal: this.goal })
       // console.log(daylist)
+    },
+    getDateRangeForKeyPress() {
+      const dayList = this.getDaysArray(
+        moment(this.date[0]),
+        moment(this.date[1] || moment(this.date[0]))
+      )
+      setTimeout(() => {
+        this.$emit('getDateRange', { dayList, goal: this.goal })
+      }, 1500)
     },
     onExport() {
       const dataWS = XLSX.utils.json_to_sheet(this.items)
       const wb = XLSX.utils.book_new()
       XLSX.utils.book_append_sheet(wb, dataWS)
       XLSX.writeFile(wb, `${this.title}-${this.dateRangeText}.xlsx`)
+    },
+    textColor(value) {
+      if (value > 0) {
+        return 'green--text'
+      } else if (value < 0) {
+        return 'red--text'
+      } else {
+        return 'black--text'
+      }
+    },
+    handleClick(value) {
+      console.log(value)
+      this.$emit('openDrawer')
     },
   },
 }

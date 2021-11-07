@@ -21,6 +21,7 @@ export const allCustomer = async (req, res, next) => {
 
     const result2 = customers.map((r) => {
       return {
+        id: r.id,
         name: r.name,
         email: result.email,
         phone_number: r.phone_number,
@@ -38,7 +39,17 @@ export const allCustomer = async (req, res, next) => {
 
 export const allCustomerForAdmin = async (req, res, next) => {
   try {
-    const result = await loyversConnect('GET', '/customers')
+    let customers = []
+    let result = await loyversConnect('GET', '/customers?limit=250')
+    customers = [...customers, ...result.customers]
+
+    while (result.cursor) {
+      result = await checkCursorInResult(
+        `/customers?limit=250&cursor=${result.cursor}`
+      )
+      customers = [...customers, ...result.customers]
+    }
+
     const result2 = result.customers.map((r) => {
       const customer = findCustomerById(r.id)
       return { ...r, detail: customer }
@@ -101,4 +112,13 @@ const findAdviserByAdviseCode = (adviseCode) => {
     const result = adviser.find((a) => a.advise_code === adviseCode)
     resolve(result)
   })
+}
+// Employees
+export const allEmployees = async (req, res, next) => {
+  try {
+    const result = await loyversConnect('GET', '/employees?limit=250')
+    res.json(result.employees)
+  } catch (e) {
+    next(e)
+  }
 }
