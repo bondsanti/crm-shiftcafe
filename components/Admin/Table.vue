@@ -36,7 +36,6 @@
               </template>
               <v-date-picker v-model="date" range no-title locale="th">
                 <v-btn
-                  text
                   color="primary"
                   @click="$refs.menu.save(date), getDateRange()"
                 >
@@ -82,7 +81,7 @@
             v-show="chip"
             :key="i"
             class="ma-2"
-            color="warning"
+            :color="item.color"
             text-color="white"
           >
             <v-icon left> {{ item.icon }} </v-icon>
@@ -100,7 +99,7 @@
             {{ item.text }}</v-btn
           >
           <v-btn rounded color="success" @click="onExport"
-            ><v-icon left>mdi-file-table</v-icon>CSV</v-btn
+            ><v-icon left>mdi-file-table</v-icon>EXEL</v-btn
           >
         </v-row>
       </v-col>
@@ -130,6 +129,7 @@
           ไม่มีข้อมูล
         </v-alert>
       </template>
+      <!-- report-index -->
       <template #[`item.diffPerGoal`]="{ item }">
         <span :class="`${item.diffPerGoal > 0 ? 'green' : 'red'}--text`">{{
           item.diffPerGoal > 0 ? '+ ' : ''
@@ -140,12 +140,17 @@
       </template>
       <template #[`item.diffPerYesterday`]="{ item }">
         <span :class="`${item.diffPerYesterday > 0 ? 'green' : 'red'}--text`">{{
-          item.diffPerYesterday > 0 ? '+ ' : ''
+          item.diffPerYesterday > 0 ? '+' : ''
         }}</span
         ><span :class="textColor(item.diffPerYesterday)">{{
           item.diffPerYesterday | currency
         }}</span>
       </template>
+      <!-- report-index -->
+      <template #[`item.type`]="{ item }">
+        <span :class="textReceiptColor(item.type)">{{ item.type }}</span>
+      </template>
+      <!-- report-receipt -->
     </v-data-table>
     <div class="text-center py-2 mx-5">
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
@@ -201,6 +206,13 @@ export default {
       type: Boolean,
       default: false,
     },
+    time: {
+      type: Object,
+      default: () => ({
+        start: '2021-11-05',
+        end: '2021-11-30',
+      }),
+    },
   },
 
   data() {
@@ -240,12 +252,12 @@ export default {
     },
   },
   created() {
-    let fourDaysAgo = moment()
-    fourDaysAgo = fourDaysAgo.subtract(9, 'days')
-    fourDaysAgo = fourDaysAgo.format('YYYY-MM-DD')
+    // let fourDaysAgo = moment()
+    // fourDaysAgo = fourDaysAgo.subtract(9, 'days')
+    // fourDaysAgo = fourDaysAgo.format('YYYY-MM-DD')
     // console.log(fourDaysAgo, moment().format('YYYY-MM-DD'))
-    this.date[0] = fourDaysAgo
-    this.date[1] = moment().format('YYYY-MM-DD')
+    this.date[0] = moment(this.time.start).format('YYYY-MM-DD')
+    this.date[1] = moment(this.time.end).format('YYYY-MM-DD')
     this.getDateRange()
   },
   methods: {
@@ -292,9 +304,18 @@ export default {
         return 'black--text'
       }
     },
+    textReceiptColor(value) {
+      if (value === 'การขาย') {
+        return 'green--text'
+      } else if (value === 'คืนเงิน') {
+        return 'yellow--text'
+      } else {
+        return 'red--text'
+      }
+    },
     handleClick(value) {
-      console.log(value)
-      this.$emit('openDrawer')
+      // console.log(value)
+      this.$emit('openDrawer', value.data)
     },
   },
 }

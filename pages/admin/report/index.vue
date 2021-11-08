@@ -9,12 +9,13 @@
       :items="items"
       :items-sub-header="itemsSubHeader"
       :loading="loading"
+      :time="time"
       @getDateRange="getDateRange"
     />
   </v-row>
 </template>
 <script>
-// import moment from 'moment'
+import moment from 'moment'
 export default {
   props: {
     allReceipts: {
@@ -47,7 +48,7 @@ export default {
         value: 'total',
       },
       {
-        text: 'ผลต่าง จากยอดขายต่อวัน',
+        text: 'ผลต่าง จากยอดขายวันก่อน',
         align: 'start',
         sortable: false,
         value: 'diffPerYesterday',
@@ -64,25 +65,33 @@ export default {
         value: 100,
         text: 'ยอดขาย',
         icon: 'mdi-cash',
+        color: 'primary',
       },
       {
         value: 2,
         text: 'คืนเงิน',
         icon: 'mdi-cash-refund',
+        color: 'red',
       },
       {
         value: 3,
         text: 'ส่วนลด',
         icon: 'mdi-cash-minus',
+        color: 'warning',
       },
       {
         value: 4,
         text: 'ยอดขายสุทธิ',
         icon: 'mdi-cash-lock',
+        color: 'primary',
       },
     ],
     items: [],
     loading: false,
+    time: {
+      start: '2021-11-05',
+      end: '2021-11-30',
+    },
   }),
   head() {
     return {
@@ -90,9 +99,12 @@ export default {
     }
   },
   created() {
-    // console.log(this.title)
     this.receipts = this.allReceipts.filter((r) => r.cancelled_at === null)
-    // console.log(moment('2021-11-06').add(-1, 'days').format('YYYY-MM-DD'))
+    const end = this.receipts.length - 1
+    this.time.start = moment(this.receipts[end].receipt_date).format(
+      'YYYY-MM-DD'
+    )
+    this.time.end = moment(this.receipts[0].receipt_date).format('YYYY-MM-DD')
   },
   methods: {
     getDateRange(obj) {
