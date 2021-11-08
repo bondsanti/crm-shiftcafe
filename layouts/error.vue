@@ -34,9 +34,9 @@
             {{ error.message }}
           </h1>
         </v-row>
-        <v-row justify="center">
-          <v-btn color="primary" x-large icon fab @click="$router.go(-1)"
-            ><v-icon>mdi-home</v-icon></v-btn
+        <v-row justify="center" class="mt-5">
+          <v-btn color="primary" outlined x-large @click="$router.go(-1)"
+            ><v-icon x-large left>mdi-arrow-left-box</v-icon>ย้อนกลับ</v-btn
           >
         </v-row>
       </v-col>

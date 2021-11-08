@@ -17,7 +17,12 @@
         </v-row>
         <v-row v-show="systemBar" justify="center" class="ma-0 pa-0 mt-2">
           <v-chip-group mandatory active-class="warning--text" show-arrows>
-            <v-chip v-for="(item, i) in items" :key="i" label>
+            <v-chip
+              v-for="(item, i) in items"
+              :key="i"
+              label
+              @click="goTo(item.to)"
+            >
               {{ item.text }}
             </v-chip>
           </v-chip-group>
@@ -54,11 +59,11 @@ export default {
     return {
       slide: 1,
       items: [
-        { text: 'รายงาน', value: 1 },
-        { text: 'รายการสินค้า', value: 2 },
-        { text: 'ลูกค้า', value: 2 },
-        { text: 'รหัสตัวแทน', value: 2 },
-        { text: 'ออกจากระบบ', value: 2 },
+        { text: 'รายงาน', to: '/admin/report' },
+        { text: 'รายการสินค้า', to: '/admin/item' },
+        { text: 'ลูกค้า', to: '/admin/customer' },
+        { text: 'รหัสตัวแทน', to: '/admin/adviser' },
+        { text: 'ออกจากระบบ', to: 'logout' },
       ],
       products: [{ title: 'ของหวาน' }, { title: 'อาหารทานเล่น' }],
     }
@@ -73,6 +78,12 @@ export default {
         default:
           return 55
       }
+    },
+  },
+  methods: {
+    goTo(to) {
+      // console.log(to)
+      this.$router.push(to)
     },
   },
 }
