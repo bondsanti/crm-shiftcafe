@@ -35,8 +35,24 @@
           </h1>
         </v-row>
         <v-row justify="center" class="mt-5">
-          <v-btn color="primary" outlined x-large @click="$router.go(-1)"
+          <v-btn
+            class="mr-1"
+            color="primary"
+            outlined
+            x-large
+            @click="$router.go(-1)"
             ><v-icon x-large left>mdi-arrow-left-box</v-icon>ย้อนกลับ</v-btn
+          >
+          <v-btn
+            v-show="error.statusCode !== 404"
+            class="ml-1"
+            color="primary"
+            outlined
+            x-large
+            @click="refresh"
+            >โหลดอีกครั้ง<v-icon x-large right
+              >mdi-refresh-circle</v-icon
+            ></v-btn
           >
         </v-row>
       </v-col>
@@ -74,6 +90,12 @@ export default {
   },
   created() {
     // console.log(this.error)
+  },
+  methods: {
+    refresh() {
+      // this.$nuxt.refresh()
+      window.location.reload()
+    },
   },
 }
 </script>

@@ -14,7 +14,7 @@ Vue.filter('dateTh', function (value) {
 })
 
 Vue.filter('dateThWithTime', function (value) {
-  if (!value) return ''
+  if (!value) return '-'
   const strdate = moment(value).add(543, 'years')
   return moment(strdate).format('D MMMM YYYY H:mm')
   // value = value.toString()

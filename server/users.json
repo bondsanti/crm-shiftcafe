@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "id": "21814b35-d9a8-46cc-915e-f528f0bb3339",
+      "name": "super admin",
+      "email": "super_admin@mail.com",
+      "username": "super-admin",
+      "password": "$2b$10$GHbT5cEwuckivc.GBmtOIutOlf6T5.T8UmFgiMR9ac6CvDt2.FCIy",
+      "role": ["report", "customer"]
+    }
+  ]
+}
