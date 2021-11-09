@@ -23,7 +23,7 @@
               rounded
               block
               color="primary"
-              @click="$router.push('/admin/home')"
+              @click="$router.push('/admin/report')"
               >เข้าสู่ระบบ</v-btn
             >
           </v-row>

@@ -7,11 +7,15 @@
             <v-icon size="60">{{ icon }}</v-icon> {{ title }}
           </h1>
         </v-row>
-        <v-row justify="center"> {{ dateRangeText }} </v-row>
+        <v-row v-show="showDateInput" justify="center">
+          {{ dateRangeText }}
+        </v-row>
+        <v-row v-show="showSelectInput" justify="center"> ของหวาน </v-row>
       </v-col>
       <v-col cols="12" md="8">
         <v-row class="pa-2 mb-0">
           <v-col cols="12" :md="target ? 5 : 6" class="ma-0 pt-1 pa-0">
+            <!-- date time -->
             <v-menu
               ref="menu"
               v-model="menu"
@@ -23,6 +27,7 @@
             >
               <template #activator="{ on, attrs }">
                 <v-text-field
+                  v-show="showDateInput"
                   v-model="dateRangeText"
                   filled
                   hide-details
@@ -47,6 +52,16 @@
                 </v-btn>
               </v-date-picker>
             </v-menu>
+            <!-- select -->
+            <v-select
+              v-show="showSelectInput"
+              :items="items2"
+              filled
+              rounded
+              label="หมวดหมู่"
+              dense
+              hide-details
+            ></v-select>
           </v-col>
           <v-col
             :cols="target ? 6 : 12"
@@ -213,6 +228,14 @@ export default {
         end: '2021-11-30',
       }),
     },
+    showDateInput: {
+      type: Boolean,
+      default: false,
+    },
+    showSelectInput: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -224,6 +247,7 @@ export default {
       date: ['2021-11-05', '2021-11-30'],
       menu: false,
       goal: '5,000',
+      items2: ['Foo', 'Bar', 'Fizz', 'Buzz'],
     }
   },
 
