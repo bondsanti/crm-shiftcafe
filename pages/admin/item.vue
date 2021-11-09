@@ -5,10 +5,16 @@
     <v-row class="ma-3">
       <AdminTable
         :title="title"
-        icon="mdi-cash"
+        icon="mdi-food-outline"
         btn
         show-select-input
+        target
+        excel-first-col
         :headers="headers"
+        :items="items2"
+        :loading="loading"
+        :items-for-select="itemsForSelect"
+        @receiveDataSelectFromChild="filterProduct"
       />
     </v-row>
   </div>
@@ -16,12 +22,12 @@
 <script>
 export default {
   async asyncData({ $axios }) {
-    const [items, categories] = await Promise.all([
+    const [productItems, categories] = await Promise.all([
       $axios.$get('/item'),
       $axios.$get('/item/category'),
     ])
     // console.log(items, categories)
-    return { items, categories }
+    return { productItems, categories }
   },
   data() {
     return {
@@ -42,6 +48,10 @@ export default {
         { text: 'ราคาขาย', align: 'start', sortable: false, value: 'price' },
         { text: 'ต้นทุน', align: 'start', sortable: false, value: 'cost' },
       ],
+      items: [],
+      items2: [],
+      loading: false,
+      itemsForSelect: [],
     }
   },
   head() {
@@ -49,6 +59,73 @@ export default {
       title: 'รายการสินค้า',
     }
   },
-  methods: {},
+  created() {
+    this.getData()
+    this.makeItRightForSelect()
+  },
+  methods: {
+    getData() {
+      this.loading = true
+      // console.log(this.productItems)
+      this.productItems.map((d) => {
+        this.makeItRightForTable(d)
+        return d
+      })
+      setTimeout(() => {
+        // this.calculate()
+        this.items2 = this.items
+        this.loading = false
+      }, 1200)
+    },
+    makeItRightForTable(data) {
+      const obj = {
+        name: data.item_name,
+        category: this.findCategory(data.category_id).name,
+        price: this.$options.filters.currency(data.variants[0].default_price),
+        cost: this.$options.filters.currency(data.variants[0].cost),
+        category_id: data.category_id,
+      }
+
+      this.items.push(obj)
+    },
+    findCategory(id) {
+      const result = this.categories.find((c) => c.id === id)
+      return result
+    },
+    makeItRightForSelect() {
+      const array = [
+        {
+          text: 'ทั้งหมด',
+          value: 'all',
+        },
+      ]
+      this.categories.map((c) => {
+        const obj = {
+          text: c.name,
+          value: c.id,
+        }
+        array.push(obj)
+        return c
+      })
+      this.itemsForSelect = array
+    },
+    filterProduct(text) {
+      this.loading = true
+      this.items2 = []
+      // console.log(text)
+      if (text === 'all') {
+        setTimeout(() => {
+          this.items2 = this.items
+          this.loading = false
+        }, 500)
+      } else {
+        const result = this.items.filter((i) => i.category_id === text)
+        setTimeout(() => {
+          this.items2 = result
+          this.loading = false
+        }, 500)
+      }
+    },
+  },
 }
 </script>

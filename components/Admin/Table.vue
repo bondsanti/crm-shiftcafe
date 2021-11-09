@@ -10,7 +10,9 @@
         <v-row v-show="showDateInput" justify="center">
           {{ dateRangeText }}
         </v-row>
-        <v-row v-show="showSelectInput" justify="center"> ของหวาน </v-row>
+        <v-row v-show="showSelectInput" justify="center">
+          {{ textSelect }}
+        </v-row>
       </v-col>
       <v-col cols="12" md="8">
         <v-row class="pa-2 mb-0">
@@ -55,12 +57,14 @@
             <!-- select -->
             <v-select
               v-show="showSelectInput"
-              :items="items2"
+              v-model="select"
+              :items="itemsForSelect"
               filled
               rounded
               label="หมวดหมู่"
               dense
               hide-details
+              @change="sendValueSelectToParent"
             ></v-select>
           </v-col>
           <v-col
@@ -77,8 +81,22 @@
               hide-details
             ></v-text-field>
           </v-col>
-          <v-col v-show="target" cols="6" md="2" class="ma-0 pt-1 pa-0">
+          <v-col
+            v-show="target"
+            cols="6"
+            md="2"
+            class="ma-0 pt-1 pa-0"
+            align-self="center"
+          >
+            <v-btn
+              v-if="excelFirstCol"
+              rounded
+              color="success"
+              @click="onExport"
+              ><v-icon left>mdi-file-table</v-icon>EXEL</v-btn
+            >
             <v-text-field
+              v-else
               v-model="goal"
               append-icon="mdi-target"
               label="เป้าหมาย"
@@ -113,7 +131,11 @@
             ><v-icon left>{{ item.icon }}</v-icon> {{ item.value }}
             {{ item.text }}</v-btn
           >
-          <v-btn rounded color="success" @click="onExport"
+          <v-btn
+            v-show="!excelFirstCol"
+            rounded
+            color="success"
+            @click="onExport"
             ><v-icon left>mdi-file-table</v-icon>EXEL</v-btn
           >
         </v-row>
@@ -164,6 +186,10 @@
       <!-- report-index -->
       <template #[`item.type`]="{ item }">
         <span :class="textReceiptColor(item.type)">{{ item.type }}</span>
+      </template>
+      <template #[`item.detail`]="{ item }">
+        <v-row>{{ item.detail }}</v-row>
+        <v-row>{{ item.phone }}</v-row>
       </template>
       <!-- report-receipt -->
     </v-data-table>
@@ -236,6 +262,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    itemsForSelect: {
+      type: Array,
+      default: () => [],
+    },
+    excelFirstCol: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -247,7 +281,8 @@ export default {
       date: ['2021-11-05', '2021-11-30'],
       menu: false,
       goal: '5,000',
-      items2: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+      select: 'all',
+      textSelect: 'ทั้งหมด',
     }
   },
 
@@ -317,7 +352,12 @@ export default {
       const dataWS = XLSX.utils.json_to_sheet(this.items)
       const wb = XLSX.utils.book_new()
       XLSX.utils.book_append_sheet(wb, dataWS)
-      XLSX.writeFile(wb, `${this.title}-${this.dateRangeText}.xlsx`)
+      XLSX.writeFile(
+        wb,
+        `${this.title}${
+          this.showDateInput ? '-' + this.dateRangeText : ''
+        }.xlsx`
+      )
     },
     textColor(value) {
       if (value > 0) {
@@ -340,6 +380,12 @@ export default {
     handleClick(value) {
       // console.log(value)
       this.$emit('openDrawer', value.data)
+    },
+    sendValueSelectToParent() {
+      // console.log(this.select)
+      const res = this.itemsForSelect.find((f) => f.value === this.select)
+      this.textSelect = res.text
+      this.$emit('receiveDataSelectFromChild', this.select)
     },
   },
 }
