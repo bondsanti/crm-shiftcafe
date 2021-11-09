@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="primary" padless app>
+  <v-footer :color="color" padless app>
     <v-row justify="center" align="center">
       <v-col align="right" cols="4" class="py-4 white--text">
         <Logo height="80" width="80" />
@@ -10,3 +10,13 @@
     </v-row>
   </v-footer>
 </template>
+<script>
+export default {
+  props: {
+    color: {
+      type: String,
+      default: 'primary',
+    },
+  },
+}
+</script>

@@ -5,6 +5,7 @@
       icon="mdi-cash"
       chip
       target
+      show-date-input
       :headers="headers"
       :items="items"
       :items-sub-header="itemsSubHeader"
