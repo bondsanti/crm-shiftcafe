@@ -41,6 +41,7 @@
             <v-btn
               type="submit"
               :disabled="!valid"
+              :loading="btnLoading"
               rounded
               block
               color="primary"
@@ -50,40 +51,78 @@
         </v-form>
       </v-col>
       <v-col cols="1" sm="2" md="3" lg="4"></v-col>
-
-      <!-- <v-btn dark color="red darken-2" @click="snackbar"> Open Snackbar </v-btn> -->
     </v-row>
   </div>
 </template>
 <script>
+import Logo from '@/components/Logo.vue'
 export default {
   middleware: ['ifSignIn'],
   data: () => ({
     login: { username: '', password: '' },
     valid: true,
     showPass: false,
+    btnLoading: false,
   }),
   head() {
     return {
       title: 'SING IN',
     }
   },
+  created() {
+    // this.$store.dispatch('fetchCustomers')
+  },
   methods: {
     async signIn() {
       try {
-        console.log(this.login)
+        this.btnLoading = true
+        // console.log(this.login)
         const res = await this.$auth.loginWith('local', { data: this.login })
+        this.$store.dispatch('fetchReceipts')
+        this.$store.dispatch('fetchCustomers')
+        this.$store.dispatch('fetchEmployees')
         // this.$toast.success(res.data.message)
-        console.log(res)
+        // console.log(res.data)
         this.$router.push('/admin/report')
+        this.btnLoading = false
+        this.showAlert(res.data.message)
       } catch (e) {
+        this.btnLoading = false
         // this.$toast.error(e.response.data.error.message)
-        console.log(e.response.data.error)
+        // console.log(e.response.data.error)
+        this.showAlertError(e.response.data.error.message)
       }
     },
-    snackbar() {
-      this.$store.commit('setAlert', {
-        status: true,
+    showAlert(msg) {
+      this.$toast(msg, {
+        position: 'top-right',
+        timeout: 2543,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: true,
+        hideProgressBar: false,
+        closeButton: 'button',
+        icon: Logo,
+        rtl: false,
+      })
+    },
+    showAlertError(msg) {
+      this.$toast.error(msg, {
+        position: 'top-right',
+        timeout: 2543,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: true,
+        hideProgressBar: false,
+        closeButton: 'button',
+        icon: Logo,
+        rtl: false,
       })
     },
   },

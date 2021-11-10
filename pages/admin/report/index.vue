@@ -101,12 +101,15 @@ export default {
     }
   },
   created() {
+    // console.log(this.allReceipts)
     this.receipts = this.allReceipts.filter((r) => r.cancelled_at === null)
-    const end = this.receipts.length - 1
-    this.time.start = moment(this.receipts[end].receipt_date).format(
-      'YYYY-MM-DD'
-    )
-    this.time.end = moment(this.receipts[0].receipt_date).format('YYYY-MM-DD')
+    if (this.receipts.length !== 0) {
+      const end = this.receipts.length - 1
+      this.time.start = moment(this.receipts[end].receipt_date).format(
+        'YYYY-MM-DD'
+      )
+      this.time.end = moment(this.receipts[0].receipt_date).format('YYYY-MM-DD')
+    }
   },
   methods: {
     getDateRange(obj) {
