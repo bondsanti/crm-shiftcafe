@@ -4,6 +4,9 @@ export const state = () => ({
   provinces: [],
   dataAfterLogin: {},
   loginType: '',
+  alert: {
+    status: false,
+  },
 })
 
 export const mutations = {
@@ -13,4 +16,5 @@ export const mutations = {
   setProvinces: (state, value) => (state.provinces = value),
   setDataAfterLogin: (state, value) => (state.dataAfterLogin = value),
   setLoginType: (state, value) => (state.loginType = value),
+  setAlert: (state, value) => (state.alert = value),
 }

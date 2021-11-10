@@ -1,5 +1,7 @@
 import fetch from 'node-fetch'
 import request from 'request'
+import { v4 as uuidV4 } from 'uuid'
+import bcrypt from 'bcrypt'
 import {
   LINENOTIFY_TOKEN,
   LOYVERSE_BASE_URL,
@@ -83,5 +85,27 @@ export const sendLineNotify = (msg, imgUrl) => {
       }
     )
     resolve(true)
+  })
+}
+
+export const encodePassword = (password) => {
+  return new Promise((resolve, reject) => {
+    const salt = bcrypt.genSaltSync(10)
+    const hash = bcrypt.hashSync('123456', salt)
+    resolve(hash)
+  })
+}
+
+export const comparePassword = (password, hash) => {
+  return new Promise((resolve, reject) => {
+    const result = bcrypt.compareSync(password, hash)
+    resolve(result)
+  })
+}
+
+export const randomId = () => {
+  return new Promise((resolve, reject) => {
+    const result = uuidV4()
+    resolve(result)
   })
 }

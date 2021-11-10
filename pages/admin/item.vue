@@ -21,6 +21,7 @@
 </template>
 <script>
 export default {
+  middleware: ['requireSignIn'],
   async asyncData({ $axios }) {
     const [productItems, categories] = await Promise.all([
       $axios.$get('/item'),

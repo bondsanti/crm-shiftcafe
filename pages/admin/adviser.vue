@@ -9,6 +9,7 @@
 </template>
 <script>
 export default {
+  middleware: ['requireSignIn'],
   data() {
     return {
       title: 'รายการสินค้า',

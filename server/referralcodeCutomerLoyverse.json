@@ -14,6 +14,126 @@
       "id_cutomer": "b4d2ebfa-7059-472b-a04f-33fe8ec137b8",
       "know": "Instagram",
       "advise": "SHIFT001"
+    },
+    {
+      "id_cutomer": "b6c8f216-5fe6-4d09-bdb0-f423ef285dee",
+      "know": "เพื่อน",
+      "advise": null
+    },
+    {
+      "id_cutomer": "aff01c6f-845a-4ef1-9dd2-14cb0c1b495f",
+      "know": "อื่นๆ",
+      "advise": null
+    },
+    {
+      "id_cutomer": "c42f0931-c446-433c-8307-0e58b0cbcd70",
+      "know": "Google",
+      "advise": "PN01"
+    },
+    {
+      "id_cutomer": "d80cf682-464f-4ce5-ad5e-fc6bb18fdebf",
+      "know": "Line",
+      "advise": "PN02"
+    },
+    {
+      "id_cutomer": "f1005569-c032-4adc-9474-87b67c1ce6c1",
+      "know": "Line",
+      "advise": "PN01"
+    },
+    {
+      "id_cutomer": "005783d7-031a-40ab-8408-e9772c3d56c1",
+      "know": "Facebook",
+      "advise": "PN02"
+    },
+    {
+      "id_cutomer": "3223e8e5-1976-41d0-b19a-d4a888ccf4b9",
+      "know": "เพื่อน",
+      "advise": "PN00"
+    },
+    {
+      "id_cutomer": "568225f6-df67-4da0-bc7f-1706c99613b5",
+      "know": "เพื่อน",
+      "advise": "PN02"
+    },
+    {
+      "id_cutomer": "fb394a0c-be74-49b1-9958-0b3f08c5d962",
+      "know": "เพื่อน",
+      "advise": "PN00"
+    },
+    {
+      "id_cutomer": "0812447f-6033-4856-af7d-ee4d6e2c8250",
+      "know": "Line",
+      "advise": "PN02"
+    },
+    {
+      "id_cutomer": "773cb36f-053a-4fe1-9206-9270edd96748",
+      "know": "Facebook",
+      "advise": null
+    },
+    {
+      "id_cutomer": "178d5069-aa77-4ca7-b270-73dcedc1c583",
+      "know": "Facebook",
+      "advise": "PN02"
+    },
+    {
+      "id_cutomer": "3eadd59d-b831-4438-af22-64d692ffdfad",
+      "know": "อื่นๆ",
+      "advise": "PN00"
+    },
+    {
+      "id_cutomer": "2e75825b-4e5d-4a9f-84f3-84c516a15ebe",
+      "know": "Facebook",
+      "advise": "PN02"
+    },
+    {
+      "id_cutomer": "7ebc1681-09fa-458a-bc87-366141e4f50a",
+      "know": "Facebook",
+      "advise": "PN03"
+    },
+    {
+      "id_cutomer": "83491aa4-1304-4e10-bece-bc0a5202d23c",
+      "know": "Facebook",
+      "advise": "PN03"
+    },
+    {
+      "id_cutomer": "bdd04573-4a4a-4210-8d1e-5476b1562ed8",
+      "know": "Facebook",
+      "advise": "PN03"
+    },
+    {
+      "id_cutomer": "fc4ef415-1337-4aa4-92e5-3962573dd83c",
+      "know": "Facebook",
+      "advise": null
+    },
+    {
+      "id_cutomer": "5c56c4ec-fb60-4f42-81d8-55999c85c5b7",
+      "know": "Facebook",
+      "advise": null
+    },
+    {
+      "id_cutomer": "53f2dafa-b624-447f-9684-3846a29d6bd2",
+      "know": "อื่นๆ",
+      "advise": null
+    },
+    {
+      "id_cutomer": "bd64f83a-8e7c-4350-85a8-623b557791a0",
+      "know": "Facebook",
+      "advise": "PN03"
+    },
+    {
+      "id_cutomer": "3e5c270e-92a3-4b61-8bfc-21571135b7be",
+      "know": "เพื่อน",
+      "advise": "PN00"
+    },
+    {
+      "id_cutomer": "46040c93-49c8-4c50-a6a3-36b9c05dcb39",
+      "know": "เพื่อน",
+      "advise": null
+    },
+    {
+      "id_cutomer": "7084d11d-bcd1-4a56-8153-c7ba948b226f",
+      "know": "Facebook",
+      "advise": null
     }
   ]
 }

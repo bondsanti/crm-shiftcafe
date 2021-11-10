@@ -55,16 +55,38 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
-    // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    '@nuxtjs/auth',
   ],
   axios: {
     baseURL: 'http://localhost:3000/server',
     // baseURL: 'https://shiftcafe.th.app.ruk-com.cloud/server',
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            method: 'post',
+            url: 'user/signin',
+            propertyName: 'token',
+          },
+          user: {
+            method: 'get',
+            url: 'user/me ',
+            propertyName: 'user',
+          },
+          logout: false,
+        },
+      },
+    },
+    redirect: {
+      login: '/admin/report',
+      logout: '/admin',
+    },
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules

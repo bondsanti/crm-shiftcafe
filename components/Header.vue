@@ -120,7 +120,12 @@ export default {
           icon: 'mdi-account-tie-voice',
           nameRoute: ['admin-adviser'],
         },
-        { text: 'ออกจากระบบ', to: '#', icon: 'mdi-logout', nameRoute: [] },
+        {
+          text: 'ออกจากระบบ',
+          to: 'sign-out',
+          icon: 'mdi-logout',
+          nameRoute: [],
+        },
       ],
       products: [{ title: 'ของหวาน' }, { title: 'อาหารทานเล่น' }],
       fab: false,
@@ -147,9 +152,13 @@ export default {
     this.getRouteName()
   },
   methods: {
-    goTo(to) {
+    async goTo(to) {
       // console.log(to)
-      this.$router.push(to)
+      if (to === 'sign-out') {
+        await this.$auth.logout()
+      } else {
+        this.$router.push(to)
+      }
     },
     getRouteName() {
       const route = this.nameRoute
