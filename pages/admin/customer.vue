@@ -17,6 +17,7 @@
 </template>
 <script>
 export default {
+  middleware: ['requireSignIn'],
   async asyncData({ $axios }) {
     const customers = await $axios.$get('/customer/admin')
     // console.log(customers)

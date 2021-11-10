@@ -1,5 +1,8 @@
 import express from 'express'
-import { allUser } from '../controllers/user.controler'
+import { allUser, me, signin } from '../controllers/user.controler'
+import requireSignIn from './../middleware/authen.middleware'
 const router = express.Router()
-router.get('/', allUser)
+router.get('/', requireSignIn, allUser)
+router.post('/signin', signin)
+router.get('/me', requireSignIn, me)
 export default router

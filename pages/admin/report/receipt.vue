@@ -24,6 +24,7 @@
 <script>
 import moment from 'moment'
 export default {
+  middleware: ['requireSignIn'],
   props: {
     allReceipts: {
       type: Array,

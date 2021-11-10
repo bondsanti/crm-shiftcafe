@@ -39,6 +39,7 @@
 </template>
 <script>
 export default {
+  middleware: ['requireSignIn'],
   async asyncData({ $axios }) {
     const [result, customers, employees] = await Promise.all([
       $axios.$get('/receipt'),

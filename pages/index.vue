@@ -25,14 +25,14 @@
               dark
               color="primary"
               @click="$refs.dl.dialog = true"
-              >รายละเอียดสมาชิก</v-btn
+              >เข้าสู่ระบบ</v-btn
             >
           </v-col>
         </v-row>
 
         <v-card-text class="d-flex align-center mt-2">
           <v-divider></v-divider>
-          <span class="mx-5">สมัครสมาชิกหรือดูรายละเอียดด้วย</span>
+          <span class="mx-5">สมัครสมาชิกหรือเข้าสู่ระบบด้วย</span>
           <v-divider></v-divider>
         </v-card-text>
 
@@ -119,12 +119,7 @@
       </v-col>
       <v-col cols="1" md="2" lg="3"></v-col>
     </v-row>
-    <Dialog
-      ref="dl"
-      :error="errorDialog"
-      :btn-loading="btnLoading"
-      @confirmDialog="goDetail"
-    />
+    <Dialog ref="dl" @confirmDialog="goDetail" />
   </div>
 </template>
 <script>
@@ -319,16 +314,13 @@ export default {
       this.$router.push('/form')
     },
     async goDetail(telephone) {
-      // console.log(telephone)
-      this.btnLoading = true
-      this.errorDialog = false
       const customer = await this.findCustomersByTelephone(telephone)
       if (!customer) {
-        this.errorDialog = true
-        this.btnLoading = false
+        // this.errorDialog = true
+        // this.btnLoading = false
       } else {
-        this.btnLoading = false
-        this.errorDialog = false
+        // this.btnLoading = false
+        // this.errorDialog = false
         this.$refs.dl.dialog = false
         this.$store.commit('setCustomerAfterRegister', customer)
         this.$router.push('/detail')

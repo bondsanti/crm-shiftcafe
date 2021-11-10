@@ -23,7 +23,7 @@ export const allCustomer = async (req, res, next) => {
       return {
         id: r.id,
         name: r.name,
-        email: result.email,
+        email: r.email,
         phone_number: r.phone_number,
         total_spent: r.total_spent,
         total_points: r.total_points,
