@@ -137,13 +137,15 @@ export default {
     }
   },
   created() {
-    const end = this.allReceipts.length - 1
-    this.time.start = moment(this.allReceipts[end].receipt_date).format(
-      'YYYY-MM-DD'
-    )
-    this.time.end = moment(this.allReceipts[0].receipt_date).format(
-      'YYYY-MM-DD'
-    )
+    if (this.allReceipts.length !== 0) {
+      const end = this.allReceipts.length - 1
+      this.time.start = moment(this.allReceipts[end].receipt_date).format(
+        'YYYY-MM-DD'
+      )
+      this.time.end = moment(this.allReceipts[0].receipt_date).format(
+        'YYYY-MM-DD'
+      )
+    }
   },
   methods: {
     getDateRange(obj) {

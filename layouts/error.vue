@@ -21,7 +21,7 @@
             {{ error.statusCode }}
           </h1>
         </v-row>
-        <v-row justify="center">
+        <v-row justify="center" class="my-2">
           <h1
             id="font"
             class="display-3"
@@ -44,7 +44,7 @@
             ><v-icon x-large left>mdi-arrow-left-box</v-icon>ย้อนกลับ</v-btn
           >
           <v-btn
-            v-show="error.statusCode !== 404"
+            v-show="refreshBtn"
             class="ml-1"
             color="primary"
             outlined
@@ -69,6 +69,11 @@ export default {
       default: null,
     },
   },
+  data() {
+    return {
+      refreshBtn: true,
+    }
+  },
 
   head() {
     const title = this.error.statusCode + ' ' + this.error.message
@@ -90,11 +95,20 @@ export default {
   },
   created() {
     // console.log(this.error)
+    this.showRefreshButton()
+    // console.log(this.refreshBtn)
   },
   methods: {
     refresh() {
       // this.$nuxt.refresh()
       window.location.reload()
+    },
+    showRefreshButton() {
+      if (this.error.statusCode === 404 || this.error.statusCode === '401') {
+        this.refreshBtn = false
+      } else {
+        this.refreshBtn = true
+      }
     },
   },
 }
