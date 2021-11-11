@@ -137,7 +137,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <Footer color="grey darken-2" />
+    <Footer class="hidden-sm-and-down" color="grey darken-2" />
   </v-navigation-drawer>
 </template>
 <script>

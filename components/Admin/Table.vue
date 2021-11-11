@@ -15,6 +15,7 @@
         </v-row>
       </v-col>
       <v-col cols="12" md="8">
+        <!-- first-row -->
         <v-row class="pa-2 mb-0">
           <v-col cols="12" :md="target ? 5 : 6" class="ma-0 pt-1 pa-0">
             <!-- date time -->
@@ -91,6 +92,7 @@
             <v-btn
               v-if="excelFirstCol"
               rounded
+              block
               color="success"
               @click="onExport"
               ><v-icon left>mdi-file-table</v-icon>EXEL</v-btn
@@ -108,7 +110,8 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row justify="center" align="center" class="mt-0">
+        <!-- second-row -->
+        <v-row v-show="secondRow" justify="center" align="center" class="mt-0">
           <v-chip
             v-for="(item, i) in itemsSubHeader"
             v-show="chip"
@@ -136,6 +139,15 @@
             rounded
             color="success"
             @click="onExport"
+            ><v-icon left>mdi-file-table</v-icon>EXEL</v-btn
+          >
+        </v-row>
+        <!-- third-row -->
+        <v-row v-show="thirdRow" justify="end" align="center" class="mt-0 mr-1">
+          <v-btn rounded color="primary" class="mr-1" @click="$emit('addData')"
+            ><v-icon left>mdi-database-plus</v-icon>เพิ่มข้อมูล</v-btn
+          >
+          <v-btn rounded color="success" @click="onExport"
             ><v-icon left>mdi-file-table</v-icon>EXEL</v-btn
           >
         </v-row>
@@ -187,11 +199,19 @@
       <template #[`item.type`]="{ item }">
         <span :class="textReceiptColor(item.type)">{{ item.type }}</span>
       </template>
+      <!-- report-receipt -->
       <template #[`item.detail`]="{ item }">
         <v-row>{{ item.detail }}</v-row>
-        <v-row>{{ item.phone }}</v-row>
+        <v-row>{{ item.phone }}{{ item.adviseName }}</v-row>
       </template>
-      <!-- report-receipt -->
+      <template #[`item.status`]="{ item }">
+        <v-chip class="ma-2" :color="item.status ? 'success' : 'red'" outlined>
+          <v-icon left>
+            {{ item.status ? 'mdi-account-check' : 'mdi-account-remove' }}
+          </v-icon>
+          {{ item.status ? 'ENABLE' : 'DISABLE' }}
+        </v-chip>
+      </template>
     </v-data-table>
     <div class="text-center py-2 mx-5">
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
@@ -267,6 +287,14 @@ export default {
       default: () => [],
     },
     excelFirstCol: {
+      type: Boolean,
+      default: false,
+    },
+    secondRow: {
+      type: Boolean,
+      default: false,
+    },
+    thirdRow: {
       type: Boolean,
       default: false,
     },

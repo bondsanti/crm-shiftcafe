@@ -17,12 +17,7 @@
 </template>
 <script>
 export default {
-  middleware: ['requireSignIn'],
-  async asyncData({ $axios }) {
-    const customers = await $axios.$get('/customer/admin')
-    // console.log(customers)
-    return { customers }
-  },
+  middleware: ['requireSignIn', 'refreshData'],
   data() {
     return {
       title: 'ลูกค้า',
@@ -34,7 +29,7 @@ export default {
           value: 'name',
         },
         {
-          text: 'ข้อมูลติดต่อ',
+          text: 'รายละเอียด',
           align: 'start',
           sortable: false,
           value: 'detail',
@@ -79,6 +74,11 @@ export default {
       title: 'ลูกค้า',
     }
   },
+  computed: {
+    adminData() {
+      return this.$store.state.adminData
+    },
+  },
   created() {
     this.getData()
   },
@@ -86,7 +86,7 @@ export default {
     getData() {
       this.loading = true
       setTimeout(() => {
-        this.customers.map((c) => {
+        this.adminData.customers.map((c) => {
           this.makeItRightForTable(c)
           return c
         })
@@ -97,6 +97,7 @@ export default {
       const obj = {
         name: data.name,
         detail: data.email,
+        adviseName: this.findAdviser(data.detail),
         phone: data.phone_number,
         buyFirst: this.$options.filters.dateThWithTime(data.first_visit),
         buyCurrent: this.$options.filters.dateThWithTime(data.last_visit),
@@ -107,6 +108,17 @@ export default {
 
       this.items.push(obj)
       // console.log(data)
+    },
+    findAdviser(value) {
+      // console.log(value.advise)
+      const res = this.adminData.advisers.find(
+        (a) => a.advise_code === value.advise
+      )
+      if (res) {
+        return ' | ' + res.full_name
+      } else {
+        return ''
+      }
     },
   },
 }

@@ -104,7 +104,10 @@ export default {
       window.location.reload()
     },
     showRefreshButton() {
-      if (this.error.statusCode === 404 || this.error.statusCode === '401') {
+      if (
+        this.error.statusCode === 404 ||
+        parseInt(this.error.statusCode) === 401
+      ) {
         this.refreshBtn = false
       } else {
         this.refreshBtn = true

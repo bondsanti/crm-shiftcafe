@@ -6,6 +6,7 @@
       chip
       target
       show-date-input
+      second-row
       :headers="headers"
       :items="items"
       :items-sub-header="itemsSubHeader"
@@ -18,7 +19,7 @@
 <script>
 import moment from 'moment'
 export default {
-  middleware: ['requireSignIn'],
+  middleware: ['requireSignIn', 'refreshData'],
   props: {
     allReceipts: {
       type: Array,
