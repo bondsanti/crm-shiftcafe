@@ -1,36 +1,36 @@
 {
-  "adviser": [
-    {
-      "id": "29b7950c-1c9f-4219-9e5b-674dd9d73d6g",
-      "advise_code": "PN00",
-      "full_name": "นิโรดม วาระนัง",
-      "id_cutomer": "a84ce1c4-05b1-4cd1-a495-cc9bc52d3aad",
-      "percent": 0,
-      "status": true
-    },
-    {
-      "id": "29b7950c-1c9f-4219-9e5b-674dd9d74d7g",
-      "advise_code": "PN01",
-      "full_name": "มินตรา สาวงค์",
-      "id_cutomer": null,
-      "percent": 0,
-      "status": true
-    },
-    {
-      "id": "29b7950c-1c9f-4219-9e5b-674dd9d84d7f",
-      "advise_code": "PN02",
-      "full_name": "ศตพิพัฒน์ จงเจริญพานิชกุล",
-      "id_cutomer": null,
-      "percent": 0,
-      "status": true
-    },
-    {
-      "id": "29b7950c-1c9f-4219-9e5b-974dd0d84d7f",
-      "advise_code": "PN03",
-      "full_name": "สันติ ชูประยูร",
-      "id_cutomer": "3d78cd51-bfa8-4695-9943-2e5b78966804",
-      "percent": 0,
-      "status": true
-    }
-  ]
+    "adviser": [
+        {
+            "id": "29b7950c-1c9f-4219-9e5b-674dd9d73d6g",
+            "advise_code": "PN00",
+            "full_name": "นิโรดม วาระนัง",
+            "id_customer": "a84ce1c4-05b1-4cd1-a495-cc9bc52d3aad",
+            "percent": 0,
+            "status": true
+        },
+        {
+            "id": "29b7950c-1c9f-4219-9e5b-674dd9d74d7g",
+            "advise_code": "PN01",
+            "full_name": "มินตรา สาวงค์",
+            "id_customer": null,
+            "percent": 0,
+            "status": true
+        },
+        {
+            "id": "29b7950c-1c9f-4219-9e5b-674dd9d84d7f",
+            "advise_code": "PN02",
+            "full_name": "ศตพิพัฒน์ จงเจริญพานิชกุล",
+            "id_customer": null,
+            "percent": 0,
+            "status": true
+        },
+        {
+            "id": "29b7950c-1c9f-4219-9e5b-974dd0d84d7f",
+            "advise_code": "PN03",
+            "full_name": "สันติ ชูประยูร",
+            "id_customer": "3d78cd51-bfa8-4695-9943-2e5b78966804",
+            "percent": 0,
+            "status": true
+        }
+    ]
 }

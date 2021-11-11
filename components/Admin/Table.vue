@@ -145,7 +145,9 @@
         <!-- third-row -->
         <v-row v-show="thirdRow" justify="end" align="center" class="mt-0 mr-1">
           <v-btn rounded color="primary" class="mr-1" @click="$emit('addData')"
-            ><v-icon left>mdi-database-plus</v-icon>เพิ่มข้อมูล</v-btn
+            ><v-icon left>mdi-database-plus</v-icon>เพิ่มข้อมูล{{
+              title
+            }}</v-btn
           >
           <v-btn rounded color="success" @click="onExport"
             ><v-icon left>mdi-file-table</v-icon>EXEL</v-btn
@@ -211,6 +213,22 @@
           </v-icon>
           {{ item.status ? 'ENABLE' : 'DISABLE' }}
         </v-chip>
+      </template>
+      <template #[`item.actions`]="{ item }">
+        <v-btn
+          fab
+          icon
+          color="warning"
+          @click="$emit('formActions', { type: 'edit', data: item })"
+          ><v-icon>mdi-grease-pencil</v-icon></v-btn
+        >
+        <v-btn
+          fab
+          icon
+          color="red"
+          @click="$emit('formActions', { type: 'delete', data: item })"
+          ><v-icon>mdi-trash-can</v-icon></v-btn
+        >
       </template>
     </v-data-table>
     <div class="text-center py-2 mx-5">
@@ -407,7 +425,7 @@ export default {
     },
     handleClick(value) {
       // console.log(value)
-      this.$emit('openDrawer', value.data)
+      this.$emit('openDrawer', value)
     },
     sendValueSelectToParent() {
       // console.log(this.select)
