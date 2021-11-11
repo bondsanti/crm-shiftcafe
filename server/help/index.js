@@ -109,3 +109,13 @@ export const randomId = () => {
     resolve(result)
   })
 }
+
+export const findValueById = (arrs, id) => {
+  return new Promise((resolve, reject) => {
+    const result = arrs.findIndex((a) => a.id === id)
+    if (result === -1) {
+      reject(new Error(`ไม่พบข้อมูลของรหัส ${id}`))
+    }
+    resolve(result)
+  })
+}

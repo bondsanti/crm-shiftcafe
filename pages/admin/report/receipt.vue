@@ -269,7 +269,7 @@ export default {
       // console.log(text)
     },
     viewReceiptDetail(value) {
-      const obj = { ...value }
+      const obj = { ...value.data }
       obj.employee_id = this.findEmployee(value.employee_id)
       obj.customer_id = value.customer_id
         ? this.findCustomer(value.customer_id)

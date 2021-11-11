@@ -33,6 +33,7 @@
           <v-select
             v-model="item.value"
             filled
+            :prepend-inner-icon="item.icon"
             :label="item.label"
             :items="item.items"
             rounded
@@ -40,7 +41,7 @@
         </v-row>
       </v-form>
     </v-container>
-    <Footer class="hidden-sm-and-down" color="grey darken-2" />
+    <Footer class="hidden-md-and-down" color="grey darken-2" />
   </v-navigation-drawer>
 </template>
 <script>
