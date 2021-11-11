@@ -16,16 +16,6 @@
           </h2>
         </v-row>
         <v-row v-show="systemBar" justify="center" class="ma-0 pa-0 mt-2">
-          <!-- <v-chip-group mandatory active-class="warning--text" show-arrows>
-            <v-chip
-              v-for="(item, i) in items"
-              :key="i"
-              label
-              @click="goTo(item.to)"
-            >
-              {{ item.text }}
-            </v-chip>
-          </v-chip-group> -->
           <v-bottom-navigation
             v-model="value"
             height="44"
@@ -94,7 +84,6 @@ export default {
   },
   data() {
     return {
-      slide: 1,
       items: [
         {
           text: 'รายงาน',
@@ -115,7 +104,7 @@ export default {
           nameRoute: ['admin-customer'],
         },
         {
-          text: 'รหัสตัวแทน',
+          text: 'ตัวแทน',
           to: '/admin/adviser',
           icon: 'mdi-account-tie-voice',
           nameRoute: ['admin-adviser'],
@@ -169,7 +158,7 @@ export default {
       } else if (route === 'admin-customer') {
         this.value = 'ลูกค้า'
       } else if (route === 'admin-adviser') {
-        this.value = 'รหัสตัวแทน'
+        this.value = 'ตัวแทน'
       } else {
         this.value = 'ออกจากระบบ'
       }

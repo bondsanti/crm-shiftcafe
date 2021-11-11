@@ -25,7 +25,7 @@
             <Input
               v-model="email"
               type="email"
-              label="อีเมลล์"
+              label="อีเมล"
               icon="mdi-email"
               :rules="emailRules"
             />
@@ -187,7 +187,8 @@ export default {
   middleware: 'getProvince',
   async asyncData({ $axios }) {
     const res = await $axios.$get('/adviser')
-    const adviseCode = res.map((r) => r.advise_code)
+    const filterAdviseCode = res.filter((r) => r.status === true)
+    const adviseCode = filterAdviseCode.map((r) => r.advise_code)
     // console.log(adviserCode)
     return { adviseCode }
   },

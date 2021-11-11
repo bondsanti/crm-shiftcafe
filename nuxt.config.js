@@ -84,8 +84,9 @@ export default {
       },
     },
     redirect: {
-      login: '/admin/report',
+      login: '/admin',
       logout: '/admin',
+      home: '/admin',
     },
   },
 

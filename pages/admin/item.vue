@@ -21,15 +21,8 @@
 </template>
 <script>
 export default {
-  middleware: ['requireSignIn'],
-  async asyncData({ $axios }) {
-    const [productItems, categories] = await Promise.all([
-      $axios.$get('/item'),
-      $axios.$get('/item/category'),
-    ])
-    // console.log(items, categories)
-    return { productItems, categories }
-  },
+  middleware: ['requireSignIn', 'refreshData'],
+
   data() {
     return {
       title: 'รายการสินค้า',
@@ -60,6 +53,11 @@ export default {
       title: 'รายการสินค้า',
     }
   },
+  computed: {
+    adminData() {
+      return this.$store.state.adminData
+    },
+  },
   created() {
     this.getData()
     this.makeItRightForSelect()
@@ -68,7 +66,7 @@ export default {
     getData() {
       this.loading = true
       // console.log(this.productItems)
-      this.productItems.map((d) => {
+      this.adminData.items.map((d) => {
         this.makeItRightForTable(d)
         return d
       })
@@ -90,7 +88,7 @@ export default {
       this.items.push(obj)
     },
     findCategory(id) {
-      const result = this.categories.find((c) => c.id === id)
+      const result = this.adminData.categories.find((c) => c.id === id)
       return result
     },
     makeItRightForSelect() {
@@ -100,7 +98,7 @@ export default {
           value: 'all',
         },
       ]
-      this.categories.map((c) => {
+      this.adminData.categories.map((c) => {
         const obj = {
           text: c.name,
           value: c.id,
