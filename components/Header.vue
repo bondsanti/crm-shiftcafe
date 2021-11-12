@@ -56,6 +56,11 @@
         </v-row>
       </v-col>
     </v-app-bar>
+    <ConfirmDialog
+      ref="confirmDialog"
+      title="คุณต้องการออกจากระบบหรือไม่ ?"
+      @confirm="logout"
+    />
   </div>
 </template>
 <script>
@@ -100,7 +105,7 @@ export default {
         {
           text: 'ลูกค้า',
           to: '/admin/customer',
-          icon: 'mdi-account',
+          icon: 'mdi-account-group',
           nameRoute: ['admin-customer'],
         },
         {
@@ -108,6 +113,12 @@ export default {
           to: '/admin/adviser',
           icon: 'mdi-account-tie-voice',
           nameRoute: ['admin-adviser'],
+        },
+        {
+          text: 'ผู้ใช้',
+          to: '/admin/user',
+          icon: 'mdi-account',
+          nameRoute: ['admin-user'],
         },
         {
           text: 'ออกจากระบบ',
@@ -141,10 +152,11 @@ export default {
     this.getRouteName()
   },
   methods: {
-    async goTo(to) {
+    goTo(to) {
       // console.log(to)
       if (to === 'sign-out') {
-        await this.$auth.logout()
+        this.$refs.confirmDialog.dialog = true
+        // await this.$auth.logout()
       } else {
         this.$router.push(to)
       }
@@ -159,9 +171,16 @@ export default {
         this.value = 'ลูกค้า'
       } else if (route === 'admin-adviser') {
         this.value = 'ตัวแทน'
+      } else if (route === 'admin-user') {
+        this.value = 'ผู้ใช้'
       } else {
         this.value = 'ออกจากระบบ'
       }
+    },
+    async logout() {
+      await this.$auth.logout()
+      await this.$store.dispatch('clearState')
+      this.$refs.confirmDialog.dialog = false
     },
   },
 }

@@ -102,6 +102,7 @@ export default {
         await this.$store.dispatch('fetchItems')
         await this.$store.dispatch('fetchCategories')
         await this.$store.dispatch('fetchAdvisers')
+        await this.$store.dispatch('fetchUsers')
         // this.$toast.success(res.data.message)
         // console.log(res.data)
         this.progress = false

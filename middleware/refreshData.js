@@ -6,12 +6,14 @@ export default (context) => {
     const items = localStorage.getItem('items')
     const categories = localStorage.getItem('categories')
     const advisers = localStorage.getItem('advisers')
+    const users = localStorage.getItem('users')
     context.store.commit('setReceipts', JSON.parse(receipts))
     context.store.commit('setCustomers', JSON.parse(customers))
     context.store.commit('setEmployees', JSON.parse(employees))
     context.store.commit('setItems', JSON.parse(items))
     context.store.commit('setCategories', JSON.parse(categories))
     context.store.commit('setAdvisers', JSON.parse(advisers))
+    context.store.commit('setUsers', JSON.parse(users))
 
     // console.log(JSON.parse(receipts))
   } catch (e) {

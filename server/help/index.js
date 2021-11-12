@@ -119,3 +119,23 @@ export const findValueById = (arrs, id) => {
     resolve(result)
   })
 }
+
+export const findValueByEmail = (arrs, email) => {
+  return new Promise((resolve, reject) => {
+    const result = arrs.some((a) => a.email === email)
+    if (result) {
+      reject(new Error(`${email} อีเมลนี้มีคนใช้งานแล้ว`))
+    }
+    resolve(result)
+  })
+}
+
+export const findValueByUsername = (arrs, username) => {
+  return new Promise((resolve, reject) => {
+    const result = arrs.some((a) => a.username === username)
+    if (result) {
+      reject(new Error(`${username} ชื่อผู้ใช้นี้มีคนใช้งานแล้ว`))
+    }
+    resolve(result)
+  })
+}

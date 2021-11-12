@@ -11,4 +11,5 @@ export default {
   setItems: (state, value) => (state.adminData.items = value),
   setCategories: (state, value) => (state.adminData.categories = value),
   setAdvisers: (state, value) => (state.adminData.advisers = value),
+  setUsers: (state, value) => (state.adminData.users = value),
 }

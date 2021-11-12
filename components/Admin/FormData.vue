@@ -5,12 +5,17 @@
         ><v-icon>mdi-close</v-icon></v-btn
       ><v-spacer></v-spacer> <Logo width="60" height="60" />
       <v-spacer></v-spacer
-      ><v-btn small fab color="primary" @click="$emit('sendData', inputData)"
+      ><v-btn
+        :disabled="!valid"
+        small
+        fab
+        color="primary"
+        @click="$emit('sendData', inputData)"
         ><v-icon>mdi-content-save</v-icon></v-btn
       ></v-app-bar
     >
     <v-container>
-      <v-form class="ma-2">
+      <v-form ref="form" v-model="valid" class="ma-2">
         <v-row justify="center" class="mb-3"
           ><h2>
             {{ type === 'add' ? 'เพิ่มข้อมูล' : 'แก้ไขข้อมูล' }} {{ title }}
@@ -21,6 +26,7 @@
             v-model="item.value"
             :label="item.label"
             :append-icon="item.icon"
+            :rules="item.rules"
             rounded
             filled
           ></v-text-field>
@@ -65,6 +71,7 @@ export default {
   },
   data: () => ({
     drawer: false,
+    valid: true,
   }),
   methods: {
     formatDataBeforeSend() {

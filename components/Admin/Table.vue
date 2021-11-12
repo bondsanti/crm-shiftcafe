@@ -214,6 +214,11 @@
           {{ item.status ? 'ENABLE' : 'DISABLE' }}
         </v-chip>
       </template>
+      <template #[`item.count`]="{ item }">
+        <v-btn rounded outlined @click="$emit('viewCustomer', item.advise_code)"
+          ><v-icon left>mdi-eye</v-icon>{{ item.count }} คน</v-btn
+        >
+      </template>
       <template #[`item.actions`]="{ item }">
         <v-btn
           fab
@@ -231,7 +236,7 @@
         >
       </template>
     </v-data-table>
-    <div class="text-center py-2 mx-5">
+    <div class="text-center pb-1 mx-5">
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
     </div>
   </v-card>

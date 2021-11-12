@@ -4,7 +4,7 @@
     <v-row class="ma-3">
       <AdminTable
         :title="title"
-        icon="mdi-account"
+        icon="mdi-account-group"
         btn
         target
         excel-first-col
