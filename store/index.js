@@ -13,6 +13,7 @@ export const state = () => ({
     employees: [],
     categories: [],
     advisers: [],
+    users: [],
   },
 })
 

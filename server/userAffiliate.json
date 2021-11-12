@@ -31,6 +31,14 @@
             "id_customer": "3d78cd51-bfa8-4695-9943-2e5b78966804",
             "percent": 0,
             "status": true
+        },
+        {
+            "id": "c40f7469-9a6d-43df-9992-6e40deb62aa7",
+            "advise_code": "001",
+            "full_name": "test",
+            "id_customer": null,
+            "percent": 0,
+            "status": true
         }
     ]
 }

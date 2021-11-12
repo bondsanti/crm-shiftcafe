@@ -1,4 +1,30 @@
 export default {
+  clearState({ commit }) {
+    return new Promise((resolve, reject) => {
+      localStorage.setItem('receipts', JSON.stringify([]))
+      commit('setReceipts', [])
+
+      localStorage.setItem('customers', JSON.stringify([]))
+      commit('setCustomers', [])
+
+      localStorage.setItem('employees', JSON.stringify([]))
+      commit('setEmployees', [])
+
+      localStorage.setItem('items', JSON.stringify([]))
+      commit('setItems', [])
+
+      localStorage.setItem('categories', JSON.stringify([]))
+      commit('setCategories', [])
+
+      localStorage.setItem('advisers', JSON.stringify([]))
+      commit('setAdvisers', [])
+
+      localStorage.setItem('users', JSON.stringify([]))
+      commit('setUsers', [])
+
+      resolve('ok')
+    })
+  },
   async fetchReceipts({ commit }) {
     const res = await this.$axios.$get('/receipt')
     return new Promise((resolve, reject) => {
@@ -44,6 +70,14 @@ export default {
     return new Promise((resolve, reject) => {
       localStorage.setItem('advisers', JSON.stringify(res))
       commit('setAdvisers', res)
+      resolve('ok')
+    })
+  },
+  async fetchUsers({ commit }) {
+    const res = await this.$axios.$get('/user')
+    return new Promise((resolve, reject) => {
+      localStorage.setItem('users', JSON.stringify(res))
+      commit('setUsers', res)
       resolve('ok')
     })
   },

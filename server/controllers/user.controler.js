@@ -1,7 +1,14 @@
 import HandyStorage from 'handy-storage'
 import Jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../constant'
-import { comparePassword } from '../help'
+import {
+  comparePassword,
+  encodePassword,
+  findValueByEmail,
+  findValueByUsername,
+  randomId,
+  findValueById,
+} from '../help'
 // import { randomId } from '../help'
 
 const storage = new HandyStorage({
@@ -56,6 +63,64 @@ export const signin = async (req, res, next) => {
       { expiresIn: '5 days' }
     )
     res.json({ message: 'เข้าสู่ระบบสำเร็จ', token })
+  } catch (e) {
+    next(e)
+  }
+}
+
+export const createUser = async (req, res, next) => {
+  try {
+    const data = storage.connect('./server/users.json')
+    const { users } = data.state
+    const { name, email, username, password, role } = req.body
+    await findValueByEmail(users, email)
+    await findValueByUsername(users, username)
+    const obj = {
+      id: await randomId(),
+      name,
+      email,
+      username,
+      password: await encodePassword(password),
+      role,
+    }
+    users.push(obj)
+    data.setState({ users })
+    data.save()
+    res.json(obj)
+  } catch (e) {
+    next(e)
+  }
+}
+
+export const updateUser = async (req, res, next) => {
+  try {
+    const data = storage.connect('./server/users.json')
+    const { users } = data.state
+    const { name, email, username, password, id, role } = req.body
+    const index = await findValueById(users, id)
+    users[index].name = name
+    users[index].email = email
+    users[index].password = password
+    users[index].username = username
+    users[index].role = role
+    data.setState({ users })
+    data.save()
+    res.json(users[index])
+  } catch (e) {
+    next(e)
+  }
+}
+
+export const deleteUser = async (req, res, next) => {
+  try {
+    const data = storage.connect('./server/users.json')
+    const { users } = data.state
+    const { id } = req.params
+    const index = await findValueById(users, id)
+    users.splice(index, 1)
+    data.setState({ users })
+    data.save()
+    res.json(users)
   } catch (e) {
     next(e)
   }
