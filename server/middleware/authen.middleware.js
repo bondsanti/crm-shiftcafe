@@ -6,7 +6,6 @@ const storage = new HandyStorage({
   beautify: true,
 })
 
-const connect = storage.connect('./server/users.json')
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: JWT_SECRET,
@@ -15,6 +14,7 @@ passport.use(
   // decode jwt auto
   new JwtStrategy(opts, (jwtPayload, done) => {
     try {
+      const connect = storage.connect('./server/users.json')
       const { users } = connect.state
       const oneUser = users.find((u) => u.id === jwtPayload.id)
       if (!oneUser) {

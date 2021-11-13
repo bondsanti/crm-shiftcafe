@@ -1,6 +1,12 @@
 <template>
   <div>
-    <Header title="Dashboard" system-bar icon="mdi-chart-box" prominent dense />
+    <Header
+      :title="`${auth.user.username}`"
+      system-bar
+      icon="mdi-chart-box"
+      prominent
+      dense
+    />
 
     <v-row class="ma-3">
       <AdminTable
@@ -22,7 +28,21 @@
 <script>
 export default {
   middleware: ['requireSignIn', 'refreshData'],
+  validate({ store }) {
+    const { user } = store.state.auth
+    // console.log(user)
+    const result = user.role.includes('item')
+    if (!result) {
+      const error = new Error(
+        `คุณไม่มีสิทธิ์เข้าถึงส่วนรายการสินค้า โปรดติดต่อผู้ดูแลระบบ`
+      )
+      error.statusCode = 401
 
+      throw error
+    }
+
+    return user.role.includes('item')
+  },
   data() {
     return {
       title: 'รายการสินค้า',
@@ -56,6 +76,9 @@ export default {
   computed: {
     adminData() {
       return this.$store.state.adminData
+    },
+    auth() {
+      return this.$store.state.auth
     },
   },
   created() {

@@ -4,9 +4,45 @@
             "id": "21814b35-d9a8-46cc-915e-f528f0bb3339",
             "name": "super admin",
             "email": "super_admin@mail.com",
-            "username": "superAdmin",
-            "password": "$2b$10$GHbT5cEwuckivc.GBmtOIutOlf6T5.T8UmFgiMR9ac6CvDt2.FCIy",
-            "role": [ "all" ]
+            "username": "super_admin",
+            "password": "$2b$10$yO1QjgjurVmlQ/IVf1n8TeOTKVsPqZw3DaVIyErVJVZHPST596L8e",
+            "role": [
+                "report",
+                "item",
+                "customer",
+                "adviser",
+                "user",
+                "add-adviser",
+                "edit-adviser",
+                "delete-adviser",
+                "add-user",
+                "edit-user",
+                "delete-user"
+            ]
+        },
+        {
+            "id": "a518264f-ae6a-430e-9299-32eb3654ee81",
+            "name": "test",
+            "email": "test2",
+            "username": "testy2",
+            "password": "$2b$10$q7DZc2q/GLMV9jEBFzaCYuAZ7cUWBbcMGt7u9ZDSzx8yKb68651pS",
+            "role": [ "report", "customer" ]
+        },
+        {
+            "id": "4f40aadb-683d-4d9f-a9c5-c65a8dc1ae00",
+            "name": "admin23",
+            "email": "admin2",
+            "username": "admin2",
+            "password": "$2b$10$GL6YToWSMZ5n.2xngewGQuoNoZjytuhVYvY8b.rjEVVQj6sd34JO6",
+            "role": [ "report", "customer" ]
+        },
+        {
+            "id": "02c5a759-5813-4832-b96a-306165ed3726",
+            "name": "test",
+            "email": "test",
+            "username": "test",
+            "password": "$2b$10$ZlJuvxoJ9DVajU.hzlztSe9Eu5mtxITwSZ1RfIKjva0XxQ/RhM2jK",
+            "role": [ "report", "item" ]
         }
     ]
 }

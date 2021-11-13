@@ -36,8 +36,13 @@
           <v-speed-dial direction="bottom" class="mt-2 hidden-md-and-up">
             <template #activator>
               <v-btn v-model="fab" color="grey darken-2" dark fab>
-                <v-icon v-if="fab">mdi-menu</v-icon>
-                <Logo v-else />
+                <v-progress-circular
+                  v-show="progress"
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+
+                <Logo v-show="!progress" />
               </v-btn>
             </template>
             <v-btn
@@ -53,6 +58,14 @@
               <v-icon left>{{ item.icon }}</v-icon> {{ item.text }}
             </v-btn>
           </v-speed-dial>
+          <v-progress-linear
+            v-show="progress"
+            class="hidden-sm-and-down"
+            rounded
+            height="10"
+            indeterminate
+            color="yellow darken-2"
+          ></v-progress-linear>
         </v-row>
       </v-col>
     </v-app-bar>
@@ -90,6 +103,12 @@ export default {
   data() {
     return {
       items: [
+        {
+          text: 'โหลดข้อมูลใหม่',
+          to: 'refresh',
+          icon: 'mdi-database-refresh',
+          nameRoute: [],
+        },
         {
           text: 'รายงาน',
           to: '/admin/report',
@@ -130,6 +149,7 @@ export default {
       products: [{ title: 'ของหวาน' }, { title: 'อาหารทานเล่น' }],
       fab: false,
       value: 'ลูกค้า',
+      progress: false,
     }
   },
   computed: {
@@ -148,15 +168,26 @@ export default {
     },
   },
   created() {
-    console.log(this.nameRoute)
+    // console.log(this.nameRoute)
     this.getRouteName()
   },
   methods: {
-    goTo(to) {
+    async goTo(to) {
       // console.log(to)
       if (to === 'sign-out') {
         this.$refs.confirmDialog.dialog = true
         // await this.$auth.logout()
+      } else if (to === 'refresh') {
+        this.progress = true
+        await this.$store.dispatch('fetchReceipts')
+        await this.$store.dispatch('fetchCustomers')
+        await this.$store.dispatch('fetchEmployees')
+        await this.$store.dispatch('fetchItems')
+        await this.$store.dispatch('fetchCategories')
+        await this.$store.dispatch('fetchAdvisers')
+        await this.$store.dispatch('fetchUsers')
+        this.progress = false
+        window.location.reload()
       } else {
         this.$router.push(to)
       }

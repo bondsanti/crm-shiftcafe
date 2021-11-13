@@ -1,6 +1,12 @@
 <template>
   <div>
-    <Header title="Dashboard" system-bar icon="mdi-chart-box" prominent dense />
+    <Header
+      :title="`${auth.user.username}`"
+      system-bar
+      icon="mdi-chart-box"
+      prominent
+      dense
+    />
     <v-row class="ma-3">
       <AdminTable
         :title="title"
@@ -18,6 +24,21 @@
 <script>
 export default {
   middleware: ['requireSignIn', 'refreshData'],
+  validate({ store }) {
+    const { user } = store.state.auth
+    // console.log(user)
+    const result = user.role.includes('customer')
+    if (!result) {
+      const error = new Error(
+        `คุณไม่มีสิทธิ์เข้าถึงส่วนของลูกค้า โปรดติดต่อผู้ดูแลระบบ`
+      )
+      error.statusCode = 401
+
+      throw error
+    }
+
+    return user.role.includes('customer')
+  },
   data() {
     return {
       title: 'ลูกค้า',
@@ -77,6 +98,9 @@ export default {
   computed: {
     adminData() {
       return this.$store.state.adminData
+    },
+    auth() {
+      return this.$store.state.auth
     },
   },
   created() {

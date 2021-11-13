@@ -31,6 +31,7 @@ export const allUser = (req, res, next) => {
 export const me = (req, res, next) => {
   try {
     delete req.user.password
+    // console.log(req.user)
     res.json({
       user: req.user,
     })
@@ -98,9 +99,17 @@ export const updateUser = async (req, res, next) => {
     const { users } = data.state
     const { name, email, username, password, id, role } = req.body
     const index = await findValueById(users, id)
+
     users[index].name = name
     users[index].email = email
-    users[index].password = password
+    if (
+      users[index].password === password &&
+      users[index].password.length === password.length
+    ) {
+      users[index].password = password
+    } else {
+      users[index].password = await encodePassword(password)
+    }
     users[index].username = username
     users[index].role = role
     data.setState({ users })

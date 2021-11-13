@@ -1,6 +1,12 @@
 <template>
   <div>
-    <Header title="Dashboard" system-bar icon="mdi-chart-box" prominent dense />
+    <Header
+      :title="`${auth.user.username}`"
+      system-bar
+      icon="mdi-chart-box"
+      prominent
+      dense
+    />
     <v-row dense class="ma-2">
       <v-col cols="12" sm="6" lg="3">
         <AdminTopCard
@@ -40,10 +46,27 @@
 <script>
 export default {
   middleware: ['requireSignIn'],
+  validate({ store }) {
+    const { user } = store.state.auth
+    // console.log(user)
+    const result = user.role.includes('report')
+    if (!result) {
+      const error = new Error(
+        `คุณไม่มีสิทธิ์เข้าถึงส่วนรายงาน โปรดติดต่อผู้ดูแลระบบ`
+      )
+      error.statusCode = 401
 
+      throw error
+    }
+
+    return user.role.includes('report')
+  },
   computed: {
     adminData() {
       return this.$store.state.adminData
+    },
+    auth() {
+      return this.$store.state.auth
     },
   },
   created() {
