@@ -41,7 +41,7 @@
             "name": "test",
             "email": "test",
             "username": "test",
-            "password": "$2b$10$ZlJuvxoJ9DVajU.hzlztSe9Eu5mtxITwSZ1RfIKjva0XxQ/RhM2jK",
+            "password": "$2b$10$.6rlG0gLtBdf.Xnvop80se.77BK11rxBTtfJG46ltFJmuOHurhwjS",
             "role": [ "report", "item" ]
         }
     ]

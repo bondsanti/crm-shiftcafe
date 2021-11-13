@@ -23,14 +23,34 @@
             class="hidden-sm-and-down"
           >
             <v-btn
+              value="โหลดข้อมูลใหม่"
+              :disabled="progress"
+              @click="goTo('refresh')"
+            >
+              <span>โหลดข้อมูลใหม่</span>
+
+              <v-icon>mdi-database-refresh</v-icon>
+            </v-btn>
+            <v-btn
               v-for="(item, i) in items"
+              v-show="auth.user.role.includes(item.value)"
               :key="i"
               :value="item.text"
+              :disabled="progress"
               @click="goTo(item.to)"
             >
               <span>{{ item.text }}</span>
 
               <v-icon>{{ item.icon }}</v-icon>
+            </v-btn>
+            <v-btn
+              value="ออกจากระบบ"
+              :disabled="progress"
+              @click="goTo('sign-out')"
+            >
+              <span>ออกจากระบบ</span>
+
+              <v-icon>mdi-logout</v-icon>
             </v-btn>
           </v-bottom-navigation>
           <v-speed-dial direction="bottom" class="mt-2 hidden-md-and-up">
@@ -45,17 +65,25 @@
                 <Logo v-show="!progress" />
               </v-btn>
             </template>
+            <v-btn dark small :disabled="progress" @click="goTo('refresh')">
+              <v-icon left>mdi-database-refresh</v-icon> โหลดข้อมูลใหม่
+            </v-btn>
             <v-btn
               v-for="(item, i) in items"
+              v-show="auth.user.role.includes(item.value)"
               :key="i"
               dark
               small
+              :disabled="progress"
               :color="
                 item.nameRoute.includes($route.name) ? 'warning' : 'primary'
               "
               @click="goTo(item.to)"
             >
               <v-icon left>{{ item.icon }}</v-icon> {{ item.text }}
+            </v-btn>
+            <v-btn dark small :disabled="progress" @click="goTo('sign-out')">
+              <v-icon left>mdi-logout</v-icon> ออกจากระบบ
             </v-btn>
           </v-speed-dial>
           <v-progress-linear
@@ -104,49 +132,46 @@ export default {
     return {
       items: [
         {
-          text: 'โหลดข้อมูลใหม่',
-          to: 'refresh',
-          icon: 'mdi-database-refresh',
-          nameRoute: [],
-        },
-        {
           text: 'รายงาน',
           to: '/admin/report',
           icon: 'mdi-book',
-          nameRoute: ['admin-report', 'admin-report-receipt'],
+          nameRoute: [
+            'admin-report',
+            'admin-report-receipt',
+            'admin-report-category',
+            'admin-report-item',
+          ],
+          value: 'report',
         },
         {
           text: 'รายการสินค้า',
           to: '/admin/item',
           icon: 'mdi-food-outline',
           nameRoute: ['admin-item'],
+          value: 'item',
         },
         {
           text: 'ลูกค้า',
           to: '/admin/customer',
           icon: 'mdi-account-group',
           nameRoute: ['admin-customer'],
+          value: 'customer',
         },
         {
           text: 'ตัวแทน',
           to: '/admin/adviser',
           icon: 'mdi-account-tie-voice',
           nameRoute: ['admin-adviser'],
+          value: 'adviser',
         },
         {
           text: 'ผู้ใช้',
           to: '/admin/user',
           icon: 'mdi-account',
           nameRoute: ['admin-user'],
-        },
-        {
-          text: 'ออกจากระบบ',
-          to: 'sign-out',
-          icon: 'mdi-logout',
-          nameRoute: [],
+          value: 'user',
         },
       ],
-      products: [{ title: 'ของหวาน' }, { title: 'อาหารทานเล่น' }],
       fab: false,
       value: 'ลูกค้า',
       progress: false,
@@ -166,9 +191,12 @@ export default {
     nameRoute() {
       return this.$route.name
     },
+    auth() {
+      return this.$store.state.auth
+    },
   },
   created() {
-    // console.log(this.nameRoute)
+    console.log(this.auth.user)
     this.getRouteName()
   },
   methods: {
@@ -194,7 +222,12 @@ export default {
     },
     getRouteName() {
       const route = this.nameRoute
-      if (route === 'admin-report' || route === 'admin-report-receipt') {
+      if (
+        route === 'admin-report' ||
+        route === 'admin-report-receipt' ||
+        route === 'admin-report-category' ||
+        route === 'admin-report-item'
+      ) {
         this.value = 'รายงาน'
       } else if (route === 'admin-item') {
         this.value = 'รายการสินค้า'

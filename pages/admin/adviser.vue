@@ -36,7 +36,7 @@ export default {
     const result = user.role.includes('adviser')
     if (!result) {
       const error = new Error(
-        `คุณไม่มีสิทธ์เข้าถึงส่วนของตัวแทน โปรดติดต่อผู้ดูแลระบบ`
+        `คุณไม่มีสิทธิ์เข้าถึงส่วนของตัวแทน โปรดติดต่อผู้ดูแลระบบ`
       )
       error.statusCode = 401
 

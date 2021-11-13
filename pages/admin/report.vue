@@ -15,24 +15,28 @@
           to="/admin/report"
         />
       </v-col>
-      <!-- <v-col cols="12" sm="6" lg="3">
-        <AdminTopCard
-          title="ยอดขายแยกตามหมวดหมู่"
-          icon="mdi-food-off-outline"
-        />
-      </v-col>
-      <v-col cols="12" sm="6" lg="3">
-        <AdminTopCard
-          title="ยอดขายแยกตามประเภทการชำระเงิน"
-          icon="mdi-cash-register"
-        />
-      </v-col> -->
       <v-col cols="12" sm="6" lg="3">
         <AdminTopCard
           title="ใบเสร็จรับเงิน"
           icon="mdi-receipt"
           route-name="admin-report-receipt"
           to="/admin/report/receipt"
+        />
+      </v-col>
+      <v-col cols="12" sm="6" lg="3">
+        <AdminTopCard
+          title="จำนวนยอดขายแยกตามหมวดหมู่"
+          icon="mdi-food-off-outline"
+          route-name="admin-report-category"
+          to="/admin/report/category"
+        />
+      </v-col>
+      <v-col cols="12" sm="6" lg="3">
+        <AdminTopCard
+          title="จำนวนยอดขายแยกตามสินค้า"
+          icon="mdi-food-fork-drink"
+          route-name="admin-report-item"
+          to="/admin/report/item"
         />
       </v-col>
     </v-row>

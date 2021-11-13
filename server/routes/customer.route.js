@@ -5,10 +5,11 @@ import {
   allEmployees,
   createCustomer,
 } from '../controllers/customer.controller'
+import requireSignIn from './../middleware/authen.middleware'
 const router = express.Router()
 router.get('/', allCustomer)
-router.get('/admin', allCustomerForAdmin)
-router.get('/employee', allEmployees)
+router.get('/admin', requireSignIn, allCustomerForAdmin)
+router.get('/employee', requireSignIn, allEmployees)
 router.post('/', createCustomer)
 
 export default router

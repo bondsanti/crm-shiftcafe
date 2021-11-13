@@ -156,6 +156,8 @@
       </v-col>
     </v-card-title>
     <v-data-table
+      group-by="name"
+      show-group-by
       :headers="headers"
       :search="search"
       :items="items"
