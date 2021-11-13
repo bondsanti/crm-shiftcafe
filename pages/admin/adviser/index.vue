@@ -25,6 +25,7 @@
       :title="titleConfirm"
       @confirm="deleteAdvisor"
     />
+    <Alert ref="alert" :title="titleAlert" />
   </div>
 </template>
 <script>
@@ -97,6 +98,7 @@ export default {
             value: null,
             icon: 'mdi-account-group',
             items: [],
+            multiple: false,
           },
           {
             label: 'สถานะ',
@@ -112,11 +114,13 @@ export default {
                 value: false,
               },
             ],
+            multiple: false,
           },
         ],
       },
       idForEditAdviser: null,
       titleConfirm: 'คุณต้องการลบหรือไม่',
+      titleAlert: 'คุณต้องการลบหรือไม่',
     }
   },
   head() {
@@ -125,11 +129,11 @@ export default {
     }
   },
 
-  computed: mapState(['adminData']),
+  computed: mapState(['adminData', 'auth']),
   created() {
     this.getData()
     this.setItemForCustomer()
-    // console.log(this.items)
+    // console.log(this.auth)
   },
   methods: {
     getData() {
@@ -183,6 +187,10 @@ export default {
     },
     addData() {
       // console.log('addData')
+      const check = this.auth.user.role.includes('add-adviser')
+      if (!check) {
+        this.throwError('คุณไม่มีสิทธิ์เพิ่มข้อมูลตัวแทน', 401)
+      }
       this.type = 'add'
       this.initializeForm()
       this.$refs.formData.drawer = true
@@ -196,8 +204,16 @@ export default {
       this.idForEditAdviser = value.data.id
       this.type = value.type
       if (this.type === 'edit') {
+        const check = this.auth.user.role.includes('edit-adviser')
+        if (!check) {
+          this.throwError('คุณไม่มีสิทธิ์แก้ไขข้อมูลตัวแทน', 401)
+        }
         this.$refs.formData.drawer = true
       } else {
+        const check = this.auth.user.role.includes('delete-adviser')
+        if (!check) {
+          this.throwError('คุณไม่มีสิทธิ์ลบข้อมูลตัวแทน', 401)
+        }
         // console.log(value.data)
         this.titleConfirm = `คุณต้องการลบ ${value.data.full_name} หรือไม่ ?`
         this.$refs.confirmDialog.dialog = true
@@ -212,8 +228,16 @@ export default {
         status: value.select[1].value,
       }
       if (this.type === 'add') {
+        const check = this.auth.user.role.includes('add-adviser')
+        if (!check) {
+          this.throwError('คุณไม่มีสิทธิ์เพิ่มข้อมูลตัวแทน', 401)
+        }
         this.createAdviser(obj)
       } else {
+        const check = this.auth.user.role.includes('edit-adviser')
+        if (!check) {
+          this.throwError('คุณไม่มีสิทธิ์แก้ไขข้อมูลตัวแทน', 401)
+        }
         const newObj = { ...obj, id: this.idForEditAdviser, percent: 0 }
         // console.log(newObj)
         this.updateAdviser(newObj)
@@ -226,8 +250,10 @@ export default {
         this.items.push(res)
         this.initializeForm()
         this.$refs.formData.drawer = false
+        this.showAlert('เพิ่มข้อมูลตัวแทนสำเร็จ')
         // console.log(res)
       } catch (e) {
+        this.showAlert(e.response.data.error.message)
         console.log(e)
       }
     },
@@ -243,11 +269,12 @@ export default {
         this.items[index].percent = res.percent
         this.items[index].status = res.status
         this.items[index].id_customer = res.id_customer
-
+        this.showAlert('แก้ไขข้อมูลตัวแทนสำเร็จ')
         this.initializeForm()
         this.$refs.formData.drawer = false
         // console.log(res)
       } catch (e) {
+        this.showAlert(e.response.data.error.message)
         console.log(e)
       }
     },
@@ -261,12 +288,27 @@ export default {
         await this.$store.dispatch('fetchAdvisers')
         this.items.splice(index, 1)
         this.$refs.confirmDialog.dialog = false
+        this.showAlert('ลบข้อมูลตัวแทนสำเร็จ')
       } catch (e) {
+        this.showAlert(e.response.data.error.message)
         console.log(e)
       }
     },
     viewCustomer(adviseCode) {
       this.$router.push(`adviser/${adviseCode}`)
+    },
+    throwError(msg, code) {
+      const error = new Error(msg)
+      error.statusCode = code
+
+      throw error
+    },
+    showAlert(msg) {
+      this.titleAlert = msg
+      this.$refs.alert.dialog = true
+      setTimeout(() => {
+        this.$refs.alert.dialog = false
+      }, 1500)
     },
   },
 }

@@ -11,7 +11,9 @@
         fab
         color="primary"
         @click="$emit('sendData', inputData)"
-        ><v-icon>mdi-content-save</v-icon></v-btn
+        ><v-icon>{{
+          type === 'add' ? 'mdi-content-save' : 'mdi-pencil'
+        }}</v-icon></v-btn
       ></v-app-bar
     >
     <v-container>
@@ -39,6 +41,7 @@
           <v-select
             v-model="item.value"
             filled
+            :multiple="item.multiple"
             :prepend-inner-icon="item.icon"
             :label="item.label"
             :items="item.items"
