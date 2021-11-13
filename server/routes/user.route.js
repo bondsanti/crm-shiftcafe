@@ -10,9 +10,9 @@ import {
 import requireSignIn from './../middleware/authen.middleware'
 const router = express.Router()
 router.get('/', requireSignIn, allUser)
-router.post('/', createUser)
-router.put('/', updateUser)
-router.delete('/:id', deleteUser)
+router.post('/', requireSignIn, createUser)
+router.put('/', requireSignIn, updateUser)
+router.delete('/:id', requireSignIn, deleteUser)
 router.post('/signin', signin)
 router.get('/me', requireSignIn, me)
 export default router

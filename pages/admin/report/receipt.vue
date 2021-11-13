@@ -150,10 +150,11 @@ export default {
   },
   methods: {
     getDateRange(obj) {
+      this.items = []
+      this.items2 = []
       this.loading = true
       const { dayList } = obj
       let dates = []
-      this.items = []
       dayList.reverse().map((d) => {
         const res = this.filterReceiptsByDate(d)
         dates = [...dates, ...res]

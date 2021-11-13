@@ -91,7 +91,7 @@ export const sendLineNotify = (msg, imgUrl) => {
 export const encodePassword = (password) => {
   return new Promise((resolve, reject) => {
     const salt = bcrypt.genSaltSync(10)
-    const hash = bcrypt.hashSync('123456', salt)
+    const hash = bcrypt.hashSync(password, salt)
     resolve(hash)
   })
 }
