@@ -156,8 +156,7 @@
       </v-col>
     </v-card-title>
     <v-data-table
-      group-by="name"
-      show-group-by
+      v-if="!groupBy"
       :headers="headers"
       :search="search"
       :items="items"
@@ -238,6 +237,23 @@
         >
       </template>
     </v-data-table>
+    <v-data-table
+      v-else
+      group-by="name"
+      show-group-by
+      :headers="headers"
+      :search="search"
+      :items="items"
+      :page.sync="page"
+      :items-per-page="itemsPerPage"
+      loader-height="10"
+      :loading="loading"
+      loading-text="กำลังค้นหาข้อมูล..."
+      hide-default-footer
+      class="elevation-1 ma-2"
+      @page-count="pageCount = $event"
+      @click:row="handleClick"
+    ></v-data-table>
     <div class="text-center pb-1 mx-5">
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
     </div>
@@ -320,6 +336,11 @@ export default {
       default: false,
     },
     thirdRow: {
+      type: Boolean,
+      default: false,
+    },
+
+    groupBy: {
       type: Boolean,
       default: false,
     },
