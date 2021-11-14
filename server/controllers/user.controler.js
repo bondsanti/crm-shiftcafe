@@ -49,7 +49,7 @@ export const signin = async (req, res, next) => {
     if (!oneUser) {
       throw new Error('ไม่พบชื่อผู้ใช้')
     }
-    console.log(oneUser.password, password)
+    // console.log(oneUser.password, password)
     const checkPassword = await comparePassword(password, oneUser.password)
     if (!checkPassword) {
       throw new Error('รหัสผ่านไม่ถูกต้อง')

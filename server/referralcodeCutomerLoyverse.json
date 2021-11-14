@@ -134,6 +134,21 @@
       "id_cutomer": "7084d11d-bcd1-4a56-8153-c7ba948b226f",
       "know": "Facebook",
       "advise": null
+    },
+    {
+      "id_cutomer": "e3a3439d-80ca-4609-823c-46ec65cbab57",
+      "know": "เพื่อน",
+      "advise": "PN00"
+    },
+    {
+      "id_cutomer": "c0143b6e-0471-497d-b20f-00efc96d3e88",
+      "know": "เพื่อน",
+      "advise": "PN00"
+    },
+    {
+      "id_cutomer": "b0af1243-6f73-421b-8c4f-99852c05d0c6",
+      "know": "Facebook",
+      "advise": null
     }
   ]
 }

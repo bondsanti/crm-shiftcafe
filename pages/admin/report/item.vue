@@ -6,6 +6,7 @@
       btn
       show-date-input
       target
+      group-by
       excel-first-col
       :headers="headers"
       :items="items2"

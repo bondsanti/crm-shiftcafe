@@ -33,7 +33,7 @@
             </v-btn>
             <v-btn
               v-for="(item, i) in items"
-              v-show="auth.user.role.includes(item.value)"
+              v-show="showButton(item.value)"
               :key="i"
               :value="item.text"
               :disabled="progress"
@@ -70,7 +70,7 @@
             </v-btn>
             <v-btn
               v-for="(item, i) in items"
-              v-show="auth.user.role.includes(item.value)"
+              v-show="showButton(item.value)"
               :key="i"
               dark
               small
@@ -196,7 +196,7 @@ export default {
     },
   },
   created() {
-    console.log(this.auth.user)
+    // console.log(this.auth.user)
     this.getRouteName()
   },
   methods: {
@@ -245,6 +245,13 @@ export default {
       await this.$auth.logout()
       await this.$store.dispatch('clearState')
       this.$refs.confirmDialog.dialog = false
+    },
+    showButton(value) {
+      if (this.auth.loggedIn) {
+        return this.auth.user.role.includes(value)
+      } else {
+        return false
+      }
     },
   },
 }
