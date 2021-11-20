@@ -328,7 +328,7 @@ export default {
         await this.$store.dispatch('fetchUsers')
         this.items.splice(index, 1)
         this.$refs.confirmDialog.dialog = false
-        this.showAlert('แก้ไขข้อมูลผู้ใช้สำเร็จ')
+        this.showAlert('ลบข้อมูลผู้ใช้สำเร็จ')
       } catch (e) {
         console.log(e)
         this.showAlert(e.response.data.error.message)

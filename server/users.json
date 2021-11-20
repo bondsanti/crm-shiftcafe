@@ -21,28 +21,12 @@
             ]
         },
         {
-            "id": "a518264f-ae6a-430e-9299-32eb3654ee81",
+            "id": "e2d4cc60-9afb-4b5a-9e58-582b28dc4b3c",
             "name": "test",
-            "email": "test2",
-            "username": "testy2",
-            "password": "$2b$10$q7DZc2q/GLMV9jEBFzaCYuAZ7cUWBbcMGt7u9ZDSzx8yKb68651pS",
-            "role": [ "report", "customer" ]
-        },
-        {
-            "id": "4f40aadb-683d-4d9f-a9c5-c65a8dc1ae00",
-            "name": "admin23",
-            "email": "admin2",
-            "username": "admin2",
-            "password": "$2b$10$GL6YToWSMZ5n.2xngewGQuoNoZjytuhVYvY8b.rjEVVQj6sd34JO6",
-            "role": [ "report", "customer" ]
-        },
-        {
-            "id": "02c5a759-5813-4832-b96a-306165ed3726",
-            "name": "test",
-            "email": "test",
+            "email": "test@mail.com",
             "username": "test",
-            "password": "$2b$10$.6rlG0gLtBdf.Xnvop80se.77BK11rxBTtfJG46ltFJmuOHurhwjS",
-            "role": [ "report", "item" ]
+            "password": "$2b$10$CS0rXcov6fYDoBn..Wvvl.HiLYCxf/hOplF3FITve2NgViok0XNGK",
+            "role": [ "report" ]
         }
     ]
 }

@@ -21,26 +21,6 @@
       "advise": null
     },
     {
-      "id_cutomer": "aff01c6f-845a-4ef1-9dd2-14cb0c1b495f",
-      "know": "อื่นๆ",
-      "advise": null
-    },
-    {
-      "id_cutomer": "c42f0931-c446-433c-8307-0e58b0cbcd70",
-      "know": "Google",
-      "advise": "PN01"
-    },
-    {
-      "id_cutomer": "d80cf682-464f-4ce5-ad5e-fc6bb18fdebf",
-      "know": "Line",
-      "advise": "PN02"
-    },
-    {
-      "id_cutomer": "f1005569-c032-4adc-9474-87b67c1ce6c1",
-      "know": "Line",
-      "advise": "PN01"
-    },
-    {
       "id_cutomer": "005783d7-031a-40ab-8408-e9772c3d56c1",
       "know": "Facebook",
       "advise": "PN02"
@@ -149,6 +129,11 @@
       "id_cutomer": "b0af1243-6f73-421b-8c4f-99852c05d0c6",
       "know": "Facebook",
       "advise": null
+    },
+    {
+      "id_cutomer": "c0bf0414-c5de-47fd-9c3c-e22e13d4dd77",
+      "know": "เพื่อน",
+      "advise": "PN03"
     }
   ]
 }
