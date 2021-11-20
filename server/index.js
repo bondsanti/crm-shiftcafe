@@ -1,12 +1,11 @@
 import express from 'express'
 import passport from 'passport'
 import cors from 'cors'
-import helmet from 'helmet'
 import indexRoute from './routes'
 import errorHandler from './middleware/error.middleware'
 
 const app = express()
-app.use(helmet())
+
 app.use(
   cors({
     origin: ['https://app.shift-cafe.com'],
