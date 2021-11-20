@@ -7,7 +7,7 @@ import {
 } from '../controllers/adviser.controller'
 import requireSignIn from './../middleware/authen.middleware'
 const router = express.Router()
-router.get('/', requireSignIn, allAdviser)
+router.get('/', allAdviser)
 router.post('/', requireSignIn, createAdviser)
 router.put('/', requireSignIn, updateAdviser)
 router.delete('/:id', requireSignIn, deleteAdviser)
