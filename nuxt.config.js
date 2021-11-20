@@ -62,8 +62,8 @@ export default {
     '@nuxtjs/auth',
   ],
   axios: {
-    baseURL: 'http://localhost:3000/server',
-    // baseURL: 'https://shiftcafe.th.app.ruk-com.cloud/server',
+    // baseURL: 'http://localhost:3000/server',
+    baseURL: 'https://shiftcafe.th.app.ruk-com.cloud/server',
   },
   auth: {
     strategies: {
