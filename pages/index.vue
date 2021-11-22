@@ -222,18 +222,12 @@ export default {
         resolve(result)
       })
     },
-    async loginWithFacebook() {
+    loginWithFacebook() {
       try {
         this.facebookLoading = true
         this.errorText = null
-        await this.$facebook.init({
-          appId: '637285820599884',
-          status: true,
-          xfbml: true,
-          version: 'v2.7',
-        })
-        // console.log(this.$facebook)
-        this.$facebook.login((response) => {
+
+        window.FB.login((response) => {
           // console.log(response)
           if (response.authResponse) {
             // console.log(response.authResponse.userID)

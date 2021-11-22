@@ -23,6 +23,7 @@
 </template>
 <script>
 export default {
+  layout: 'admin',
   middleware: ['requireSignIn', 'refreshData'],
   validate({ store }) {
     const { user } = store.state.auth

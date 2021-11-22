@@ -1,5 +1,5 @@
 <template>
-  <v-footer :color="color" padless app height="60">
+  <v-footer :color="color" padless app height="60" fixed>
     <v-row justify="center" align="center">
       <v-col align="right" cols="4" class="py-0 white--text">
         <Logo height="58" width="60" />
