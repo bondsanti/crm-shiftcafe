@@ -10,6 +10,7 @@
                 "report",
                 "item",
                 "customer",
+                "customer-under-another-advise",
                 "adviser",
                 "user",
                 "add-adviser",
@@ -18,15 +19,26 @@
                 "add-user",
                 "edit-user",
                 "delete-user"
-            ]
+            ],
+            "userAffiliate": null
         },
         {
             "id": "e2d4cc60-9afb-4b5a-9e58-582b28dc4b3c",
-            "name": "test",
-            "email": "test@mail.com",
+            "name": "testy",
+            "email": "testy@mail.com",
             "username": "test",
             "password": "$2b$10$CS0rXcov6fYDoBn..Wvvl.HiLYCxf/hOplF3FITve2NgViok0XNGK",
-            "role": [ "report" ]
+            "role": [ "report" ],
+            "userAffiliate": "29b7950c-1c9f-4219-9e5b-974dd0d84d7f"
+        },
+        {
+            "id": "fae32e8d-9396-4cbd-8a9e-6dec434b5fd1",
+            "name": "robert",
+            "email": "robert@mail.com",
+            "username": "robert",
+            "password": "$2b$10$LlnXJkx.awQ6xbIsZ6eIKOlACUR44FHKaji18bWy2R/v1C9dG6shy",
+            "role": [ "report" ],
+            "userAffiliate": "29b7950c-1c9f-4219-9e5b-674dd9d73d6g"
         }
     ]
 }

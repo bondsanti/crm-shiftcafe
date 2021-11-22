@@ -6,6 +6,7 @@
         :headers="headers"
         :items="items"
         :loading="loading"
+        :disable-add-button="!auth.user.role.includes('add-adviser')"
         icon="mdi-account-tie-voice"
         third-row
         @addData="addData"
@@ -156,6 +157,11 @@ export default {
         status: data.status,
         id_customer: data.id_customer,
         count: this.findCustomerByAdviseCode(data.advise_code),
+        disableViewCustomer: !this.auth.user.role.includes(
+          'customer-under-another-advise'
+        ),
+        disableEdit: !this.auth.user.role.includes('edit-adviser'),
+        disableDelete: !this.auth.user.role.includes('delete-adviser'),
         actions: '',
       }
 
@@ -166,7 +172,7 @@ export default {
       const res = this.adminData.customers.filter(
         (c) => c.detail.advise === adviseCode
       )
-      // console.log(res)
+      // console.log(this.adminData.customers)
       return res.length
     },
     setItemForCustomer() {

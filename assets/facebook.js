@@ -8,13 +8,13 @@ window.fbAsyncInit = function () {
   FB.init({
     appId: '637285820599884',
     autoLogAppEvents: true,
+    status: true,
     xfbml: true,
     version: 'v2.10',
   })
   // eslint-disable-next-line no-undef
   FB.AppEvents.logPageView()
 }
-
 ;(function (d, s, id) {
   let js
   const fjs = d.getElementsByTagName(s)[0]
@@ -24,6 +24,6 @@ window.fbAsyncInit = function () {
   // eslint-disable-next-line prefer-const
   js = d.createElement(s)
   js.id = id
-  js.src = 'https://connect.facebook.net/en_US/sdk.js'
+  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0'
   fjs.parentNode.insertBefore(js, fjs)
 })(document, 'script', 'facebook-jssdk')

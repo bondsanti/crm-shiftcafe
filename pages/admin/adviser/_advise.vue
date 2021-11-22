@@ -1,6 +1,8 @@
 <template>
   <v-row class="ma-3">
     <AdminTable
+      excel-first-col
+      target
       :title="title"
       :headers="headers"
       :loading="loading"
@@ -12,8 +14,12 @@
 export default {
   middleware: ['requireSignIn', 'refreshData'],
   validate({ params, query, store }) {
-    const { advisers } = store.state.adminData
-    const newAdvisers = [...advisers, { advise_code: 'all' }]
+    const { adminData, auth } = store.state
+    const { advisers } = adminData
+    const checkRole = auth.user.role.includes('customer-under-another-advise')
+    const newAdvisers = checkRole
+      ? [...advisers, { advise_code: 'all' }]
+      : advisers
 
     const result = newAdvisers.find((a) => a.advise_code === params.advise)
     if (!result) {
@@ -22,10 +28,9 @@ export default {
 
       throw error
     }
-    return newAdvisers.some(
-      (category) => category.advise_code === params.advise
-    )
+    return newAdvisers.some((n) => n.advise_code === params.advise)
   },
+
   data() {
     return {
       title: 'รายชื่อลูกค้า',
@@ -59,6 +64,7 @@ export default {
       loading: false,
     }
   },
+
   head() {
     return {
       title: 'รายชื่อลูกค้า',
@@ -69,6 +75,23 @@ export default {
     adminData() {
       return this.$store.state.adminData
     },
+    auth() {
+      return this.$store.state.auth
+    },
+  },
+  watch: {
+    '$route.params.advise': {
+      handler(advise) {
+        console.log(advise)
+        console.log(this.auth)
+        // const checkRole = this.auth.user.role.includes('customer-under-another-advise')
+        // if(!checkRole){
+
+        // }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   created() {
     // const customersByAdvise = this.adminData.customers.filter(
@@ -77,6 +100,7 @@ export default {
     // console.log(customersByAdvise)
     this.getData()
   },
+
   methods: {
     getData(value) {
       let customersByAdvise = this.adminData.customers.filter(

@@ -28,3 +28,20 @@ passport.use(
 )
 
 export default passport.authenticate('jwt', { session: false })
+
+export const requireRole = (nameRole = 'report') => {
+  return (req, res, next) => {
+    const { role } = req.user
+    try {
+      const access = role.includes(nameRole)
+      if (!access) {
+        const err = new Error(`You don't have permission to do this.`)
+        err.statusCode = 401
+        throw err
+      }
+      next()
+    } catch (e) {
+      next(e)
+    }
+  }
+}

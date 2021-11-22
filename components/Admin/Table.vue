@@ -101,7 +101,7 @@
               v-else
               v-model="goal"
               append-icon="mdi-target"
-              label="เป้าหมาย"
+              label="เป้าหมายต่อวัน"
               filled
               rounded
               hide-details
@@ -144,7 +144,12 @@
         </v-row>
         <!-- third-row -->
         <v-row v-show="thirdRow" justify="end" align="center" class="mt-0 mr-1">
-          <v-btn rounded color="primary" class="mr-1" @click="$emit('addData')"
+          <v-btn
+            :disabled="disableAddButton"
+            rounded
+            color="primary"
+            class="mr-1"
+            @click="$emit('addData')"
             ><v-icon left>mdi-database-plus</v-icon>เพิ่มข้อมูล{{
               title
             }}</v-btn
@@ -216,12 +221,17 @@
         </v-chip>
       </template>
       <template #[`item.count`]="{ item }">
-        <v-btn rounded outlined @click="$emit('viewCustomer', item.advise_code)"
+        <v-btn
+          :disabled="item.disableViewCustomer"
+          rounded
+          outlined
+          @click="$emit('viewCustomer', item.advise_code)"
           ><v-icon left>mdi-eye</v-icon>{{ item.count }} คน</v-btn
         >
       </template>
       <template #[`item.actions`]="{ item }">
         <v-btn
+          :disabled="item.disableEdit"
           fab
           icon
           color="warning"
@@ -229,12 +239,23 @@
           ><v-icon>mdi-grease-pencil</v-icon></v-btn
         >
         <v-btn
+          :disabled="item.disableDelete"
           fab
           icon
           color="red"
           @click="$emit('formActions', { type: 'delete', data: item })"
           ><v-icon>mdi-trash-can</v-icon></v-btn
         >
+      </template>
+      <template #footer>
+        <div class="text-center pb-1 mx-5">
+          <v-pagination
+            v-model="page"
+            :length="pageCount"
+            total-visible="20"
+            circle
+          ></v-pagination>
+        </div>
       </template>
     </v-data-table>
     <v-data-table
@@ -253,10 +274,21 @@
       class="elevation-1 ma-2"
       @page-count="pageCount = $event"
       @click:row="handleClick"
-    ></v-data-table>
-    <div class="text-center pb-1 mx-5">
+    >
+      <template #footer>
+        <div class="text-center pb-1 mx-5">
+          <v-pagination
+            v-model="page"
+            :length="pageCount"
+            total-visible="20"
+            circle
+          ></v-pagination>
+        </div>
+      </template>
+    </v-data-table>
+    <!-- <div class="text-center pb-1 mx-5">
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
-    </div>
+    </div> -->
   </v-card>
 </template>
 <script>
@@ -341,6 +373,10 @@ export default {
     },
 
     groupBy: {
+      type: Boolean,
+      default: false,
+    },
+    disableAddButton: {
       type: Boolean,
       default: false,
     },

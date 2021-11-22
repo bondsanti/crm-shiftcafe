@@ -62,7 +62,7 @@ export const signin = async (req, res, next) => {
         name: oneUser.name,
       },
       JWT_SECRET,
-      { expiresIn: '5 days' }
+      { expiresIn: '6h' }
     )
     res.json({ message: 'เข้าสู่ระบบสำเร็จ', token })
   } catch (e) {
@@ -74,7 +74,7 @@ export const createUser = async (req, res, next) => {
   try {
     const data = storage.connect('./server/users.json')
     const { users } = data.state
-    const { name, email, username, password, role } = req.body
+    const { name, email, username, password, role, userAffiliate } = req.body
     await findValueByEmail(users, email)
     await findValueByUsername(users, username)
     const obj = {
@@ -84,6 +84,7 @@ export const createUser = async (req, res, next) => {
       username,
       password: await encodePassword(password),
       role,
+      userAffiliate,
     }
     users.push(obj)
     data.setState({ users })
@@ -98,7 +99,8 @@ export const updateUser = async (req, res, next) => {
   try {
     const data = storage.connect('./server/users.json')
     const { users } = data.state
-    const { name, email, username, password, id, role } = req.body
+    const { name, email, username, password, id, role, userAffiliate } =
+      req.body
     const index = await findValueById(users, id)
 
     users[index].name = name
@@ -113,6 +115,7 @@ export const updateUser = async (req, res, next) => {
     }
     users[index].username = username
     users[index].role = role
+    users[index].userAffiliate = userAffiliate
     data.setState({ users })
     data.save()
     res.json(users[index])
