@@ -97,9 +97,12 @@ export default {
         this.headerTitle = 'กำลังโหลดข้อมูล'
         this.icon = 'mdi-account-convert'
         await this.$store.dispatch('fetchReceipts')
+        this.headerTitle = 'กำลังโหลดข้อมูลใบเสร็จรับเงิน'
         await this.$store.dispatch('fetchCustomers')
+        this.headerTitle = 'กำลังโหลดข้อมูลลูกค้า'
         await this.$store.dispatch('fetchEmployees')
         await this.$store.dispatch('fetchItems')
+        this.headerTitle = 'กำลังโหลดข้อมูลสินค้า'
         await this.$store.dispatch('fetchCategories')
         await this.$store.dispatch('fetchAdvisers')
         await this.$store.dispatch('fetchUsers')

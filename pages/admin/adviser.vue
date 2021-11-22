@@ -30,6 +30,7 @@
 </template>
 <script>
 export default {
+  layout: 'admin',
   validate({ store }) {
     const { user } = store.state.auth
     // console.log(user)
