@@ -5,10 +5,15 @@ import {
   deleteAdviser,
   updateAdviser,
 } from '../controllers/adviser.controller'
-import requireSignIn from './../middleware/authen.middleware'
+import requireSignIn, { requireRole } from './../middleware/authen.middleware'
 const router = express.Router()
 router.get('/', allAdviser)
-router.post('/', requireSignIn, createAdviser)
-router.put('/', requireSignIn, updateAdviser)
-router.delete('/:id', requireSignIn, deleteAdviser)
+router.post('/', requireSignIn, requireRole('add-adviser'), createAdviser)
+router.put('/', requireSignIn, requireRole('edit-adviser'), updateAdviser)
+router.delete(
+  '/:id',
+  requireSignIn,
+  requireRole('delete-adviser'),
+  deleteAdviser
+)
 export default router

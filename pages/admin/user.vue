@@ -13,6 +13,7 @@
         icon="mdi-account"
         btn
         third-row
+        :disable-add-button="!auth.user.role.includes('add-user')"
         :headers="headers"
         :items="items"
         :loading="loading"
@@ -121,6 +122,18 @@ export default {
         ],
         select: [
           {
+            label: 'ตัวแทน',
+            value: null,
+            icon: 'mdi-account-tie-voice',
+            items: [
+              {
+                text: 'ไม่ได้เป็นตัวแทน',
+                value: null,
+              },
+            ],
+            multiple: false,
+          },
+          {
             label: 'สิทธิ์การเข้าถึง',
             value: ['report'],
             icon: 'mdi-code-array',
@@ -144,6 +157,10 @@ export default {
               {
                 text: 'เพิ่มข้อมูลตัวแทน',
                 value: 'add-adviser',
+              },
+              {
+                text: 'ดูข้อมูลลูกค้าของตัวแทนคนอื่น',
+                value: 'customer-under-another-advise',
               },
               {
                 text: 'แก้ไขข้อมูลตัวแทน',
@@ -194,6 +211,7 @@ export default {
   },
   created() {
     this.getData()
+    this.setItemForAdviseSelect()
   },
   methods: {
     getData() {
@@ -216,7 +234,10 @@ export default {
         email: data.email,
         username: data.username,
         password: data.password,
+        userAffiliate: data.userAffiliate,
         role: data.role,
+        disableEdit: !this.auth.user.role.includes('edit-user'),
+        disableDelete: !this.auth.user.role.includes('delete-user'),
         actions: '',
       }
 
@@ -228,7 +249,8 @@ export default {
       this.form.input[1].value = ''
       this.form.input[2].value = ''
       this.form.input[3].value = ''
-      this.form.select[0].value = ['report']
+      this.form.select[0].value = null
+      this.form.select[1].value = ['report']
       this.idForEditUser = null
     },
     receiveData(value) {
@@ -237,7 +259,8 @@ export default {
         email: value.input[1].value,
         username: value.input[2].value,
         password: value.input[3].value,
-        role: value.select[0].value,
+        userAffiliate: value.select[0].value,
+        role: value.select[1].value,
       }
       // console.log(obj)
       if (this.type === 'add') {
@@ -271,7 +294,8 @@ export default {
       this.form.input[1].value = value.data.email
       this.form.input[2].value = value.data.username
       this.form.input[3].value = value.data.password
-      this.form.select[0].value = value.data.role
+      this.form.select[0].value = value.data.userAffiliate
+      this.form.select[1].value = value.data.role
       this.idForEditUser = value.data.id
       this.type = value.type
       if (this.type === 'edit') {
@@ -314,6 +338,7 @@ export default {
         this.items[index].email = res.email
         this.items[index].username = res.username
         this.items[index].password = res.password
+        this.items[index].userAffiliate = res.userAffiliate
         this.items[index].role = res.role
         this.initializeForm()
         this.$refs.formData.drawer = false
@@ -347,6 +372,13 @@ export default {
       setTimeout(() => {
         this.$refs.alert.dialog = false
       }, 1500)
+    },
+    setItemForAdviseSelect() {
+      // console.log(this.adminData)
+      this.adminData.advisers.map((a) => {
+        this.form.select[0].items.push({ text: a.full_name, value: a.id })
+        return 0
+      })
     },
   },
 }

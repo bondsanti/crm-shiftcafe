@@ -51,6 +51,18 @@ export default {
         value: 'total',
       },
       {
+        text: 'ต้นทุนสินค้า',
+        align: 'start',
+        sortable: false,
+        value: 'cost',
+      },
+      {
+        text: 'ยอดขายหลังหักต้นทุน',
+        align: 'start',
+        sortable: false,
+        value: 'profit',
+      },
+      {
         text: 'ผลต่าง จากยอดขายวันก่อน',
         align: 'start',
         sortable: false,
@@ -64,28 +76,40 @@ export default {
       },
     ],
     itemsSubHeader: [
+      // {
+      //   value: 0,
+      //   text: 'ยอดขาย',
+      //   icon: 'mdi-cash',
+      //   color: 'primary',
+      // },
       {
-        value: 100,
-        text: 'ยอดขาย',
-        icon: 'mdi-cash',
-        color: 'primary',
-      },
-      {
-        value: 2,
+        value: 0,
         text: 'คืนเงิน',
         icon: 'mdi-cash-refund',
         color: 'red',
       },
       {
-        value: 3,
+        value: 0,
         text: 'ส่วนลด',
         icon: 'mdi-cash-minus',
         color: 'warning',
       },
       {
-        value: 4,
+        value: 0,
         text: 'ยอดขายสุทธิ',
         icon: 'mdi-cash-lock',
+        color: 'primary',
+      },
+      {
+        value: 0,
+        text: 'เป้าหมายเดือนนี้',
+        icon: 'mdi-target',
+        color: 'primary',
+      },
+      {
+        value: 0,
+        text: 'กำไรสุทธิ',
+        icon: 'mdi-account-cash',
         color: 'primary',
       },
     ],
@@ -111,15 +135,19 @@ export default {
       )
       this.time.end = moment(this.receipts[0].receipt_date).format('YYYY-MM-DD')
     }
+    // setTimeout(() => {
+    //   this.calculate()
+    // }, 1300)
   },
+
   methods: {
     getDateRange(obj) {
       const { dayList, goal } = obj
       // console.log(goal.replace(/,/g, ''))
+      const daysInMonth = moment(dayList[0], 'YYYY-MM-DD').daysInMonth()
       const goal2 = goal.replace(/,/g, '')
       this.loading = true
       const dates = []
-      this.items = []
       dayList.reverse().map((d) => {
         const res = this.filterReceiptsByDate(d)
         const obj = {
@@ -131,33 +159,54 @@ export default {
         return res
       })
       // หน่วงเวลา
-      // console.log(dates)
+      // console.log(dayList)
 
       setTimeout(() => {
+        this.items = []
         dates.map((d, i) => {
           this.makeItRightForTable(d, i, dates, goal2)
           return d
         })
         this.loading = false
-        this.calculate()
+        // find target for month
+        this.itemsSubHeader[3].value = goal2 * daysInMonth
       }, 1200)
+      // find profit
+      setTimeout(() => {
+        this.calculate()
+        this.findProfit(
+          this.itemsSubHeader[2].value,
+          this.itemsSubHeader[3].value
+        )
+      }, 2000)
+      // console.log(this.items)
+    },
+    findProfit(cost, target) {
+      const profit = cost - target
+      this.itemsSubHeader[4].value = profit
+      if (profit < 0) {
+        this.itemsSubHeader[4].color = 'red'
+      } else {
+        this.itemsSubHeader[4].color = 'success'
+      }
     },
     calculate() {
-      let sale = 0
+      // let sale = 0
       let refund = 0
       let discount = 0
-      let total = 0
+      let profit = 0
+
       this.items.map((i) => {
-        sale += this.$options.filters.unFormatCurrency(i.sales)
+        // sale += this.$options.filters.unFormatCurrency(i.sales)
         refund += this.$options.filters.unFormatCurrency(i.refund)
         discount += this.$options.filters.unFormatCurrency(i.discount)
-        total += this.$options.filters.unFormatCurrency(i.total)
+        profit += this.$options.filters.unFormatCurrency(i.profit)
         return i
       })
-      this.itemsSubHeader[0].value = sale
-      this.itemsSubHeader[1].value = refund
-      this.itemsSubHeader[2].value = discount
-      this.itemsSubHeader[3].value = total
+      // this.itemsSubHeader[0].value = sale
+      this.itemsSubHeader[0].value = refund
+      this.itemsSubHeader[1].value = discount
+      this.itemsSubHeader[2].value = profit
     },
 
     filterReceiptsByDate(date) {
@@ -181,13 +230,17 @@ export default {
       const total =
         this.findSale(data.value) - this.findRefund(data.value).refund
       const sales = total + discount + refund
+      const cost = this.findCost(data.value)
+      const profit = total - cost
       const obj = {
         date: this.$options.filters.dateTh(data.dateName),
         sales: this.$options.filters.currency(sales),
         refund: this.$options.filters.currency(refund),
         discount: this.$options.filters.currency(discount),
         total: this.$options.filters.currency(total),
-        diffPerGoal: total !== 0 ? total - goal : 0,
+        cost: this.$options.filters.currency(cost),
+        profit: this.$options.filters.currency(profit),
+        diffPerGoal: profit !== 0 ? profit - goal : 0,
         diffPerYesterday: this.findDiffPerYesterday(total, index, datas),
       }
       this.items.push(obj)
@@ -234,6 +287,19 @@ export default {
       })
       // return this.$options.filters.currency(discount)
       return discount
+    },
+    findCost(data) {
+      let allItem = []
+      let cost = 0
+      data.map((d) => {
+        allItem = [...allItem, ...d.line_items]
+        return 0
+      })
+
+      allItem.map((a) => (cost += a.cost))
+      //  console.log(cost)
+
+      return cost
     },
   },
 }

@@ -226,13 +226,13 @@ export default {
       }
     },
     changeTypeWord(type, cancel) {
+      // console.log(type, cancel)
       const word = type === 'SALE' ? 'การขาย' : 'คืนเงิน'
       if (cancel) {
         return word + ' ( ยกเลิก )'
       } else {
         return word
       }
-      // console.log(type, cancel)
     },
     filterReceipt(text) {
       this.loading = true
@@ -276,11 +276,12 @@ export default {
         ? this.findCustomer(value.customer_id)
         : null
       obj.receipt_type = this.changeTypeWord(
-        value.receipt_type,
-        value.cancelled_at
+        value.data.receipt_type,
+        value.data.cancelled_at
       )
       this.receiptDetail = obj
       this.$refs.receiptDetailNav.drawer = true
+      // console.log(value)
     },
   },
 }
