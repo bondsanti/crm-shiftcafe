@@ -234,12 +234,12 @@ export default {
       const profit = total - cost
       const obj = {
         date: this.$options.filters.dateTh(data.dateName),
-        sales: this.$options.filters.currency(sales),
-        refund: this.$options.filters.currency(refund),
-        discount: this.$options.filters.currency(discount),
-        total: this.$options.filters.currency(total),
-        cost: this.$options.filters.currency(cost),
-        profit: this.$options.filters.currency(profit),
+        sales: this.$options.filters.comma(sales, 2),
+        refund: this.$options.filters.comma(refund, 2),
+        discount: this.$options.filters.comma(discount, 2),
+        total: this.$options.filters.comma(total, 2),
+        cost: this.$options.filters.comma(cost, 2),
+        profit: this.$options.filters.comma(profit, 2),
         diffPerGoal: profit !== 0 ? profit - goal : 0,
         diffPerYesterday: this.findDiffPerYesterday(total, index, datas),
       }

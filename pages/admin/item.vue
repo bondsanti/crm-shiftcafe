@@ -104,8 +104,8 @@ export default {
       const obj = {
         name: data.item_name,
         category: this.findCategory(data.category_id).name,
-        price: this.$options.filters.currency(data.variants[0].default_price),
-        cost: this.$options.filters.currency(data.variants[0].cost),
+        price: this.$options.filters.comma(data.variants[0].default_price, 2),
+        cost: this.$options.filters.comma(data.variants[0].cost, 2),
         category_id: data.category_id,
       }
 

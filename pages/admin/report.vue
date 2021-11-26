@@ -8,14 +8,14 @@
       dense
     />
     <v-row dense class="ma-2">
-      <v-col cols="12" sm="6" lg="3">
+      <v-col cols="12" sm="6" md="4" lg="3">
         <AdminTopCard
           title="สรุปยอดขาย"
           route-name="admin-report"
           to="/admin/report"
         />
       </v-col>
-      <v-col cols="12" sm="6" lg="3">
+      <v-col cols="12" sm="6" md="4" lg="3">
         <AdminTopCard
           title="ใบเสร็จรับเงิน"
           icon="mdi-receipt"
@@ -23,7 +23,7 @@
           to="/admin/report/receipt"
         />
       </v-col>
-      <v-col cols="12" sm="6" lg="3">
+      <v-col cols="12" sm="6" md="4" lg="3">
         <AdminTopCard
           title="จำนวนยอดขายแยกตามหมวดหมู่"
           icon="mdi-food-off-outline"
@@ -31,12 +31,20 @@
           to="/admin/report/category"
         />
       </v-col>
-      <v-col cols="12" sm="6" lg="3">
+      <v-col cols="12" sm="6" md="4" lg="3">
         <AdminTopCard
           title="จำนวนยอดขายแยกตามสินค้า"
           icon="mdi-food-fork-drink"
           route-name="admin-report-item"
           to="/admin/report/item"
+        />
+      </v-col>
+      <v-col cols="12" sm="6" md="4" lg="3">
+        <AdminTopCard
+          title="รายรับ-รายจ่าาย"
+          icon="mdi-account-cash"
+          route-name="admin-report-income_expense"
+          to="/admin/report/income_expense"
         />
       </v-col>
     </v-row>

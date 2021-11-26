@@ -204,7 +204,7 @@ export default {
         employee: this.findEmployee(data.employee_id),
         customer: this.findCustomer(data.customer_id).name,
         type: this.changeTypeWord(data.receipt_type, data.cancelled_at),
-        total: this.$options.filters.currency(data.total_money),
+        total: this.$options.filters.comma(data.total_money, 2),
         data,
       }
       this.items.push(obj)
@@ -271,9 +271,9 @@ export default {
     },
     viewReceiptDetail(value) {
       const obj = { ...value.data }
-      obj.employee_id = this.findEmployee(value.employee_id)
-      obj.customer_id = value.customer_id
-        ? this.findCustomer(value.customer_id)
+      obj.employee_id = this.findEmployee(value.data.employee_id)
+      obj.customer_id = value.data.customer_id
+        ? this.findCustomer(value.data.customer_id)
         : null
       obj.receipt_type = this.changeTypeWord(
         value.data.receipt_type,

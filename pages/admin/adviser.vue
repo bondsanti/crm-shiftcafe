@@ -21,7 +21,7 @@
           title="รายชื่อลูกค้า"
           icon="mdi-receipt"
           route-name="admin-adviser-advise"
-          to="/admin/adviser/all"
+          :to="`/admin/adviser/${findAdviser}`"
         />
       </v-col>
     </v-row>
@@ -50,6 +50,23 @@ export default {
     auth() {
       return this.$store.state.auth
     },
+    adminData() {
+      return this.$store.state.adminData
+    },
+    findAdviser() {
+      const result = this.adminData.advisers.find(
+        (a) => a.id === this.auth.user.userAffiliate
+      )
+      return this.auth.user.userAffiliate ? result.advise_code : 'all'
+    },
+  },
+  methods: {
+    // findAdviser(adviseCode) {
+    //   const result = this.adminData.advisers.find(
+    //     (a) => a.advise_code === adviseCode
+    //   )
+    //   return result.advise_code
+    // },
   },
 }
 </script>

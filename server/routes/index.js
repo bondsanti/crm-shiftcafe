@@ -7,6 +7,7 @@ import receiptRoute from './receipt.route'
 import itemRoute from './item.route'
 import userRoute from './user.route'
 import otpRoute from './otp.route'
+import incomeExpenseRoute from './incomeExpense.route'
 const router = express.Router()
 
 router.use('/customer', customerRoute)
@@ -16,5 +17,6 @@ router.use('/receipt', receiptRoute)
 router.use('/item', itemRoute)
 router.use('/user', userRoute)
 router.use('/otp', otpRoute)
+router.use('/income-expense', incomeExpenseRoute)
 
 export default router

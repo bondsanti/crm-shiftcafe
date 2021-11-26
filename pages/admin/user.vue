@@ -186,6 +186,18 @@ export default {
                 text: 'ลบข้อมูลผู้ใช้',
                 value: 'delete-user',
               },
+              {
+                text: 'เพิ่มข้อมูลรายรับ-รายจ่าย',
+                value: 'add-income-expense',
+              },
+              {
+                text: 'แก้ไขข้อมูลรายรับ-รายจ่าย',
+                value: 'edit-income-expense',
+              },
+              {
+                text: 'ลบข้อมูลรายรับ-รายจ่าย',
+                value: 'delete-income-expense',
+              },
             ],
             multiple: true,
           },

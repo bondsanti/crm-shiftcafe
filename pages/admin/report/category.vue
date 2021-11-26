@@ -115,7 +115,9 @@ export default {
       })
 
       // เรียงจากมากไปน้อย
-      const itemsSort = this.items.sort((a, b) => b.sale - a.sale)
+      const itemsSort = this.items.sort(
+        (a, b) => parseInt(b.sale) - parseInt(a.sale)
+      )
       setTimeout(() => {
         // this.calculate()
         this.items2 = itemsSort
@@ -197,10 +199,10 @@ export default {
       const totaly = countCancel + countRefund + countSale
       const obj = {
         category: data.name,
-        total: totaly,
+        total: this.$options.filters.comma(totaly),
         sale: countSale,
-        refund: countRefund,
-        cancel: countCancel,
+        refund: this.$options.filters.comma(countRefund),
+        cancel: this.$options.filters.comma(countCancel),
       }
 
       this.items.push(obj)
