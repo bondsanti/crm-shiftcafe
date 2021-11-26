@@ -38,9 +38,9 @@ Vue.filter('unFormatCurrency', function (value) {
   return value
 })
 
-Vue.filter('currencyTwoDot', function (value) {
+Vue.filter('comma', function (value, num = 0) {
   if (!value) return '0'
   const res = parseInt(value)
-  const val = (res / 1).toFixed(2).replace(',', '.')
+  const val = (res / 1).toFixed(num).replace(',', '.')
   return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 })

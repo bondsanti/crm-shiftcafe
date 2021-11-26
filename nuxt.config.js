@@ -30,6 +30,13 @@ export default {
       },
       // { name: 'format-detection', content: 'telephone=no' },
       { name: ' theme-color', content: colors.shades.black },
+      { property: ' og:image', content: '/logo.ico' },
+      { property: ' og:title', content: 'CRM SHIFT CAFÉ' },
+      {
+        property: ' og:description',
+        content:
+          'shift café บริการ เครื่องดื่มและอาหาร ตั้งอยู่ที่ 89/1 ถนน สุขสวัสดิ์ 4 เมือง ลำปาง 52000 โทร 091-796-1816',
+      },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/logo.ico' },
@@ -62,8 +69,8 @@ export default {
     '@nuxtjs/auth',
   ],
   axios: {
-    // baseURL: 'http://localhost:3000/server',
-    baseURL: 'https://shiftcafe.th.app.ruk-com.cloud/server',
+    baseURL: 'http://localhost:3000/server',
+    // baseURL: 'https://shiftcafe.th.app.ruk-com.cloud/server',
   },
   auth: {
     strategies: {

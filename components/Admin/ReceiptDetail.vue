@@ -25,7 +25,7 @@
           </v-row>
           <v-row justify="center">
             <v-col cols="12" align="center" class="ma-0 pa-0">
-              <h1>{{ receiptDetail.total_money | currencyTwoDot }}บาท</h1>
+              <h1>{{ receiptDetail.total_money | comma(2) }}บาท</h1>
             </v-col>
             <h4>รวมทั้งหมด</h4>
           </v-row>
@@ -80,11 +80,11 @@
               }`
             }}</v-col>
             <v-col cols="3" align="end" class="ma-0 pa-0">{{
-              item.price | currencyTwoDot
+              item.price | comma(2)
             }}</v-col>
             <v-col cols="12" class="ma-0 pa-0"
               ><div class="caption">
-                {{ item.quantity }}*{{ item.price | currencyTwoDot }}
+                {{ item.quantity }}*{{ item.price | comma(2) }}
               </div></v-col
             >
             <v-col v-show="item.line_note" cols="12" class="ma-0 pa-0"
@@ -111,14 +111,14 @@
             <v-col cols="6" class="ma-0 pa-0"><h2>รวมทั้งหมด</h2></v-col>
             <v-col cols="6" align="end" class="ma-0 pa-0"
               ><h2>
-                {{ receiptDetail.total_money | currencyTwoDot }}
+                {{ receiptDetail.total_money | comma(2) }}
               </h2></v-col
             >
           </v-row>
           <v-row v-for="(item, i) in receiptDetail.payments" :key="i">
             <v-col cols="6" class="ma-0 pa-0">{{ item.name }}</v-col>
             <v-col cols="6" align="end" class="ma-0 pa-0">{{
-              item.money_amount | currencyTwoDot
+              item.money_amount | comma(2)
             }}</v-col>
           </v-row>
         </v-col>

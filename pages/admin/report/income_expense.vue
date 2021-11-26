@@ -2,11 +2,10 @@
   <v-row class="ma-3">
     <AdminTable
       :title="title"
-      icon="mdi-food-outline"
+      icon="mdi-account-cash"
       btn
       show-date-input
       target
-      group-by
       excel-first-col
       :headers="headers"
       :items="items2"
@@ -23,31 +22,13 @@ export default {
 
   data() {
     return {
-      title: 'แยกตามสินค้า',
+      title: 'รายรับ-รายจ่าย',
       headers: [
-        {
-          text: 'ชื่อสินค้า',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
-        {
-          text: 'ตัวเลือก',
-          align: 'start',
-          sortable: false,
-          value: 'option',
-        },
         {
           text: 'ประเภท',
           align: 'start',
           sortable: false,
           value: 'category',
-        },
-        {
-          text: 'ราคา',
-          align: 'start',
-          sortable: false,
-          value: 'price',
         },
         {
           text: 'จำนวนที่ขายได้ทั้งหมด',
@@ -90,7 +71,7 @@ export default {
   },
   head() {
     return {
-      title: 'ยอดขายแยกตามสินค้า',
+      title: 'ยอดขายแยกตามหมวดหมู่',
     }
   },
   computed: {
@@ -128,7 +109,7 @@ export default {
       // console.log(dates)
       this.filterReceipts(dates)
       // console.log(this.productItems)
-      this.adminData.items.map((d) => {
+      this.adminData.categories.map((d) => {
         this.makeItRightForTable(d)
         return d
       })
@@ -140,7 +121,6 @@ export default {
         this.items2 = itemsSort
         this.loading = false
       }, 1200)
-      // console.log(this.itemsInReceipt)
     },
     filterReceipts(receipts) {
       let itemCancel = []
@@ -202,103 +182,49 @@ export default {
       return res ? res.category_id : null
     },
     makeItRightForTable(data) {
-      if (data.variants.length > 1) {
-        data.variants.map((v) => {
-          let countSale = 0
-          const sale = this.filterItemsSaleByCategory(data.id, v.variant_id)
-          sale.map((s) => (countSale += s.quantity))
+      let countSale = 0
+      const sale = this.filterItemsSaleByCategory(data.id)
+      sale.map((s) => (countSale += s.quantity))
 
-          let countRefund = 0
-          const refund = this.filterItemsRefundByCategory(data.id, v.variant_id)
-          refund.map((s) => (countRefund += s.quantity))
+      let countRefund = 0
+      const refund = this.filterItemsRefundByCategory(data.id)
+      refund.map((r) => (countRefund += r.quantity))
 
-          let countCancel = 0
-          const cancel = this.filterItemsCancelByCategory(data.id, v.variant_id)
-          cancel.map((s) => (countCancel += s.quantity))
-
-          const obj = {
-            name: data.item_name,
-            option: v.option1_value,
-            category: this.findCategory(data.category_id),
-            price: this.$options.filters.comma(v.default_price, 2),
-            total: this.$options.filters.comma(
-              countSale + countRefund + countCancel
-            ),
-            sale: this.$options.filters.comma(countSale),
-            refund: this.$options.filters.comma(countRefund),
-            cancel: this.$options.filters.comma(countCancel),
-          }
-
-          this.items.push(obj)
-          return v
-        })
-      } else {
-        let countSale = 0
-        const sale = this.filterItemsSaleByCategory(data.id, null)
-        sale.map((s) => (countSale += s.quantity))
-
-        let countRefund = 0
-        const refund = this.filterItemsRefundByCategory(data.id, null)
-        refund.map((s) => (countRefund += s.quantity))
-
-        let countCancel = 0
-        const cancel = this.filterItemsCancelByCategory(data.id, null)
-        cancel.map((s) => (countCancel += s.quantity))
-        const obj = {
-          name: data.item_name,
-          option: data.item_name,
-          category: this.findCategory(data.category_id),
-          price: this.$options.filters.comma(data.variants[0].default_price, 2),
-          total: this.$options.filters.comma(
-            countCancel + countRefund + countSale
-          ),
-          sale: this.$options.filters.comma(countSale),
-          refund: this.$options.filters.comma(countRefund),
-          cancel: this.$options.filters.comma(countCancel),
-        }
-
-        this.items.push(obj)
+      let countCancel = 0
+      const cancel = this.filterItemsCancelByCategory(data.id)
+      cancel.map((c) => (countCancel += c.quantity))
+      // console.log(cancel)
+      const totaly = countCancel + countRefund + countSale
+      const obj = {
+        category: data.name,
+        total: totaly,
+        sale: countSale,
+        refund: countRefund,
+        cancel: countCancel,
       }
+
+      this.items.push(obj)
     },
-    filterItemsSaleByCategory(itemId, variantId) {
+    filterItemsSaleByCategory(cateId) {
       // console.log(this.itemsInReceipt.sale)
-      let res = []
-      if (variantId !== null) {
-        res = this.itemsInReceipt.sale.filter(
-          (s) => s.item_id === itemId && s.variant_id === variantId
-        )
-      } else {
-        res = this.itemsInReceipt.sale.filter((s) => s.item_id === itemId)
-      }
+      const res = this.itemsInReceipt.sale.filter(
+        (s) => s.category_id === cateId
+      )
       return res
     },
-    filterItemsRefundByCategory(itemId, variantId) {
+    filterItemsRefundByCategory(cateId) {
       // console.log(this.itemsInReceipt.sale)
-      let res = []
-      if (variantId !== null) {
-        res = this.itemsInReceipt.refund.filter(
-          (s) => s.item_id === itemId && s.variant_id === variantId
-        )
-      } else {
-        res = this.itemsInReceipt.refund.filter((s) => s.item_id === itemId)
-      }
+      const res = this.itemsInReceipt.refund.filter(
+        (s) => s.category_id === cateId
+      )
       return res
     },
-    filterItemsCancelByCategory(itemId, variantId) {
+    filterItemsCancelByCategory(cateId) {
       // console.log(this.itemsInReceipt.sale)
-      let res = []
-      if (variantId !== null) {
-        res = this.itemsInReceipt.cancel.filter(
-          (s) => s.item_id === itemId && s.variant_id === variantId
-        )
-      } else {
-        res = this.itemsInReceipt.cancel.filter((s) => s.item_id === itemId)
-      }
+      const res = this.itemsInReceipt.cancel.filter(
+        (s) => s.category_id === cateId
+      )
       return res
-    },
-    findCategory(cateId) {
-      const res = this.adminData.categories.find((c) => c.id === cateId)
-      return res ? res.name : '-'
     },
   },
 }

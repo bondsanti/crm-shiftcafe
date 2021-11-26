@@ -116,6 +116,7 @@ export default {
           return c
         })
         this.loading = false
+        this.items = this.items.sort((a, b) => b.totalSpent - a.totalSpent)
       }, 1200)
     },
     makeItRightForTable(data) {
@@ -127,8 +128,8 @@ export default {
         buyFirst: this.$options.filters.dateThWithTime(data.first_visit),
         buyCurrent: this.$options.filters.dateThWithTime(data.last_visit),
         buyTotal: data.total_visits,
-        totalSpent: this.$options.filters.currency(data.total_spent),
-        totalPoints: data.total_points,
+        totalSpent: data.total_spent,
+        totalPoints: this.$options.filters.dateThWithTime(data.total_points),
       }
 
       this.items.push(obj)

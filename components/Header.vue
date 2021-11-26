@@ -65,24 +65,37 @@
                 <Logo v-show="!progress" />
               </v-btn>
             </template>
-            <v-btn dark small :disabled="progress" @click="goTo('refresh')">
+            <v-btn
+              color="blue-grey darken-1"
+              dark
+              small
+              :disabled="progress"
+              @click="goTo('refresh')"
+            >
               <v-icon left>mdi-database-refresh</v-icon> โหลดข้อมูลใหม่
             </v-btn>
             <v-btn
               v-for="(item, i) in items"
               v-show="showButton(item.value)"
               :key="i"
-              dark
               small
               :disabled="progress"
               :color="
-                item.nameRoute.includes($route.name) ? 'warning' : 'primary'
+                item.nameRoute.includes($route.name)
+                  ? 'warning'
+                  : 'blue-grey darken-1'
               "
               @click="goTo(item.to)"
             >
               <v-icon left>{{ item.icon }}</v-icon> {{ item.text }}
             </v-btn>
-            <v-btn dark small :disabled="progress" @click="goTo('sign-out')">
+            <v-btn
+              color="blue-grey darken-1"
+              dark
+              small
+              :disabled="progress"
+              @click="goTo('sign-out')"
+            >
               <v-icon left>mdi-logout</v-icon> ออกจากระบบ
             </v-btn>
           </v-speed-dial>
@@ -242,9 +255,13 @@ export default {
       }
     },
     async logout() {
-      await this.$auth.logout()
-      await this.$store.dispatch('clearState')
-      this.$refs.confirmDialog.dialog = false
+      try {
+        await this.$auth.logout()
+        await this.$store.dispatch('clearState')
+        this.$refs.confirmDialog.dialog = false
+      } catch (e) {
+        console.log(e)
+      }
     },
     showButton(value) {
       if (this.auth.loggedIn) {

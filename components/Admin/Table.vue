@@ -192,7 +192,7 @@
           item.diffPerGoal > 0 ? '+ ' : ''
         }}</span
         ><span :class="textColor(item.diffPerGoal)">{{
-          item.diffPerGoal | currency
+          item.diffPerGoal | comma(2)
         }}</span>
       </template>
       <template #[`item.diffPerYesterday`]="{ item }">
@@ -200,7 +200,7 @@
           item.diffPerYesterday > 0 ? '+' : ''
         }}</span
         ><span :class="textColor(item.diffPerYesterday)">{{
-          item.diffPerYesterday | currency
+          item.diffPerYesterday | comma(2)
         }}</span>
       </template>
       <!-- report-index -->
@@ -228,6 +228,12 @@
           @click="$emit('viewCustomer', item.advise_code)"
           ><v-icon left>mdi-eye</v-icon>{{ item.count }} คน</v-btn
         >
+      </template>
+      <template #[`item.sale`]="{ item }">
+        {{ item.sale | comma }}
+      </template>
+      <template #[`item.totalSpent`]="{ item }">
+        {{ item.totalSpent | comma(2) }}
       </template>
       <template #[`item.actions`]="{ item }">
         <v-btn

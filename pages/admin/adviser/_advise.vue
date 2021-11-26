@@ -57,7 +57,7 @@ export default {
           text: 'การใช้จ่ายในร้าน',
           align: 'start',
           sortable: false,
-          value: 'total_spent',
+          value: 'totalSpent',
         },
       ],
       items: [],
@@ -82,27 +82,40 @@ export default {
   watch: {
     '$route.params.advise': {
       handler(advise) {
-        console.log(advise)
-        console.log(this.auth)
-        // const checkRole = this.auth.user.role.includes('customer-under-another-advise')
-        // if(!checkRole){
+        const checkRole = this.auth.user.role.includes(
+          'customer-under-another-advise'
+        )
+        const checkIsAdvier = this.auth.user.userAffiliate === null
+        const adviser = this.findAdviser(advise)
+        let error
+        if (!checkRole) {
+          if (checkIsAdvier) {
+            error = new Error(`คุณไม่ได้เป็นตัวแทน`)
+            error.statusCode = 401
 
-        // }
+            throw error
+          }
+          const checkAdviseCodeParams =
+            this.auth.user.userAffiliate !== adviser.id
+
+          if (checkAdviseCodeParams) {
+            error = new Error(`คุณไม่สามารถดูรายชื่อลูกค้าของตัวแทนคนอื่นได้`)
+            error.statusCode = 401
+
+            throw error
+          }
+        }
       },
       deep: true,
       immediate: true,
     },
   },
   created() {
-    // const customersByAdvise = this.adminData.customers.filter(
-    //   (c) => c.detail.advise !== null
-    // )
-    // console.log(customersByAdvise)
     this.getData()
   },
 
   methods: {
-    getData(value) {
+    getData() {
       let customersByAdvise = this.adminData.customers.filter(
         (c) => c.detail.advise !== null
       )
@@ -120,15 +133,16 @@ export default {
           return c
         })
         this.loading = false
+        this.items = this.items.sort((a, b) => b.totalSpent - a.totalSpent)
       }, 1200)
     },
     makeItRightForTable(data) {
       // console.log(data)
       const obj = {
         advise_code: data.detail.advise,
-        full_name_adviser: this.findAdviser(data.detail.advise),
+        full_name_adviser: this.findAdviser(data.detail.advise).full_name,
         full_name_customer: data.name,
-        total_spent: data.total_spent,
+        totalSpent: data.total_spent,
       }
       this.items.push(obj)
       // console.log(data)
@@ -137,7 +151,7 @@ export default {
       const result = this.adminData.advisers.find(
         (a) => a.advise_code === adviseCode
       )
-      return result.full_name
+      return result
     },
   },
 }

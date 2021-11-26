@@ -1,0 +1,25 @@
+{
+    "incomeExpense": [
+        {
+            "id": "5a15e86c-8349-4dff-ab48-8e27fc79619a",
+            "date": "2021-11-10",
+            "income": 1000,
+            "expense": 1000,
+            "expenseDetail": "at post"
+        },
+        {
+            "id": "6df5bc8d-3fc9-4b02-ba0b-737998ae36ae",
+            "date": "2021-11-10",
+            "income": 1000,
+            "expense": 1000,
+            "expenseDetail": "at post"
+        },
+        {
+            "id": "85a86d24-ff63-4774-833e-9f8e1cafc954",
+            "date": "2021-11-10",
+            "income": 1000,
+            "expense": 1000,
+            "expenseDetail": "at post"
+        }
+    ]
+}
