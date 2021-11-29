@@ -233,7 +233,7 @@ export default {
       const cost = this.findCost(data.value)
       const profit = total - cost
       const obj = {
-        date: this.$options.filters.dateTh(data.dateName),
+        date: data.dateName,
         sales: this.$options.filters.comma(sales, 2),
         refund: this.$options.filters.comma(refund, 2),
         discount: this.$options.filters.comma(discount, 2),

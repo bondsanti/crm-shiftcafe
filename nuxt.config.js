@@ -30,12 +30,61 @@ export default {
       },
       // { name: 'format-detection', content: 'telephone=no' },
       { name: ' theme-color', content: colors.shades.black },
-      { property: ' og:image', content: '/logo.ico' },
-      { property: ' og:title', content: 'CRM SHIFT CAFÉ' },
       {
-        property: ' og:description',
+        property: 'og:image',
+        name: 'og:image',
+        content: 'https://app.shift-cafe.com/cover.jpg',
+      },
+      {
+        hid: 'og:url',
+        property: 'og:url',
+        content: 'https://app.shift-cafe.com',
+      },
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content: 'CRM SHIFT CAFÉ',
+      },
+      {
+        hid: 'og:description',
+        property: 'og:description',
         content:
           'shift café บริการ เครื่องดื่มและอาหาร ตั้งอยู่ที่ 89/1 ถนน สุขสวัสดิ์ 4 เมือง ลำปาง 52000 โทร 091-796-1816',
+      },
+      { property: 'og:image:width', content: '740' },
+      { property: 'og:image:height', content: '300' },
+      {
+        property: 'apple-mobile-web-app-capable',
+        name: 'apple-mobile-web-app-capable',
+        content: 'yes',
+      },
+      {
+        property: 'mobile-web-app-capable',
+        name: 'mobile-web-app-capable',
+        content: 'yes',
+      },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      {
+        hid: 'twitter:url',
+        name: 'twitter:url',
+        content: 'https://app.shift-cafe.com',
+      },
+      {
+        hid: 'twitter:title',
+        name: 'twitter:title',
+        content:
+          'shift café บริการ เครื่องดื่มและอาหาร ตั้งอยู่ที่ 89/1 ถนน สุขสวัสดิ์ 4 เมือง ลำปาง 52000 โทร 091-796-1816',
+      },
+      {
+        hid: 'twitter:description',
+        name: 'twitter:description',
+        content:
+          'shift café บริการ เครื่องดื่มและอาหาร ตั้งอยู่ที่ 89/1 ถนน สุขสวัสดิ์ 4 เมือง ลำปาง 52000 โทร 091-796-1816',
+      },
+      {
+        hid: 'twitter:image',
+        name: 'twitter:image',
+        content: 'https://app.shift-cafe.com/cover.jpg',
       },
     ],
     link: [

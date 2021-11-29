@@ -1,5 +1,19 @@
+import HandyStorage from 'handy-storage'
 import { loyversConnect } from '../help'
-export const getAllReceipt = async (req, res, next) => {
+const storage = new HandyStorage({
+  beautify: true,
+})
+export const getAllReceipt = (req, res, next) => {
+  try {
+    // pos devices
+    const connect = storage.connect('./server/receipts.json')
+    res.json(connect.state.receipts)
+  } catch (e) {
+    next(e)
+  }
+}
+
+export const getAllReceiptFormLoyverseServer = async (req, res, next) => {
   try {
     // pos devices
     const posDevices = await loyversConnect('GET', '/pos_devices')
@@ -23,6 +37,7 @@ export const getAllReceipt = async (req, res, next) => {
       )
       return obj
     })
+    setReceipt(receipts)
     res.json(receipts)
   } catch (e) {
     next(e)
@@ -37,4 +52,11 @@ const checkCursorInResult = async (url) => {
 const findPosDevicesName = (id, posDevices) => {
   const res = posDevices.find((p) => p.id === id)
   return res.name
+}
+
+const setReceipt = (value) => {
+  const connect = storage.connect('./server/receipts.json')
+  connect.state.receipts = value
+  connect.save()
+  // console.log('setReceipts')
 }

@@ -3,15 +3,31 @@
     <AdminTable
       :title="title"
       icon="mdi-account-cash"
-      btn
       show-date-input
-      target
-      excel-first-col
+      third-row
       :headers="headers"
-      :items="items2"
+      :items="items"
       :loading="loading"
       :time="time"
+      :disable-add-button="!auth.user.role.includes('add-income-expense')"
       @getDateRange="getData"
+      @addData="addData"
+      @formActions="manageData"
+    />
+    <AdminFormData
+      ref="formData"
+      :input-data="form"
+      :type="type"
+      :title="title"
+      show-date
+      show-detail
+      @sendData="receiveData"
+    />
+    <Alert ref="alert" :title="titleAlert" />
+    <ConfirmDialog
+      ref="confirmDialog"
+      :title="titleConfirm"
+      @confirm="deleteIncomeExpense"
     />
   </v-row>
 </template>
@@ -25,53 +41,75 @@ export default {
       title: 'รายรับ-รายจ่าย',
       headers: [
         {
-          text: 'ประเภท',
+          text: 'วันที่',
           align: 'start',
           sortable: false,
-          value: 'category',
+          value: 'date',
         },
         {
-          text: 'จำนวนที่ขายได้ทั้งหมด',
+          text: 'รายรับ',
           align: 'start',
           sortable: false,
-          value: 'total',
+          value: 'income',
         },
         {
-          text: 'จำนวนที่ขาย',
+          text: 'รายจ่าย',
           align: 'start',
           sortable: false,
-          value: 'sale',
+          value: 'expense',
         },
         {
-          text: 'จำนวนที่คืน',
+          text: 'รายละเอียดรายจ่าย',
           align: 'start',
           sortable: false,
-          value: 'refund',
+          value: 'expenseDetail',
         },
         {
-          text: 'จำนวนที่ยกเลิก',
+          text: 'คงเหลือ',
           align: 'start',
           sortable: false,
-          value: 'cancel',
+          value: 'balance',
+        },
+        {
+          text: 'กระบวนการ',
+          align: 'center',
+          sortable: false,
+          value: 'actions',
         },
       ],
       items: [],
-      items2: [],
+      type: 'add',
       loading: false,
       time: {
-        start: '2021-11-05',
-        end: '2021-11-30',
+        start: moment(),
+        end: moment(),
       },
-      itemsInReceipt: {
-        cancel: [],
-        refund: [],
-        sale: [],
+      interval: null,
+      form: {
+        input: [
+          {
+            label: 'รายรับ',
+            value: '',
+            icon: 'mdi-cash-plus',
+            rules: [(v) => !!v || 'กรุณากรอกรายรับ'],
+          },
+          {
+            label: 'รายจ่าย',
+            value: '',
+            icon: 'mdi-cash-minus',
+            rules: [(v) => !!v || 'กรุณากรอกรายจ่าย'],
+          },
+        ],
+        select: [],
       },
+      titleAlert: '',
+      idForEdit: null,
+      titleConfirm: '',
     }
   },
   head() {
     return {
-      title: 'ยอดขายแยกตามหมวดหมู่',
+      title: 'รายรับ-รายจ่าย',
     }
   },
   computed: {
@@ -83,148 +121,179 @@ export default {
     },
   },
   created() {
-    if (this.adminData.receipts.length !== 0) {
-      const end = this.adminData.receipts.length - 1
-      this.time.start = moment(
-        this.adminData.receipts[end].receipt_date
-      ).format('YYYY-MM-DD')
-      this.time.end = moment(this.adminData.receipts[0].receipt_date).format(
+    // console.log(this.adminData.incomeExpense)
+    if (this.adminData.incomeExpense.length !== 0) {
+      const end = this.adminData.incomeExpense.length - 1
+      this.time.start = moment(this.adminData.incomeExpense[0].date).format(
+        'YYYY-MM-DD'
+      )
+      this.time.end = moment(this.adminData.incomeExpense[end].date).format(
         'YYYY-MM-DD'
       )
     }
     // this.filterReceipts()
   },
+  beforeDestroy() {
+    clearTimeout(this.interval)
+  },
   methods: {
     getData(obj) {
-      this.items = []
-      this.items2 = []
       this.loading = true
+      this.items = []
       const { dayList } = obj
-      let dates = []
+      let data = []
       dayList.reverse().map((d) => {
-        const res = this.filterReceiptsByDate(d)
-        dates = [...dates, ...res]
+        const res = this.filterIncomeExpenseByDate(d)
+        data = [...data, ...res]
         return res
       })
-      // console.log(dates)
-      this.filterReceipts(dates)
-      // console.log(this.productItems)
-      this.adminData.categories.map((d) => {
-        this.makeItRightForTable(d)
-        return d
-      })
-
-      // เรียงจากมากไปน้อย
-      const itemsSort = this.items.sort((a, b) => b.sale - a.sale)
-      setTimeout(() => {
-        // this.calculate()
-        this.items2 = itemsSort
+      // console.log(data)
+      this.interval = setTimeout(() => {
+        data.map((d) => this.makeItRightForTable(d))
         this.loading = false
-      }, 1200)
+      }, 1000)
     },
-    filterReceipts(receipts) {
-      let itemCancel = []
-      let itemRefund = []
-      let itemSale = []
-      const cancel = receipts.filter((r) => r.cancelled_at !== null)
-      const refund = receipts.filter(
-        (r) => r.cancelled_at === null && r.receipt_type === 'REFUND'
-      )
-      const sale = receipts.filter(
-        (r) => r.cancelled_at === null && r.receipt_type === 'SALE'
-      )
-      // ----
-      cancel.map((c) => {
-        itemCancel = [...itemCancel, ...c.line_items]
-        return c
-      })
-      refund.map((c) => {
-        itemRefund = [...itemRefund, ...c.line_items]
-        return c
-      })
-      sale.map((c) => {
-        itemSale = [...itemSale, ...c.line_items]
-        return c
-      })
-      // ----
-      itemCancel = itemCancel.map((i) => {
-        return { ...i, category_id: this.findCategoryIdInItems(i.item_id) }
-      })
-      itemRefund = itemRefund.map((i) => {
-        return { ...i, category_id: this.findCategoryIdInItems(i.item_id) }
-      })
-      itemSale = itemSale.map((i) => {
-        return { ...i, category_id: this.findCategoryIdInItems(i.item_id) }
-      })
-      // console.log(itemCancel)
-      // console.log(itemRefund)
-      // console.log(itemSale)
-      this.itemsInReceipt.cancel = itemCancel
-      this.itemsInReceipt.refund = itemRefund
-      this.itemsInReceipt.sale = itemSale
-    },
-    filterReceiptsByDate(date) {
+    filterIncomeExpenseByDate(date) {
       // console.log(new Date(date))
-      const result = this.adminData.receipts.filter((r) => {
+      const result = this.adminData.incomeExpense.filter((r) => {
         return (
-          new Date(r.receipt_date).getDate() === new Date(date).getDate() &&
-          new Date(r.receipt_date).getMonth() === new Date(date).getMonth() &&
-          new Date(r.receipt_date).getFullYear() ===
-            new Date(date).getFullYear()
+          new Date(r.date).getDate() === new Date(date).getDate() &&
+          new Date(r.date).getMonth() === new Date(date).getMonth() &&
+          new Date(r.date).getFullYear() === new Date(date).getFullYear()
         )
       })
       return result
     },
-    findCategoryIdInItems(id) {
-      // console.log(id)
-      const res = this.adminData.items.find((i) => i.id === id)
-      // console.log(res)
-      return res ? res.category_id : null
+    initialForm() {
+      this.idForEdit = null
+      this.form.input[0].value = ''
+      this.form.input[1].value = ''
+      this.$refs.formData.date = new Date(
+        Date.now() - new Date().getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .substr(0, 10)
+      this.$refs.formData.detail = ''
     },
-    makeItRightForTable(data) {
-      let countSale = 0
-      const sale = this.filterItemsSaleByCategory(data.id)
-      sale.map((s) => (countSale += s.quantity))
-
-      let countRefund = 0
-      const refund = this.filterItemsRefundByCategory(data.id)
-      refund.map((r) => (countRefund += r.quantity))
-
-      let countCancel = 0
-      const cancel = this.filterItemsCancelByCategory(data.id)
-      cancel.map((c) => (countCancel += c.quantity))
-      // console.log(cancel)
-      const totaly = countCancel + countRefund + countSale
+    makeItRightForTable(value) {
+      this.items.push({
+        ...value,
+        disableEdit: !this.auth.user.role.includes('edit-income-expense'),
+        disableDelete: !this.auth.user.role.includes('delete-income-expense'),
+      })
+    },
+    receiveData(value) {
+      // console.log(this.type)
       const obj = {
-        category: data.name,
-        total: totaly,
-        sale: countSale,
-        refund: countRefund,
-        cancel: countCancel,
+        date: value.date,
+        income: value.input[0].value,
+        expense: value.input[1].value,
+        balance: value.input[0].value - value.input[1].value,
+        expenseDetail: value.detail,
       }
+      if (this.type === 'add') {
+        this.createIncomeExpense(obj)
+      } else if (this.type === 'edit') {
+        this.updateIncomeExpense(obj)
+      }
+    },
+    manageData(obj) {
+      // console.log(obj)
+      this.type = obj.type
+      this.idForEdit = obj.data.id
+      if (obj.type === 'edit') {
+        this.form.input[0].value = obj.data.income
+        this.form.input[1].value = obj.data.expense
+        this.$refs.formData.date = obj.data.date
+        this.$refs.formData.detail = obj.data.expenseDetail
+        this.$refs.formData.drawer = true
+      } else if (obj.type === 'delete') {
+        this.titleConfirm = 'คุณต้องการลบรายรับ-รายจ่ายหรือไม่ ?'
+        this.$refs.confirmDialog.dialog = true
+      }
+    },
+    addData() {
+      this.type = 'add'
+      this.initialForm()
+      this.$refs.formData.drawer = true
+    },
+    showAlert(msg) {
+      this.titleAlert = msg
+      this.$refs.alert.dialog = true
+      setTimeout(() => {
+        this.$refs.alert.dialog = false
+      }, 1500)
+    },
+    async createIncomeExpense(obj) {
+      // console.log(obj)
+      try {
+        const check = this.auth.user.role.includes('add-income-expense')
+        if (!check) {
+          this.throwError('คุณไม่มีสิทธิ์เพิ่มข้อมูลรายรับ-รายจ่าย', 401)
+        }
+        const res = await this.$axios.$post('/income-expense', obj)
+        await this.$store.dispatch('fetchIncomeExpense')
 
-      this.items.push(obj)
+        this.items.unshift({
+          ...res,
+          disableEdit: !this.auth.user.role.includes('edit-income-expense'),
+          disableDelete: !this.auth.user.role.includes('delete-income-expense'),
+        })
+        this.initialForm()
+        this.$refs.formData.drawer = false
+        this.showAlert('เพิ่มข้อมูลรายรับ-รายจ่ายสำเร็จ')
+      } catch (e) {
+        console.log(e)
+      }
     },
-    filterItemsSaleByCategory(cateId) {
-      // console.log(this.itemsInReceipt.sale)
-      const res = this.itemsInReceipt.sale.filter(
-        (s) => s.category_id === cateId
-      )
-      return res
+    async updateIncomeExpense(obj) {
+      // console.log(obj)
+      try {
+        const check = this.auth.user.role.includes('edit-income-expense')
+        if (!check) {
+          this.throwError('คุณไม่มีสิทธิ์แก้ไขข้อมูลรายรับ-รายจ่าย', 401)
+        }
+        const index = this.items.findIndex((i) => i.id === this.idForEdit)
+        const res = await this.$axios.$put(
+          '/income-expense/' + this.idForEdit,
+          obj
+        )
+        await this.$store.dispatch('fetchIncomeExpense')
+
+        this.items[index].date = res.date
+        this.items[index].income = res.income
+        this.items[index].expense = res.expense
+        this.items[index].expenseDetail = res.expenseDetail
+        this.items[index].balance = res.balance
+        this.initialForm()
+        this.$refs.formData.drawer = false
+        this.showAlert('แก้ไขข้อมูลรายรับ-รายจ่ายสำเร็จ')
+      } catch (e) {
+        console.log(e)
+      }
     },
-    filterItemsRefundByCategory(cateId) {
-      // console.log(this.itemsInReceipt.sale)
-      const res = this.itemsInReceipt.refund.filter(
-        (s) => s.category_id === cateId
-      )
-      return res
+    async deleteIncomeExpense() {
+      try {
+        const check = this.auth.user.role.includes('delete-income-expense')
+        if (!check) {
+          this.throwError('คุณไม่มีสิทธิ์ลบข้อมูลรายรับ-รายจ่าย', 401)
+        }
+        const index = this.items.findIndex((i) => i.id === this.idForEdit)
+        await this.$axios.$delete('/income-expense/' + this.idForEdit)
+        await this.$store.dispatch('fetchIncomeExpense')
+        this.items.splice(index, 1)
+        this.initialForm()
+        this.$refs.confirmDialog.dialog = false
+        this.showAlert('ลบข้อมูลรายรับ-รายจ่ายสำเร็จ')
+      } catch (e) {
+        console.log(e)
+      }
     },
-    filterItemsCancelByCategory(cateId) {
-      // console.log(this.itemsInReceipt.sale)
-      const res = this.itemsInReceipt.cancel.filter(
-        (s) => s.category_id === cateId
-      )
-      return res
+    throwError(msg, code) {
+      const error = new Error(msg)
+      error.statusCode = code
+
+      throw error
     },
   },
 }

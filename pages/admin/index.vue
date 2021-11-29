@@ -94,10 +94,9 @@ export default {
         this.progress = true
         this.valid = false
         this.showAlert(res.data.message)
-        this.headerTitle = 'กำลังโหลดข้อมูล'
+        this.headerTitle = 'กำลังโหลดข้อมูลใบเสร็จรับเงิน'
         this.icon = 'mdi-account-convert'
         await this.$store.dispatch('fetchReceipts')
-        this.headerTitle = 'กำลังโหลดข้อมูลใบเสร็จรับเงิน'
         await this.$store.dispatch('fetchCustomers')
         this.headerTitle = 'กำลังโหลดข้อมูลลูกค้า'
         await this.$store.dispatch('fetchEmployees')
@@ -106,6 +105,7 @@ export default {
         await this.$store.dispatch('fetchCategories')
         await this.$store.dispatch('fetchAdvisers')
         await this.$store.dispatch('fetchUsers')
+        await this.$store.dispatch('fetchIncomeExpense')
         // this.$toast.success(res.data.message)
         // console.log(res.data)
         this.progress = false

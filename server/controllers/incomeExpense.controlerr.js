@@ -15,18 +15,19 @@ export const allIcomeExpense = (req, res, next) => {
 export const createIncomeExpense = async (req, res, next) => {
   try {
     const connect = storage.connect('./server/incomeExpense.json')
-    const { date, income, expense, expenseDetail } = req.body
+    const { date, income, expense, balance, expenseDetail } = req.body
     const { incomeExpense } = connect.state
     const obj = {
       id: await randomId(),
       date,
       income,
       expense,
+      balance,
       expenseDetail,
     }
     incomeExpense.push(obj)
     connect.save()
-    res.json(connect.state.incomeExpense)
+    res.json(obj)
   } catch (e) {
     next(e)
   }
@@ -36,15 +37,16 @@ export const updateIncomeExpense = async (req, res, next) => {
   try {
     const connect = storage.connect('./server/incomeExpense.json')
     const { id } = req.params
-    const { date, income, expense, expenseDetail } = req.body
+    const { date, income, expense, balance, expenseDetail } = req.body
     const { incomeExpense } = connect.state
     const index = await findValueById(incomeExpense, id)
     incomeExpense[index].date = date
     incomeExpense[index].income = income
     incomeExpense[index].expense = expense
+    incomeExpense[index].balance = balance
     incomeExpense[index].expenseDetail = expenseDetail
     connect.save()
-    res.json(connect.state.incomeExpense)
+    res.json(connect.state.incomeExpense[index])
   } catch (e) {
     next(e)
   }

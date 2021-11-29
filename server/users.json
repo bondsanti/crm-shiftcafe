@@ -1,47 +1,72 @@
 {
-  "users": [
-    {
-      "id": "21814b35-d9a8-46cc-915e-f528f0bb3339",
-      "name": "super admin",
-      "email": "super_admin@mail.com",
-      "username": "super_admin",
-      "password": "$2b$10$yO1QjgjurVmlQ/IVf1n8TeOTKVsPqZw3DaVIyErVJVZHPST596L8e",
-      "role": [
-        "report",
-        "item",
-        "customer",
-        "customer-under-another-advise",
-        "adviser",
-        "user",
-        "add-adviser",
-        "edit-adviser",
-        "delete-adviser",
-        "add-user",
-        "edit-user",
-        "delete-user",
-        "add-income-expense",
-        "edit-income-expense",
-        "delete-income-expense"
-      ],
-      "userAffiliate": null
-    },
-    {
-      "id": "e2d4cc60-9afb-4b5a-9e58-582b28dc4b3c",
-      "name": "testy",
-      "email": "testy@mail.com",
-      "username": "test",
-      "password": "$2b$10$CS0rXcov6fYDoBn..Wvvl.HiLYCxf/hOplF3FITve2NgViok0XNGK",
-      "role": ["report"],
-      "userAffiliate": "29b7950c-1c9f-4219-9e5b-974dd0d84d7f"
-    },
-    {
-      "id": "fae32e8d-9396-4cbd-8a9e-6dec434b5fd1",
-      "name": "robert",
-      "email": "robert@mail.com",
-      "username": "robert",
-      "password": "$2b$10$LlnXJkx.awQ6xbIsZ6eIKOlACUR44FHKaji18bWy2R/v1C9dG6shy",
-      "role": ["report", "adviser", "customer", "item", "user"],
-      "userAffiliate": "29b7950c-1c9f-4219-9e5b-674dd9d73d6g"
-    }
-  ]
+    "users": [
+        {
+            "id": "21814b35-d9a8-46cc-915e-f528f0bb3339",
+            "name": "super admin",
+            "email": "super_admin@mail.com",
+            "username": "super_admin",
+            "password": "$2b$10$yO1QjgjurVmlQ/IVf1n8TeOTKVsPqZw3DaVIyErVJVZHPST596L8e",
+            "role": [
+                "report",
+                "item",
+                "customer",
+                "customer-under-another-advise",
+                "adviser",
+                "user",
+                "add-adviser",
+                "edit-adviser",
+                "delete-adviser",
+                "add-user",
+                "edit-user",
+                "delete-user",
+                "add-income-expense",
+                "edit-income-expense",
+                "delete-income-expense"
+            ],
+            "userAffiliate": null
+        },
+        {
+            "id": "e2d4cc60-9afb-4b5a-9e58-582b28dc4b3c",
+            "name": "testy",
+            "email": "testy@mail.com",
+            "username": "test",
+            "password": "$2b$10$CS0rXcov6fYDoBn..Wvvl.HiLYCxf/hOplF3FITve2NgViok0XNGK",
+            "role": [ "report" ],
+            "userAffiliate": "29b7950c-1c9f-4219-9e5b-974dd0d84d7f"
+        },
+        {
+            "id": "fae32e8d-9396-4cbd-8a9e-6dec434b5fd1",
+            "name": "robert",
+            "email": "robert@mail.com",
+            "username": "robert",
+            "password": "$2b$10$LlnXJkx.awQ6xbIsZ6eIKOlACUR44FHKaji18bWy2R/v1C9dG6shy",
+            "role": [
+                "report",
+                "adviser",
+                "customer",
+                "item",
+                "user",
+                "add-user"
+            ],
+            "userAffiliate": "29b7950c-1c9f-4219-9e5b-674dd9d73d6g"
+        },
+        {
+            "id": "4ab20f5e-57d1-4e92-abd4-19e7d5100ded",
+            "name": "t1",
+            "email": "t1@mail.com",
+            "username": "t1",
+            "password": "$2b$10$qPCAowzcIjmeNwfdY3jt2u/5mrS92lCvu8ZdCQFY4ecxnFu.hpYNi",
+            "role": [ "report" ],
+            "userAffiliate": null
+        },
+        {
+            "id": "769155ba-d930-41a5-baa2-ef0780b61d1e",
+            "name": "t2",
+            "email": "t2@email.com",
+            "username": "t2",
+            "password": "$2b$10$YxVkCFh8qEGK8fOZRQ/CseOjxauhEz2c2Ec5cqDCxtAKMa/7/WoHu",
+            "role": [ "report" ],
+            "userAffiliate": null
+        }
+    ]
 }

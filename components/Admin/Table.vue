@@ -186,6 +186,24 @@
           ไม่มีข้อมูล
         </v-alert>
       </template>
+      <!-- income-expense -->
+      <template #[`item.date`]="{ item }">
+        {{ item.date | dateTh }}
+      </template>
+      <template #[`item.dateTime`]="{ item }">
+        {{ item.dateTime | dateThWithTime }}
+      </template>
+      <template #[`item.income`]="{ item }">
+        {{ item.income | comma(2) }}
+      </template>
+      <template #[`item.expense`]="{ item }">
+        {{ item.expense | comma(2) }}
+      </template>
+      <template #[`item.balance`]="{ item }">
+        <span :class="`${item.balance > 0 ? 'green' : 'red'}--text`">
+          {{ item.balance | comma(2) }}
+        </span>
+      </template>
       <!-- report-index -->
       <template #[`item.diffPerGoal`]="{ item }">
         <span :class="`${item.diffPerGoal > 0 ? 'green' : 'red'}--text`">{{
