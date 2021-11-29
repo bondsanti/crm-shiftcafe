@@ -29,68 +29,100 @@ export default {
     })
   },
   async fetchReceipts({ commit }) {
-    const res = await this.$axios.$get('/receipt')
-    return new Promise((resolve, reject) => {
-      localStorage.setItem('receipts', JSON.stringify(res))
-      commit('setReceipts', res)
-      resolve('ok')
-    })
+    try {
+      const res = await this.$axios.$get('/receipt')
+      return new Promise((resolve, reject) => {
+        localStorage.setItem('receipts', JSON.stringify(res))
+        commit('setReceipts', res)
+        resolve('ok')
+      })
+    } catch (e) {
+      console.error(e)
+    }
   },
   async fetchCustomers({ commit }) {
-    const res = await this.$axios.$get('/customer/admin')
-    return new Promise((resolve, reject) => {
-      localStorage.setItem('customers', JSON.stringify(res))
-      commit('setCustomers', res)
-      resolve('ok')
-    })
+    try {
+      const res = await this.$axios.$get('/customer/admin')
+      return new Promise((resolve, reject) => {
+        localStorage.setItem('customers', JSON.stringify(res))
+        commit('setCustomers', res)
+        resolve('ok')
+      })
+    } catch (e) {
+      console.error(e)
+    }
   },
   async fetchEmployees({ commit }) {
-    const res = await this.$axios.$get('/customer/employee')
-    return new Promise((resolve, reject) => {
-      localStorage.setItem('employees', JSON.stringify(res))
-      commit('setEmployees', res)
-      resolve('ok')
-    })
+    try {
+      const res = await this.$axios.$get('/customer/employee')
+      return new Promise((resolve, reject) => {
+        localStorage.setItem('employees', JSON.stringify(res))
+        commit('setEmployees', res)
+        resolve('ok')
+      })
+    } catch (e) {
+      console.error(e)
+    }
   },
   async fetchItems({ commit }) {
-    const res = await this.$axios.$get('/item')
-    return new Promise((resolve, reject) => {
-      localStorage.setItem('items', JSON.stringify(res))
-      commit('setItems', res)
-      resolve('ok')
-    })
+    try {
+      const res = await this.$axios.$get('/item')
+      return new Promise((resolve, reject) => {
+        localStorage.setItem('items', JSON.stringify(res))
+        commit('setItems', res)
+        resolve('ok')
+      })
+    } catch (e) {
+      console.error(e)
+    }
   },
   async fetchCategories({ commit }) {
-    const res = await this.$axios.$get('/item/category')
-    return new Promise((resolve, reject) => {
-      localStorage.setItem('categories', JSON.stringify(res))
-      commit('setCategories', res)
-      resolve('ok')
-    })
+    try {
+      const res = await this.$axios.$get('/item/category')
+      return new Promise((resolve, reject) => {
+        localStorage.setItem('categories', JSON.stringify(res))
+        commit('setCategories', res)
+        resolve('ok')
+      })
+    } catch (e) {
+      console.error(e)
+    }
   },
   async fetchAdvisers({ commit }) {
-    const res = await this.$axios.$get('/adviser')
-    return new Promise((resolve, reject) => {
-      localStorage.setItem('advisers', JSON.stringify(res))
-      commit('setAdvisers', res)
-      resolve('ok')
-    })
+    try {
+      const res = await this.$axios.$get('/adviser')
+      return new Promise((resolve, reject) => {
+        localStorage.setItem('advisers', JSON.stringify(res))
+        commit('setAdvisers', res)
+        resolve('ok')
+      })
+    } catch (e) {
+      console.error(e)
+    }
   },
   async fetchUsers({ commit }) {
-    const res = await this.$axios.$get('/user')
-    return new Promise((resolve, reject) => {
-      localStorage.setItem('users', JSON.stringify(res))
-      commit('setUsers', res)
-      resolve('ok')
-    })
+    try {
+      const res = await this.$axios.$get('/user')
+      return new Promise((resolve, reject) => {
+        localStorage.setItem('users', JSON.stringify(res))
+        commit('setUsers', res)
+        resolve('ok')
+      })
+    } catch (e) {
+      console.error(e)
+    }
   },
   async fetchIncomeExpense({ commit }) {
-    const res = await this.$axios.$get('/income-expense')
-    // console.log(res)
-    return new Promise((resolve, reject) => {
-      localStorage.setItem('incomeExpense', JSON.stringify(res))
-      commit('setIncomeExpense', res)
-      resolve('ok')
-    })
+    try {
+      const res = await this.$axios.$get('/income-expense')
+      // console.log(res)
+      return new Promise((resolve, reject) => {
+        localStorage.setItem('incomeExpense', JSON.stringify(res))
+        commit('setIncomeExpense', res)
+        resolve('ok')
+      })
+    } catch (e) {
+      console.error(e)
+    }
   },
 }
