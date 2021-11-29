@@ -125,4 +125,45 @@ export default {
       console.error(e)
     }
   },
+  async fetchAllData({ commit }) {
+    try {
+      const receipts = await this.$axios.$get('/receipt')
+      const customers = await this.$axios.$get('/customer/admin')
+      const employees = await this.$axios.$get('/customer/employee')
+      const items = await this.$axios.$get('/item')
+      const categories = await this.$axios.$get('/item/category')
+      const advisers = await this.$axios.$get('/adviser')
+      const users = await this.$axios.$get('/user')
+      const incomeExpense = await this.$axios.$get('/income-expense')
+      return new Promise((resolve, reject) => {
+        localStorage.setItem('receipts', JSON.stringify(receipts))
+        commit('setReceipts', receipts)
+
+        localStorage.setItem('customers', JSON.stringify(customers))
+        commit('setCustomers', customers)
+
+        localStorage.setItem('employees', JSON.stringify(employees))
+        commit('setEmployees', employees)
+
+        localStorage.setItem('items', JSON.stringify(items))
+        commit('setItems', items)
+
+        localStorage.setItem('categories', JSON.stringify(categories))
+        commit('setCategories', categories)
+
+        localStorage.setItem('advisers', JSON.stringify(advisers))
+        commit('setAdvisers', advisers)
+
+        localStorage.setItem('users', JSON.stringify(users))
+        commit('setUsers', users)
+
+        localStorage.setItem('incomeExpense', JSON.stringify(incomeExpense))
+        commit('setIncomeExpense', incomeExpense)
+
+        resolve('ok')
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  },
 }
