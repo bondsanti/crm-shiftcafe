@@ -94,25 +94,25 @@ export default {
         this.progress = true
         this.valid = false
         this.showAlert(res.data.message)
-        this.headerTitle = 'กำลังโหลดข้อมูลใบเสร็จรับเงิน'
+        this.headerTitle = 'กำลังโหลดข้อมูล'
         this.icon = 'mdi-account-convert'
-        await this.$store.dispatch('fetchReceipts')
-        await this.$store.dispatch('fetchCustomers')
-        this.headerTitle = 'กำลังโหลดข้อมูลลูกค้า'
-        await this.$store.dispatch('fetchEmployees')
-        await this.$store.dispatch('fetchItems')
-        this.headerTitle = 'กำลังโหลดข้อมูลสินค้า'
-        await this.$store.dispatch('fetchCategories')
-        await this.$store.dispatch('fetchAdvisers')
-        await this.$store.dispatch('fetchUsers')
-        await this.$store.dispatch('fetchIncomeExpense')
-        // this.$toast.success(res.data.message)
-        // console.log(res.data)
+        await this.$store.dispatch('fetchAllData')
+        // await this.$store.dispatch('fetchReceipts')
+        // await this.$store.dispatch('fetchCustomers')
+        // this.headerTitle = 'กำลังโหลดข้อมูลลูกค้า'
+        // await this.$store.dispatch('fetchEmployees')
+        // await this.$store.dispatch('fetchItems')
+        // this.headerTitle = 'กำลังโหลดข้อมูลสินค้า'
+        // await this.$store.dispatch('fetchCategories')
+        // await this.$store.dispatch('fetchAdvisers')
+        // await this.$store.dispatch('fetchUsers')
+        // await this.$store.dispatch('fetchIncomeExpense')
+
         this.progress = false
         this.headerTitle = 'โหลดข้อมูลเรียบร้อย'
         this.icon = 'mdi-account-lock'
 
-        this.$router.push({ path: '/admin/report', redirect: 'actualRoute' })
+        this.$router.push('/admin/report')
       } catch (e) {
         this.btnLoading = false
         // this.$toast.error(e.response.data.error.message)
