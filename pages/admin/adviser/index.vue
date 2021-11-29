@@ -253,7 +253,11 @@ export default {
       try {
         const res = await this.$axios.$post('/adviser', obj)
         await this.$store.dispatch('fetchAdvisers')
-        this.items.push(res)
+        this.items.push({
+          ...res,
+          disableEdit: !this.auth.user.role.includes('edit-adviser'),
+          disableDelete: !this.auth.user.role.includes('delete-adviser'),
+        })
         this.initializeForm()
         this.$refs.formData.drawer = false
         this.showAlert('เพิ่มข้อมูลตัวแทนสำเร็จ')

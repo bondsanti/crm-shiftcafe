@@ -330,7 +330,11 @@ export default {
         const res = await this.$axios.$post('/user', obj)
         await this.$store.dispatch('fetchUsers')
         this.showAlert('เพิ่มข้อมูลผู้ใช้สำเร็จ')
-        this.items.push(res)
+        this.items.push({
+          ...res,
+          disableEdit: !this.auth.user.role.includes('edit-user'),
+          disableDelete: !this.auth.user.role.includes('delete-user'),
+        })
         this.initializeForm()
         this.$refs.formData.drawer = false
       } catch (e) {

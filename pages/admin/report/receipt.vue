@@ -53,7 +53,7 @@ export default {
         text: 'วันที่',
         align: 'start',
         sortable: false,
-        value: 'date',
+        value: 'dateTime',
       },
       { text: 'พนักงาน', align: 'start', sortable: false, value: 'employee' },
       { text: 'ลูกค้า', align: 'start', sortable: false, value: 'customer' },
@@ -131,6 +131,7 @@ export default {
       start: '2021-11-05',
       end: '2021-11-30',
     },
+    timeout: null,
   }),
   head() {
     return {
@@ -148,8 +149,12 @@ export default {
       )
     }
   },
+  beforeDestroy() {
+    clearTimeout(this.timeout)
+  },
   methods: {
     getDateRange(obj) {
+      clearTimeout(this.timeout)
       this.items = []
       this.items2 = []
       this.loading = true
@@ -163,7 +168,7 @@ export default {
       // หน่วงเวลา
       // console.log(dates)
 
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         dates.map((d) => {
           this.makeItRightForTable(d)
           return d
@@ -200,7 +205,7 @@ export default {
     makeItRightForTable(data) {
       const obj = {
         no: data.receipt_number,
-        date: this.$options.filters.dateThWithTime(data.receipt_date),
+        dateTime: data.receipt_date,
         employee: this.findEmployee(data.employee_id),
         customer: this.findCustomer(data.customer_id).name,
         type: this.changeTypeWord(data.receipt_type, data.cancelled_at),

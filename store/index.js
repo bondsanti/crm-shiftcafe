@@ -14,6 +14,7 @@ export const state = () => ({
     categories: [],
     advisers: [],
     users: [],
+    incomeExpense: [],
   },
 })
 

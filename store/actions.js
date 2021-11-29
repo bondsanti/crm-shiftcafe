@@ -22,6 +22,9 @@ export default {
       localStorage.setItem('users', JSON.stringify([]))
       commit('setUsers', [])
 
+      localStorage.setItem('incomeExpense', JSON.stringify([]))
+      commit('setIncomeExpense', [])
+
       resolve('ok')
     })
   },
@@ -78,6 +81,15 @@ export default {
     return new Promise((resolve, reject) => {
       localStorage.setItem('users', JSON.stringify(res))
       commit('setUsers', res)
+      resolve('ok')
+    })
+  },
+  async fetchIncomeExpense({ commit }) {
+    const res = await this.$axios.$get('/income-expense')
+    // console.log(res)
+    return new Promise((resolve, reject) => {
+      localStorage.setItem('incomeExpense', JSON.stringify(res))
+      commit('setIncomeExpense', res)
       resolve('ok')
     })
   },
