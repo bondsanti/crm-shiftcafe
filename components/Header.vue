@@ -219,18 +219,22 @@ export default {
         this.$refs.confirmDialog.dialog = true
         // await this.$auth.logout()
       } else if (to === 'refresh') {
-        this.progress = true
-        await this.$axios.$get('/receipt/loyverse')
-        await this.$store.dispatch('fetchReceipts')
-        await this.$store.dispatch('fetchCustomers')
-        await this.$store.dispatch('fetchEmployees')
-        await this.$store.dispatch('fetchItems')
-        await this.$store.dispatch('fetchCategories')
-        await this.$store.dispatch('fetchAdvisers')
-        await this.$store.dispatch('fetchUsers')
-        await this.$store.dispatch('fetchIncomeExpense')
-        this.progress = false
-        window.location.reload()
+        try {
+          this.progress = true
+          await this.$axios.$get('/receipt/loyverse')
+          await this.$store.dispatch('fetchReceipts')
+          await this.$store.dispatch('fetchCustomers')
+          await this.$store.dispatch('fetchEmployees')
+          await this.$store.dispatch('fetchItems')
+          await this.$store.dispatch('fetchCategories')
+          await this.$store.dispatch('fetchAdvisers')
+          await this.$store.dispatch('fetchUsers')
+          await this.$store.dispatch('fetchIncomeExpense')
+          this.progress = false
+          window.location.reload()
+        } catch (e) {
+          console.error(e)
+        }
       } else {
         this.$router.push(to)
       }
