@@ -21,10 +21,10 @@ import moment from 'moment'
 export default {
   middleware: ['requireSignIn', 'refreshData'],
   props: {
-    allReceipts: {
-      type: Array,
-      default: () => [],
-    },
+    // allReceipts: {
+    //   type: Array,
+    //   default: () => [],
+    // },
   },
 
   data: () => ({
@@ -124,6 +124,11 @@ export default {
     return {
       title: 'สรุปยอดขาย',
     }
+  },
+  computed: {
+    allReceipts() {
+      return this.$store.state.adminData.receipts
+    },
   },
   created() {
     // console.log(this.allReceipts)
