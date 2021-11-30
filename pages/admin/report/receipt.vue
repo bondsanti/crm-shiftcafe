@@ -27,18 +27,18 @@ import moment from 'moment'
 export default {
   middleware: ['requireSignIn', 'refreshData'],
   props: {
-    allReceipts: {
-      type: Array,
-      default: () => [],
-    },
-    customers: {
-      type: Array,
-      default: () => [],
-    },
-    employees: {
-      type: Array,
-      default: () => [],
-    },
+    // allReceipts: {
+    //   type: Array,
+    //   default: () => [],
+    // },
+    // customers: {
+    //   type: Array,
+    //   default: () => [],
+    // },
+    // employees: {
+    //   type: Array,
+    //   default: () => [],
+    // },
   },
 
   data: () => ({
@@ -137,6 +137,17 @@ export default {
     return {
       title: 'ใบเสร็จรับเงิน',
     }
+  },
+  computed: {
+    allReceipts() {
+      return this.$store.state.adminData.receipts
+    },
+    customers() {
+      return this.$store.state.adminData.customers
+    },
+    employees() {
+      return this.$store.state.adminData.employees
+    },
   },
   created() {
     if (this.allReceipts.length !== 0) {

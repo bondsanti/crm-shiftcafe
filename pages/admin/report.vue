@@ -48,11 +48,12 @@
         />
       </v-col>
     </v-row>
-    <nuxt-child
+    <!-- <nuxt-child
       :all-receipts="adminData.receipts"
       :customers="adminData.customers"
       :employees="adminData.employees"
-    ></nuxt-child>
+    ></nuxt-child> -->
+    <nuxt-child></nuxt-child>
   </div>
 </template>
 <script>
@@ -75,9 +76,9 @@ export default {
     return user.role.includes('report')
   },
   computed: {
-    adminData() {
-      return this.$store.state.adminData
-    },
+    // adminData() {
+    //   return this.$store.state.adminData
+    // },
     auth() {
       return this.$store.state.auth
     },
