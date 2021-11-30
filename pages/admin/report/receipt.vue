@@ -150,14 +150,16 @@ export default {
     },
   },
   created() {
-    if (this.allReceipts.length !== 0) {
-      const end = this.allReceipts.length - 1
-      this.time.start = moment(this.allReceipts[end].receipt_date).format(
-        'YYYY-MM-DD'
-      )
-      this.time.end = moment(this.allReceipts[0].receipt_date).format(
-        'YYYY-MM-DD'
-      )
+    if (this.allReceipts) {
+      if (this.allReceipts.length !== 0) {
+        const end = this.allReceipts.length - 1
+        this.time.start = moment(this.allReceipts[end].receipt_date).format(
+          'YYYY-MM-DD'
+        )
+        this.time.end = moment(this.allReceipts[0].receipt_date).format(
+          'YYYY-MM-DD'
+        )
+      }
     }
   },
   beforeDestroy() {
@@ -203,15 +205,19 @@ export default {
     },
     filterReceiptsByDate(date) {
       // console.log(new Date(date))
-      const result = this.allReceipts.filter((r) => {
-        return (
-          new Date(r.receipt_date).getDate() === new Date(date).getDate() &&
-          new Date(r.receipt_date).getMonth() === new Date(date).getMonth() &&
-          new Date(r.receipt_date).getFullYear() ===
-            new Date(date).getFullYear()
-        )
-      })
-      return result
+      if (this.allReceipts) {
+        const result = this.allReceipts.filter((r) => {
+          return (
+            new Date(r.receipt_date).getDate() === new Date(date).getDate() &&
+            new Date(r.receipt_date).getMonth() === new Date(date).getMonth() &&
+            new Date(r.receipt_date).getFullYear() ===
+              new Date(date).getFullYear()
+          )
+        })
+        return result
+      } else {
+        return []
+      }
     },
     makeItRightForTable(data) {
       const obj = {
