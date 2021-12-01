@@ -3,7 +3,6 @@
     <AdminTable
       :title="title"
       icon="mdi-food-outline"
-      btn
       show-date-input
       target
       excel-first-col

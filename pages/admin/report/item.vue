@@ -2,8 +2,7 @@
   <v-row class="ma-3">
     <AdminTable
       :title="title"
-      icon="mdi-food-outline"
-      btn
+      icon="mdi-food-fork-drink"
       show-date-input
       target
       group-by

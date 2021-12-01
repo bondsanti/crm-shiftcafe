@@ -198,10 +198,12 @@ export default {
         (i) => i.type === 'คืนเงิน ( ยกเลิก )' || i.type === 'การขาย ( ยกเลิก )'
       )
 
-      this.itemsSubHeader[0].value = this.items.length
-      this.itemsSubHeader[1].value = sale.length
-      this.itemsSubHeader[2].value = refund.length
-      this.itemsSubHeader[3].value = cancel.length
+      this.itemsSubHeader[0].value = this.$options.filters.comma(
+        this.items.length
+      )
+      this.itemsSubHeader[1].value = this.$options.filters.comma(sale.length)
+      this.itemsSubHeader[2].value = this.$options.filters.comma(refund.length)
+      this.itemsSubHeader[3].value = this.$options.filters.comma(cancel.length)
     },
     filterReceiptsByDate(date) {
       // console.log(new Date(date))

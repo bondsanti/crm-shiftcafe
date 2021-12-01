@@ -25,7 +25,7 @@
       </v-col>
       <v-col cols="12" sm="6" md="4" lg="3">
         <AdminTopCard
-          title="จำนวนยอดขายแยกตามหมวดหมู่"
+          title="ยอดขายแยกตามหมวดหมู่"
           icon="mdi-food-off-outline"
           route-name="admin-report-category"
           to="/admin/report/category"
@@ -33,10 +33,18 @@
       </v-col>
       <v-col cols="12" sm="6" md="4" lg="3">
         <AdminTopCard
-          title="จำนวนยอดขายแยกตามสินค้า"
+          title="ยอดขายแยกตามสินค้า"
           icon="mdi-food-fork-drink"
           route-name="admin-report-item"
           to="/admin/report/item"
+        />
+      </v-col>
+      <v-col cols="12" sm="6" md="4" lg="3">
+        <AdminTopCard
+          title="ยอดขายแยกตามตัวเลือก"
+          icon="mdi-food-variant"
+          route-name="admin-report-option"
+          to="/admin/report/option"
         />
       </v-col>
       <v-col cols="12" sm="6" md="4" lg="3">
