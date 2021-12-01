@@ -244,7 +244,7 @@ export default {
         sales: this.$options.filters.comma(sales, 2),
         refund: this.$options.filters.comma(refund, 2),
         discount: this.$options.filters.comma(discount, 2),
-        total: this.$options.filters.comma(total, 2),
+        total,
         cost: this.$options.filters.comma(cost, 2),
         profit: this.$options.filters.comma(profit, 2),
         diffPerGoal: profit !== 0 ? profit - goal : 0,
