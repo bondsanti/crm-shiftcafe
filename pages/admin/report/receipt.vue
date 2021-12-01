@@ -228,7 +228,7 @@ export default {
         employee: this.findEmployee(data.employee_id),
         customer: this.findCustomer(data.customer_id).name,
         type: this.changeTypeWord(data.receipt_type, data.cancelled_at),
-        total: this.$options.filters.comma(data.total_money, 2),
+        total: data.total_money,
         data,
       }
       this.items.push(obj)

@@ -186,6 +186,9 @@
           ไม่มีข้อมูล
         </v-alert>
       </template>
+      <template #[`item.total`]="{ item }">
+        {{ item.total | comma(2) }}
+      </template>
       <!-- income-expense -->
       <template #[`item.date`]="{ item }">
         {{ item.date | dateTh }}
