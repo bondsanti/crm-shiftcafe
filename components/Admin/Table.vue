@@ -121,7 +121,7 @@
             text-color="white"
           >
             <v-icon left> {{ item.icon }} </v-icon>
-            {{ item.value | currency }} {{ item.text }}
+            {{ item.value }} {{ item.text }}
           </v-chip>
           <v-btn
             v-for="item in itemsSubHeader"

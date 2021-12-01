@@ -76,12 +76,6 @@ export default {
       },
     ],
     itemsSubHeader: [
-      // {
-      //   value: 0,
-      //   text: 'ยอดขาย',
-      //   icon: 'mdi-cash',
-      //   color: 'primary',
-      // },
       {
         value: 0,
         text: 'คืนเงิน',
@@ -178,7 +172,9 @@ export default {
         })
         this.loading = false
         // find target for month
-        this.itemsSubHeader[3].value = goal2 * daysInMonth
+        this.itemsSubHeader[3].value = this.$options.filters.currency(
+          goal2 * daysInMonth
+        )
       }, 1200)
       // find profit
       setTimeout(() => {
@@ -191,8 +187,10 @@ export default {
       // console.log(this.items)
     },
     findProfit(cost, target) {
-      const profit = cost - target
-      this.itemsSubHeader[4].value = profit
+      const profit =
+        this.$options.filters.unFormatCurrency(cost) -
+        this.$options.filters.unFormatCurrency(target)
+      this.itemsSubHeader[4].value = this.$options.filters.currency(profit)
       if (profit < 0) {
         this.itemsSubHeader[4].color = 'red'
       } else {
@@ -213,9 +211,9 @@ export default {
         return i
       })
       // this.itemsSubHeader[0].value = sale
-      this.itemsSubHeader[0].value = refund
-      this.itemsSubHeader[1].value = discount
-      this.itemsSubHeader[2].value = profit
+      this.itemsSubHeader[0].value = this.$options.filters.currency(refund)
+      this.itemsSubHeader[1].value = this.$options.filters.currency(discount)
+      this.itemsSubHeader[2].value = this.$options.filters.currency(profit)
     },
 
     filterReceiptsByDate(date) {
