@@ -25,7 +25,7 @@
             <v-btn
               value="โหลดข้อมูลใหม่"
               :disabled="progress"
-              @click="goTo('refresh')"
+              @click="refreshData"
             >
               <span>โหลดข้อมูลใหม่</span>
 
@@ -37,7 +37,7 @@
               :key="i"
               :value="item.text"
               :disabled="progress"
-              @click="goTo(item.to)"
+              @click="$router.push(item.to)"
             >
               <span>{{ item.text }}</span>
 
@@ -46,7 +46,7 @@
             <v-btn
               value="ออกจากระบบ"
               :disabled="progress"
-              @click="goTo('sign-out')"
+              @click="$refs.confirmDialog.dialog = true"
             >
               <span>ออกจากระบบ</span>
 
@@ -70,7 +70,7 @@
               dark
               small
               :disabled="progress"
-              @click="goTo('refresh')"
+              @click="refreshData"
             >
               <v-icon left>mdi-database-refresh</v-icon> โหลดข้อมูลใหม่
             </v-btn>
@@ -85,7 +85,7 @@
                   ? 'warning'
                   : 'blue-grey darken-1'
               "
-              @click="goTo(item.to)"
+              @click="$router.push(item.to)"
             >
               <v-icon left>{{ item.icon }}</v-icon> {{ item.text }}
             </v-btn>
@@ -94,7 +94,7 @@
               dark
               small
               :disabled="progress"
-              @click="goTo('sign-out')"
+              @click="$refs.confirmDialog.dialog = true"
             >
               <v-icon left>mdi-logout</v-icon> ออกจากระบบ
             </v-btn>
@@ -213,31 +213,34 @@ export default {
     this.getRouteName()
   },
   methods: {
-    async goTo(to) {
-      // console.log(to)
-      if (to === 'sign-out') {
-        this.$refs.confirmDialog.dialog = true
-        // await this.$auth.logout()
-      } else if (to === 'refresh') {
-        try {
-          this.progress = true
+    async refreshData() {
+      try {
+        this.progress = true
+        const route = this.nameRoute
+        if (
+          route === 'admin-report' ||
+          route === 'admin-report-receipt' ||
+          route === 'admin-report-category' ||
+          route === 'admin-report-item'
+        ) {
           await this.$axios.$get('/receipt/loyverse')
-          await this.$store.dispatch('fetchAllData')
-          // await this.$store.dispatch('fetchReceipts')
-          // await this.$store.dispatch('fetchCustomers')
-          // await this.$store.dispatch('fetchEmployees')
-          // await this.$store.dispatch('fetchItems')
-          // await this.$store.dispatch('fetchCategories')
-          // await this.$store.dispatch('fetchAdvisers')
-          // await this.$store.dispatch('fetchUsers')
-          // await this.$store.dispatch('fetchIncomeExpense')
-          this.progress = false
-          window.location.reload()
-        } catch (e) {
-          console.error(e)
+          await this.$store.dispatch('fetchReceipts')
+          await this.$store.dispatch('fetchEmployees')
+          await this.$store.dispatch('fetchIncomeExpense')
+        } else if (route === 'admin-item') {
+          await this.$store.dispatch('fetchItems')
+          await this.$store.dispatch('fetchCategories')
+        } else if (route === 'admin-customer') {
+          await this.$store.dispatch('fetchCustomers')
+        } else if (route === 'admin-adviser') {
+          await this.$store.dispatch('fetchAdvisers')
+        } else if (route === 'admin-user') {
+          await this.$store.dispatch('fetchUsers')
         }
-      } else {
-        this.$router.push(to)
+        this.progress = false
+        window.location.reload()
+      } catch (e) {
+        console.error(e)
       }
     },
     getRouteName() {
@@ -264,8 +267,8 @@ export default {
     async logout() {
       try {
         await this.$auth.logout()
-        await this.$store.dispatch('clearState')
         this.$refs.confirmDialog.dialog = false
+        await this.$store.dispatch('clearState')
       } catch (e) {
         console.log(e)
       }

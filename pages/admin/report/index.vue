@@ -20,13 +20,8 @@
 import moment from 'moment'
 export default {
   middleware: ['requireSignIn', 'refreshData'],
-  props: {
-    // allReceipts: {
-    //   type: Array,
-    //   default: () => [],
-    // },
-  },
 
+  transition: 'home',
   data: () => ({
     receipts: [],
     headers: [
@@ -113,6 +108,8 @@ export default {
       start: '2021-11-05',
       end: '2021-11-30',
     },
+    timeout: null,
+    timeout2: null,
   }),
   head() {
     return {
@@ -142,6 +139,9 @@ export default {
     //   this.calculate()
     // }, 1300)
   },
+  beforeDestroy() {
+    clearTimeout(this.timeout, this.timeout2)
+  },
 
   methods: {
     getDateRange(obj) {
@@ -164,7 +164,7 @@ export default {
       // หน่วงเวลา
       // console.log(dayList)
 
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         this.items = []
         dates.map((d, i) => {
           this.makeItRightForTable(d, i, dates, goal2)
@@ -177,7 +177,7 @@ export default {
         )
       }, 1200)
       // find profit
-      setTimeout(() => {
+      this.timeout2 = setTimeout(() => {
         this.calculate()
         this.findProfit(
           this.itemsSubHeader[2].value,

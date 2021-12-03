@@ -26,21 +26,7 @@
 import moment from 'moment'
 export default {
   middleware: ['requireSignIn', 'refreshData'],
-  props: {
-    // allReceipts: {
-    //   type: Array,
-    //   default: () => [],
-    // },
-    // customers: {
-    //   type: Array,
-    //   default: () => [],
-    // },
-    // employees: {
-    //   type: Array,
-    //   default: () => [],
-    // },
-  },
-
+  transition: 'home',
   data: () => ({
     headers: [
       {
@@ -228,7 +214,11 @@ export default {
         employee: this.findEmployee(data.employee_id),
         customer: this.findCustomer(data.customer_id).name,
         type: this.changeTypeWord(data.receipt_type, data.cancelled_at),
-        total: data.total_money,
+        total: this.findTotal(
+          data.receipt_type,
+          data.cancelled_at,
+          data.total_money
+        ),
         data,
       }
       this.items.push(obj)
@@ -264,19 +254,19 @@ export default {
       this.btnSelect = text
       switch (text) {
         case 'ยอดขาย':
-          setTimeout(() => {
+          this.timeout = setTimeout(() => {
             this.items2 = this.items.filter((i) => i.type === 'การขาย')
             this.loading = false
           }, 1000)
           break
         case 'คืนเงิน':
-          setTimeout(() => {
+          this.timeout = setTimeout(() => {
             this.items2 = this.items.filter((i) => i.type === 'คืนเงิน')
             this.loading = false
           }, 1000)
           break
         case 'ยกเลิก':
-          setTimeout(() => {
+          this.timeout = setTimeout(() => {
             this.items2 = this.items.filter(
               (i) =>
                 i.type === 'คืนเงิน ( ยกเลิก )' ||
@@ -286,7 +276,7 @@ export default {
           }, 1000)
           break
         default:
-          setTimeout(() => {
+          this.timeout = setTimeout(() => {
             this.items2 = this.items
             this.loading = false
           }, 1000)
@@ -306,6 +296,15 @@ export default {
       this.receiptDetail = obj
       this.$refs.receiptDetailNav.drawer = true
       // console.log(value)
+    },
+    findTotal(receiptType, cancelAt, total) {
+      if (cancelAt) {
+        return -total
+      } else if (receiptType === 'REFUND') {
+        return -total
+      } else {
+        return total
+      }
     },
   },
 }

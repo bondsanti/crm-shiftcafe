@@ -1,13 +1,5 @@
 <template>
   <div>
-    <Header
-      :title="`${auth.user.username}`"
-      system-bar
-      icon="mdi-chart-box"
-      prominent
-      dense
-    />
-
     <v-row class="ma-3">
       <AdminTable
         :title="title"
@@ -44,6 +36,7 @@ export default {
 
     return user.role.includes('item')
   },
+  transition: 'home',
   data() {
     return {
       title: 'รายการสินค้า',
@@ -67,6 +60,7 @@ export default {
       items2: [],
       loading: false,
       itemsForSelect: [],
+      timeout: null,
     }
   },
   head() {
@@ -86,6 +80,9 @@ export default {
     this.getData()
     this.makeItRightForSelect()
   },
+  beforeDestroy() {
+    clearTimeout(this.timeout)
+  },
   methods: {
     getData() {
       this.loading = true
@@ -94,7 +91,7 @@ export default {
         this.makeItRightForTable(d)
         return d
       })
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         // this.calculate()
         this.items2 = this.items
         this.loading = false
@@ -137,13 +134,13 @@ export default {
       this.items2 = []
       // console.log(text)
       if (text === 'all') {
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
           this.items2 = this.items
           this.loading = false
         }, 500)
       } else {
         const result = this.items.filter((i) => i.category_id === text)
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
           this.items2 = result
           this.loading = false
         }, 500)

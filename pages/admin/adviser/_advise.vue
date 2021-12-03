@@ -30,7 +30,7 @@ export default {
     }
     return newAdvisers.some((n) => n.advise_code === params.advise)
   },
-
+  transition: 'home',
   data() {
     return {
       title: 'รายชื่อลูกค้า',
@@ -62,6 +62,7 @@ export default {
       ],
       items: [],
       loading: false,
+      timeout: null,
     }
   },
 
@@ -113,6 +114,9 @@ export default {
   created() {
     this.getData()
   },
+  beforeDestroy() {
+    clearTimeout(this.timeout)
+  },
 
   methods: {
     getData() {
@@ -127,7 +131,7 @@ export default {
       }
 
       this.loading = true
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         customersByAdvise.map((c) => {
           this.makeItRightForTable(c)
           return c

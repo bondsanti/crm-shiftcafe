@@ -33,6 +33,7 @@
 import { mapState } from 'vuex'
 export default {
   middleware: ['requireSignIn', 'refreshData'],
+  transition: 'home',
   data() {
     return {
       title: 'ตัวแทน',
@@ -122,6 +123,7 @@ export default {
       idForEditAdviser: null,
       titleConfirm: 'คุณต้องการลบหรือไม่',
       titleAlert: 'คุณต้องการลบหรือไม่',
+      timeout: null,
     }
   },
   head() {
@@ -136,10 +138,13 @@ export default {
     this.setItemForCustomer()
     // console.log(this.auth)
   },
+  beforeDestroy() {
+    clearTimeout(this.timeout)
+  },
   methods: {
     getData() {
       this.loading = true
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         this.adminData.advisers.map((c) => {
           this.makeItRightForTable(c)
           return c
@@ -316,7 +321,7 @@ export default {
     showAlert(msg) {
       this.titleAlert = msg
       this.$refs.alert.dialog = true
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         this.$refs.alert.dialog = false
       }, 1500)
     },
