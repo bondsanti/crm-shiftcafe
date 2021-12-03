@@ -1,12 +1,5 @@
 <template>
   <div>
-    <Header
-      :title="`${auth.user.username}`"
-      system-bar
-      icon="mdi-chart-box"
-      prominent
-      dense
-    />
     <v-row class="ma-3">
       <AdminTable
         :title="title"
@@ -40,6 +33,7 @@ export default {
 
     return user.role.includes('customer')
   },
+  transition: 'home',
   data() {
     return {
       title: 'ลูกค้า',
@@ -89,6 +83,7 @@ export default {
       ],
       items: [],
       loading: false,
+      timeout: null,
     }
   },
   head() {
@@ -107,10 +102,13 @@ export default {
   created() {
     this.getData()
   },
+  beforeDestroy() {
+    clearTimeout(this.timeout)
+  },
   methods: {
     getData() {
       this.loading = true
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         this.adminData.customers.map((c) => {
           this.makeItRightForTable(c)
           return c

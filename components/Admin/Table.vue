@@ -210,7 +210,7 @@
       <!-- report-index -->
       <template #[`item.diffPerGoal`]="{ item }">
         <span :class="`${item.diffPerGoal > 0 ? 'green' : 'red'}--text`">{{
-          item.diffPerGoal > 0 ? '+ ' : ''
+          item.diffPerGoal > 0 ? '+' : ''
         }}</span
         ><span :class="textColor(item.diffPerGoal)">{{
           item.diffPerGoal | comma(2)

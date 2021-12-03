@@ -3,8 +3,10 @@ import passport from 'passport'
 import cors from 'cors'
 import indexRoute from './routes'
 import errorHandler from './middleware/error.middleware'
+import { getReceiptEveryHour } from './controllers/receipt.controller'
 
 const app = express()
+getReceiptEveryHour()
 
 app.use(
   cors({

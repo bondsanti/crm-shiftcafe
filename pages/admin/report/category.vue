@@ -18,7 +18,7 @@
 import moment from 'moment'
 export default {
   middleware: ['requireSignIn', 'refreshData'],
-
+  transition: 'home',
   data() {
     return {
       title: 'แยกตามหมวดหมู่',
@@ -66,6 +66,7 @@ export default {
         refund: [],
         sale: [],
       },
+      timeout: null,
     }
   },
   head() {
@@ -93,6 +94,9 @@ export default {
     }
     // this.filterReceipts()
   },
+  beforeDestroy() {
+    clearTimeout(this.timeout)
+  },
   methods: {
     getData(obj) {
       this.items = []
@@ -117,7 +121,7 @@ export default {
       const itemsSort = this.items.sort(
         (a, b) => parseInt(b.sale) - parseInt(a.sale)
       )
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         // this.calculate()
         this.items2 = itemsSort
         this.loading = false

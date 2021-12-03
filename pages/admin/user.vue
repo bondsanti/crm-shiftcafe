@@ -1,12 +1,5 @@
 <template>
   <div>
-    <Header
-      :title="`${auth.user.username}`"
-      system-bar
-      icon="mdi-chart-box"
-      prominent
-      dense
-    />
     <v-row class="ma-3">
       <AdminTable
         :title="title"
@@ -55,6 +48,7 @@ export default {
 
     return user.role.includes('user')
   },
+  transition: 'home',
   data() {
     return {
       title: 'ผู้ใช้',
@@ -206,6 +200,7 @@ export default {
       idForEditUser: null,
       titleConfirm: 'คุณต้องการลบหรือไม่',
       titleAlert: 'คุณต้องการลบหรือไม่',
+      timeout: null,
     }
   },
   head() {
@@ -225,13 +220,16 @@ export default {
     this.getData()
     this.setItemForAdviseSelect()
   },
+  beforeDestroy() {
+    clearTimeout(this.timeout)
+  },
   methods: {
     getData() {
       this.loading = true
       const filterUser = this.adminData.users.filter(
         (a) => a.username !== 'super_admin'
       )
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         filterUser.map((c) => {
           this.makeItRightForTable(c)
           return c
@@ -385,7 +383,7 @@ export default {
     showAlert(msg) {
       this.titleAlert = msg
       this.$refs.alert.dialog = true
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         this.$refs.alert.dialog = false
       }, 1500)
     },

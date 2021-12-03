@@ -1,3 +1,4 @@
+import schedule from 'node-schedule'
 import HandyStorage from 'handy-storage'
 import { loyversConnect } from '../help'
 const storage = new HandyStorage({
@@ -42,6 +43,42 @@ export const getAllReceiptFormLoyverseServer = async (req, res, next) => {
   } catch (e) {
     next(e)
   }
+}
+
+const getReceipt = async () => {
+  const posDevices = await loyversConnect('GET', '/pos_devices')
+  // end
+  let test = []
+  let result = await loyversConnect('GET', '/receipts?limit=250')
+  test = [...test, ...result.receipts]
+  // ลูปจนกว่าไม่มีหน้าถัดไป
+  while (result.cursor) {
+    result = await checkCursorInResult(
+      `/receipts?limit=250&cursor=${result.cursor}`
+    )
+    test = [...test, ...result.receipts]
+  }
+  // console.log(posDevices)
+  const receipts = test.map((t) => {
+    const obj = { ...t }
+    obj.pos_device_id = findPosDevicesName(
+      t.pos_device_id,
+      posDevices.pos_devices
+    )
+    return obj
+  })
+  setReceipt(receipts)
+  return new Promise((resolve, reject) => {
+    resolve(receipts)
+  })
+}
+
+export const getReceiptEveryHour = () => {
+  const rule = new schedule.RecurrenceRule()
+  rule.minute = new schedule.Range(0, 59, 60)
+  schedule.scheduleJob(rule, async function () {
+    await getReceipt()
+  })
 }
 
 const checkCursorInResult = async (url) => {

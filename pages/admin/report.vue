@@ -1,12 +1,5 @@
 <template>
   <div>
-    <Header
-      :title="`${auth.user.username}`"
-      system-bar
-      icon="mdi-chart-box"
-      prominent
-      dense
-    />
     <v-row dense class="ma-2">
       <v-col cols="12" sm="6" md="4" lg="3">
         <AdminTopCard
@@ -83,10 +76,8 @@ export default {
 
     return user.role.includes('report')
   },
+  transition: 'home',
   computed: {
-    // adminData() {
-    //   return this.$store.state.adminData
-    // },
     auth() {
       return this.$store.state.auth
     },

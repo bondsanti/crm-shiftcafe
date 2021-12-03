@@ -21,6 +21,7 @@
 import moment from 'moment'
 export default {
   middleware: ['requireSignIn', 'refreshData'],
+  transition: 'home',
   data() {
     return {
       title: 'แยกตามตัวเลือก',
@@ -153,7 +154,9 @@ export default {
     }
     // this.filterReceipts()
   },
-  beforeDestroy() {},
+  beforeDestroy() {
+    clearTimeout(this.timeout)
+  },
   methods: {
     getData(obj) {
       this.items = []
@@ -230,7 +233,11 @@ export default {
         category: this.findCategory(data.line_itemDetail),
         name: data.line_itemDetail.item_name,
         option: data.line_itemDetail.variant_name,
-        quantity: data.line_itemDetail.quantity,
+        quantity: this.findQuantity(
+          data.cancelled_at,
+          data.receipt_type,
+          data.line_itemDetail.quantity
+        ),
         total: totaly,
         discount: disC,
         net: totaly - disC,
@@ -259,6 +266,16 @@ export default {
       let discount = 0
       lineDiscount.map((l) => (discount += l.money_amount))
       return discount
+    },
+    findQuantity(cancelAt, receiptType, quantity) {
+      // console.log(cancelAt, receiptType, quantity)
+      if (cancelAt) {
+        return -quantity
+      } else if (receiptType === 'REFUND') {
+        return -quantity
+      } else {
+        return quantity
+      }
     },
     findCategory(item) {
       const resultItemDetail = this.adminData.items.find(

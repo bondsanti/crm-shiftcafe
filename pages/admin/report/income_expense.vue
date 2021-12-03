@@ -35,7 +35,7 @@
 import moment from 'moment'
 export default {
   middleware: ['requireSignIn', 'refreshData'],
-
+  transition: 'home',
   data() {
     return {
       title: 'รายรับ-รายจ่าย',
@@ -220,7 +220,7 @@ export default {
     showAlert(msg) {
       this.titleAlert = msg
       this.$refs.alert.dialog = true
-      setTimeout(() => {
+      this.interval = setTimeout(() => {
         this.$refs.alert.dialog = false
       }, 1500)
     },
